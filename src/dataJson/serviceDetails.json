@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "service_details": {
+      "title": "Loyola Motors - Chapa y Pintura",
+      "description": "En Loyola Motors entendemos que la chapa y pintura son elementos críticos para el aspecto y valor de tu vehículo. Nuestros servicios están diseñados para devolver a tu coche su aspecto original, proporcionándote la calidad, durabilidad y acabado que mereces. Explora nuestros servicios especializados:",
+      "services": [
+        {
+          "title": "Pintura Completa",
+          "description": "Renovación total de la pintura de tu vehículo con garantía de 1 año. Utilizamos productos de primera calidad y técnicas profesionales para un acabado perfecto."
+        },
+        {
+          "title": "Reparación de Golpes",
+          "description": "Reparación profesional de golpes y abolladuras sin afectar la pintura original. Nuestros técnicos especializados devuelven la forma original a la carrocería."
+        },
+        {
+          "title": "Eliminación de Arañazos",
+          "description": "Tratamiento específico para arañazos profundos y superficiales. Restauramos la superficie original sin comprometer la integridad de la pintura."
+        },
+        {
+          "title": "Pulido y Abrillantado",
+          "description": "Servicio de pulido profesional que elimina micro-rayones y devuelve el brillo original a la pintura de tu vehículo."
+        }
+      ]
+    },
+    "similar_services": [
+      {
+        "id": 2,
+        "title": "Restauración de Faros",
+        "description": "Devolvemos la transparencia y el brillo original a tus faros, mejorando la estética y la seguridad.",
+        "icon": "/assets/img/icon/service-icon-1.svg"
+      },
+      {
+        "id": 3,
+        "title": "Revisión Pre-ITV",
+        "description": "Preparamos tu vehículo para la ITV, asegurando que cumpla con todos los requisitos para pasar la inspección.",
+        "icon": "/assets/img/icon/service-icon-2.svg"
+      },
+      {
+        "id": 4,
+        "title": "Aire Acondicionado",
+        "description": "Carga y reparación de sistemas de aire acondicionado para un confort óptimo en tu coche.",
+        "icon": "/assets/img/icon/service-icon-3.svg"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "service_details": {
+      "title": "Loyola Motors - Restauración de Faros",
+      "description": "Unos faros opacos o amarillentos no solo afectan la estética de tu vehículo, sino también tu seguridad. Nuestro servicio de restauración de faros devuelve la claridad y eficacia original.",
+      "services": [
+        {
+          "title": "Pulido Profesional",
+          "description": "Eliminamos la capa exterior dañada del faro mediante un proceso de pulido de varias fases, devolviendo la transparencia."
+        },
+        {
+          "title": "Tratamiento de Protección UV",
+          "description": "Aplicamos una capa de protección UV para prevenir que los faros vuelvan a opacarse rápidamente por la exposición al sol."
+        },
+        {
+          "title": "Mejora de la Visibilidad",
+          "description": "Unos faros restaurados mejoran notablemente la visibilidad nocturna, aumentando tu seguridad y la de los demás."
+        },
+        {
+          "title": "Estética Renovada",
+          "description": "El cambio estético es inmediato. Tu coche parecerá más nuevo y cuidado con unos faros brillantes y transparentes."
+        }
+      ]
+    },
+    "similar_services": [
+      {
+        "id": 1,
+        "title": "Chapa y Pintura",
+        "description": "Reparación de golpes, arañazos y pintura completa para que tu coche luzca como nuevo.",
+        "icon": "/assets/img/icon/service-icon-1.svg"
+      },
+      {
+        "id": 5,
+        "title": "Neumáticos",
+        "description": "Venta, montaje, equilibrado y reparación de neumáticos para una conducción segura.",
+        "icon": "/assets/img/icon/service-icon-2.svg"
+      },
+      {
+        "id": 3,
+        "title": "ITV",
+        "description": "Preparación completa para pasar la ITV, certificado en 24 horas.",
+        "icon": "/assets/img/icon/service-icon-3.svg"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "service_details": {
+      "title": "Loyola Motors - Revisión Pre-ITV",
+      "description": "Asegura que tu vehículo pase la Inspección Técnica de Vehículos (ITV) a la primera con nuestro servicio de revisión pre-ITV. Realizamos una inspección completa y nos encargamos de cualquier ajuste necesario.",
+      "services": [
+        {
+          "title": "Revisión de Puntos Clave",
+          "description": "Inspeccionamos todos los puntos críticos que se evalúan en la ITV: luces, frenos, neumáticos, emisiones, etc."
+        },
+        {
+          "title": "Ajustes y Reparaciones",
+          "description": "Realizamos los ajustes y reparaciones necesarios para garantizar que tu coche cumpla con la normativa vigente."
+        },
+        {
+          "title": "Gestión de Cita",
+          "description": "Si lo deseas, podemos gestionar la cita de la ITV por ti para tu comodidad."
+        },
+        {
+          "title": "Garantía de Aprobado",
+          "description": "Con nuestra revisión exhaustiva, te damos la tranquilidad de que tu vehículo pasará la ITV sin problemas."
+        }
+      ]
+    },
+    "similar_services": [
+      {
+        "id": 1,
+        "title": "Chapa y Pintura",
+        "description": "Reparación de golpes, arañazos y pintura completa para que tu coche luzca como nuevo.",
+        "icon": "/assets/img/icon/service-icon-1.svg"
+      },
+      {
+        "id": 2,
+        "title": "Restauración de Faros",
+        "description": "Devolvemos la transparencia y el brillo original a tus faros, mejorando la estética y la seguridad.",
+        "icon": "/assets/img/icon/service-icon-2.svg"
+      },
+      {
+        "id": 4,
+        "title": "Aire Acondicionado",
+        "description": "Carga y reparación de sistemas de aire acondicionado para un confort óptimo en tu coche.",
+        "icon": "/assets/img/icon/service-icon-3.svg"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "service_details": {
+      "title": "Loyola Motors - Aire Acondicionado",
+      "description": "Mantén el confort en tu vehículo durante todo el año con nuestros servicios especializados de aire acondicionado. Garantizamos un ambiente fresco y agradable en cualquier temporada.",
+      "services": [
+        {
+          "title": "Carga de Gas Refrigerante",
+          "description": "Recarga completa del sistema de aire acondicionado con gases refrigerantes de calidad, restaurando la eficiencia del sistema."
+        },
+        {
+          "title": "Limpieza de Filtros",
+          "description": "Limpieza y sustitución de filtros del habitáculo para asegurar un aire limpio y libre de olores en el interior de tu vehículo."
+        },
+        {
+          "title": "Reparación de Averías",
+          "description": "Diagnóstico y reparación de averías en el sistema de climatización, desde fugas hasta fallos en componentes eléctricos."
+        },
+        {
+          "title": "Mantenimiento Preventivo",
+          "description": "Revisión periódica del sistema para prevenir averías y mantener la eficiencia energética del aire acondicionado."
+        }
+      ]
+    },
+    "similar_services": [
+      {
+        "id": 1,
+        "title": "Pintura de Llantas",
+        "description": "Renueva el aspecto de tus llantas con un acabado profesional y duradero. Amplia gama de colores.",
+        "icon": "/assets/img/icon/service-icon-1.svg"
+      },
+      {
+        "id": 6,
+        "title": "Inyección Diésel/Gasolina",
+        "description": "Optimiza consumo y potencia de tu motor con nuestro servicio especializado en sistemas de inyección.",
+        "icon": "/assets/img/icon/service-icon-2.svg"
+      },
+      {
+        "id": 7,
+        "title": "Instalación de Accesorios",
+        "description": "Spoilers, llantas, luces LED – personaliza tu vehículo con calidad profesional.",
+        "icon": "/assets/img/icon/service-icon-3.svg"
+      }
+    ]
+  }
+]

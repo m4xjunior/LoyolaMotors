@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "José Antonio Loyola",
+    "title": "Director General",
+    "image": "/assets/img/member/member_1.jpg",
+    "desp": "Fundador de Loyola Motors con más de 25 años de experiencia en el sector automotriz. Especialista en chapa y pintura, ha transformado el taller familiar en una referencia de calidad en Valencia.",
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/",
+      "facebook": "https://www.facebook.com/",
+      "twitter": "https://www.instagram.com/"
+    },
+    "contact": {
+      "address": "Calle Sant Ignasi de Loiola, 21 - BJ IZ, 46008 Valencia",
+      "email": "info@loyolamotors.es",
+      "phone": "+34 640 16 29 47",
+      "website": "www.loyolamotors.es"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Carlos Martín",
+    "title": "Jefe de Taller",
+    "image": "/assets/img/member/member_2.jpg",
+    "desp": "Mecánico especializado con 15 años de experiencia en reparación de chapa y pintura. Experto en trabajos de precisión y acabados de alta calidad.",
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/",
+      "facebook": "https://www.facebook.com/",
+      "twitter": "https://www.instagram.com/"
+    },
+    "contact": {
+      "address": "Calle Sant Ignasi de Loiola, 21 - BJ IZ, 46008 Valencia",
+      "email": "carlos@loyolamotors.es",
+      "phone": "+34 963 846 955",
+      "website": "www.loyolamotors.es"
+    }
+  },
+  {
+    "id": 3,
+    "name": "Ana García",
+    "title": "Especialista en Pintura",
+    "image": "/assets/img/member/member_3.jpg",
+    "desp": "Técnica especializada en aplicación de pintura y acabados. Con 12 años de experiencia, garantiza resultados perfectos en cada trabajo de restauración.",
+    "socialLinks": {
+      "linkedin": "https://www.linkedin.com/",
+      "facebook": "https://www.facebook.com/",
+      "twitter": "https://www.instagram.com/"
+    },
+    "contact": {
+      "address": "Calle Sant Ignasi de Loiola, 21 - BJ IZ, 46008 Valencia",
+      "email": "ana@loyolamotors.es",
+      "phone": "+34 963 846 955",
+      "website": "www.loyolamotors.es"
+    }
+  }
+]

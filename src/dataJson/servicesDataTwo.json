@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "Reparación mecánica",
+    "description": "Motor, frenos, suspensión – diagnóstico rápido y reparación profesional con garantía.",
+    "icon": "/assets/img/icon/service-icon-1.svg"
+  },
+  {
+    "id": 2,
+    "title": "Pintura y chapeado",
+    "description": "Pintura completa o por pieza, con garantía de 1 año. Dejamos tu coche como nuevo.",
+    "icon": "/assets/img/icon/service-icon-2.svg"
+  },
+  {
+    "id": 3,
+    "title": "Aire acondicionado",
+    "description": "Recarga, reparación y diagnóstico completo del sistema de climatización.",
+    "icon": "/assets/img/icon/service-icon-3.svg"
+  },
+  {
+    "id": 4,
+    "title": "Inyección diésel/gasolina",
+    "description": "Optimiza consumo y potencia de tu motor con nuestro servicio especializado.",
+    "icon": "/assets/img/icon/service-icon-4.svg"
+  },
+  {
+    "id": 5,
+    "title": "ITV",
+    "description": "Preparación completa para pasar la ITV, certificado en 24 horas.",
+    "icon": "/assets/img/icon/service-icon-5.svg"
+  },
+  {
+    "id": 6,
+    "title": "Instalación de accesorios",
+    "description": "Spoilers, llantas, luces LED – personaliza tu vehículo con calidad profesional.",
+    "icon": "/assets/img/icon/service-icon-6.svg"
+  }
+]

@@ -1,0 +1,106 @@
+[
+  {
+    "id": 1,
+    "title": "Cómo detectar una abolladura antes de que tu coche pierda valor",
+    "date": "20.07.2024",
+    "imageUrl": "/assets/img/blog/blog_1.jpg",
+    "blogdetails": {
+      "img": "/assets/img/blog/blog-show.jpg",
+      "shortDesp": "Una pequeña abolladura puede parecer inofensiva, pero con el tiempo puede causar óxido y devaluar tu vehículo. Aprende a identificar y solucionar estos problemas a tiempo para mantener el valor de tu coche.",
+      "itemlist": [
+        {
+          "title": "1. Inspección Visual Detallada:",
+          "desp": "Revisa tu coche bajo diferentes condiciones de luz. La luz del amanecer o atardecer es ideal para detectar imperfecciones en la chapa que no se ven a simple vista."
+        },
+        {
+          "title": "2. El Tacto no Engaña:",
+          "desp": "Pasa la mano suavemente por la superficie de la carrocería. Muchas veces, el tacto puede revelar pequeñas ondulaciones o abolladuras que el ojo no percibe."
+        },
+        {
+          "title": "3. ¿Por qué actuar rápido?:",
+          "desp": "Una abolladura compromete la capa de pintura, exponiendo el metal a la humedad. Esto acelera la oxidación y puede convertir una pequeña reparación en un gran gasto. Solicita una inspección gratuita para evitarlo."
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "title": "5 trucos para mantener el brillo de la pintura de tu coche",
+    "date": "25.07.2024",
+    "imageUrl": "/assets/img/blog/blog_2.jpg",
+    "blogdetails": {
+      "img": "/assets/img/blog/single-blog.jpg",
+      "shortDesp": "El brillo de la pintura no solo es estética, es una capa de protección para tu vehículo. Con estos 5 trucos, mantendrás tu coche como nuevo por más tiempo, protegiendo tu inversión.",
+      "itemlist": [
+        {
+          "title": "1. Lavado Adecuado:",
+          "desp": "Utiliza siempre dos cubos: uno con agua y champú para coches, y otro solo con agua para enjuagar el guante de lavado. Así evitarás rayar la pintura con la suciedad."
+        },
+        {
+          "title": "2. Cera de Calidad:",
+          "desp": "Aplica cera cada 3-4 meses. La cera no solo da brillo, sino que crea una barrera protectora contra los rayos UV, la lluvia ácida y los excrementos de pájaros."
+        },
+        {
+          "title": "3. Evita el Sol Directo:",
+          "desp": "Siempre que sea posible, aparca a la sombra. El sol intenso degrada los pigmentos de la pintura, haciéndola perder color y brillo con el tiempo."
+        },
+        {
+          "title": "4. Secado Correcto:",
+          "desp": "No dejes que el coche se seque al aire, ya que las gotas de agua dejan marcas de minerales. Usa una toalla de microfibra limpia y suave."
+        },
+        {
+          "title": "5. Pulido Profesional Anual:",
+          "desp": "Un pulido profesional una vez al año elimina micro-arañazos y restaura la capa superior de la pintura, devolviéndole un brillo profundo y duradero."
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "title": "¿Cuándo es el momento correcto para pasar la ITV?",
+    "date": "30.07.2024",
+    "imageUrl": "/assets/img/blog/blog_3.jpg",
+    "blogdetails": {
+      "img": "/assets/img/blog/blog_3.jpg",
+      "shortDesp": "Pasar la ITV puede ser un proceso estresante si no estás preparado. Te explicamos cuál es el mejor momento para pasarla y cómo podemos ayudarte a garantizar que tu coche la supere sin problemas.",
+      "itemlist": [
+        {
+          "title": "1. Revisa la Fecha de Vencimiento:",
+          "desp": "Puedes pasar la ITV hasta 30 días antes de la fecha de vencimiento sin que se modifique la fecha para la siguiente inspección. No esperes al último día."
+        },
+        {
+          "title": "2. Inspección Pre-ITV:",
+          "desp": "Antes de ir a la estación, es crucial hacer una revisión pre-ITV. En Loyola Motors revisamos los puntos clave: luces, frenos, neumáticos y emisiones, para evitar sorpresas."
+        },
+        {
+          "title": "3. ¿Qué pasa si no la superas?:",
+          "desp": "Si tu coche no supera la ITV, tienes un plazo para solucionar los defectos. Nosotros nos encargamos de las reparaciones necesarias de forma rápida para que puedas volver a presentar el coche a tiempo."
+        }
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "title": "Comparativa de precios: ¿Cuánto puedes ahorrar con Loyola Motors?",
+    "date": "05.08.2024",
+    "imageUrl": "/assets/img/blog/blog_4.jpg",
+    "blogdetails": {
+      "img": "/assets/img/blog/blog_4.jpg",
+      "shortDesp": "La transparencia es clave para nosotros. En este post, comparamos nuestros precios en reparaciones comunes de chapa y pintura con la media del mercado en Valencia, para que veas por ti mismo el ahorro.",
+      "itemlist": [
+        {
+          "title": "1. Pintura de Paragolpes:",
+          "desp": "Mientras que el precio medio en Valencia ronda los 160€, en Loyola Motors lo ofrecemos desde 140€, manteniendo la máxima calidad en materiales y acabado."
+        },
+        {
+          "title": "2. Reparación de un Arañazo Profundo:",
+          "desp": "Una reparación de este tipo puede costar hasta 120€ en otros talleres. Con nosotros, puedes esperar un presupuesto a partir de 90€, con garantía de 1 año."
+        },
+        {
+          "title": "3. Pintura Completa:",
+          "desp": "Renovar tu coche por completo con una pintura nueva puede superar los 1.650€ en el mercado. En Loyola Motors, ofrecemos paquetes desde 1.400€, un ahorro de más del 15%."
+        }
+      ]
+    }
+  }
+]

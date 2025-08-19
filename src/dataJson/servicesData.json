@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "img": "/assets/img/service/service_1.jpg",
+    "title": "Chapa y Pintura",
+    "desp": "Reparación de golpes, arañazos y pintura completa para que tu coche luzca como nuevo."
+  },
+  {
+    "id": 2,
+    "img": "/assets/img/service/service_2.jpg",
+    "title": "Restauración de Faros",
+    "desp": "Devolvemos la transparencia y el brillo original a tus faros, mejorando la estética y la seguridad en la conducción nocturna."
+  },
+  {
+    "id": 3,
+    "img": "/assets/img/service/service_3.jpg",
+    "title": "Revisión Pre-ITV",
+    "desp": "Preparamos tu vehículo para la ITV, asegurando que cumpla con todos los requisitos para pasar la inspección."
+  },
+  {
+    "id": 4,
+    "img": "/assets/img/service/service_4.jpg",
+    "title": "Neumáticos",
+    "desp": "Venta, montaje, equilibrado y reparación de neumáticos para una conducción segura."
+  },
+  {
+    "id": 5,
+    "img": "/assets/img/service/service_5.jpg",
+    "title": "Aire Acondicionado",
+    "desp": "Carga y reparación de sistemas de aire acondicionado para un confort óptimo en tu coche."
+  }
+]
