@@ -36,9 +36,13 @@
     "react-modal-video": "^2.0.1",
     "react-router-dom": "^6.23.1",
     "split-type": "^0.3.4",
-    "swiper": "^11.1.4"
+    "swiper": "^11.1.4",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "tailwindcss": "^3.4.4",
+    "postcss": "^8.4.38",
+    "autoprefixer": "^10.4.19",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react-swc": "^3.5.0",
