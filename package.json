@@ -37,7 +37,11 @@
     "react-router-dom": "^6.23.1",
     "split-type": "^0.3.4",
     "swiper": "^11.1.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "@tremor/react": "^0.1.0",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-scroll-area": "^1.0.5"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.4",
