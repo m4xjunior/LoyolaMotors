@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useMemo,
-} from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import classNames from "classnames";
 import NavMenu from "../../components/Nav/NavMenu";
 import navitemlist from "../../dataJson/navitemlist.json";
@@ -49,7 +43,7 @@ const Header = () => {
         "ak-gescout_sticky": isSticky,
         "ak-gescout_show": isHeaderVisible,
       }),
-    [isSticky, isHeaderVisible]
+    [isSticky, isHeaderVisible],
   );
   return (
     <header ref={headerRef} className={navClass}>

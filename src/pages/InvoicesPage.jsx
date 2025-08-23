@@ -75,6 +75,7 @@ const InvoicesPage = () => {
           </tbody>
         </table>
       </div>
+    </div>
     </>
   );
 };

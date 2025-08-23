@@ -1,96 +1,82 @@
 [
-    {
-        "title": "Inicio",
-        "link": "/",
-        "key": "home"
-    },
-    {
-        "title": "Sobre nosotros",
-        "link": "/about",
-        "key": "about"
-    },
-    {
+  {
+    "title": "Inicio",
+    "link": "/",
+    "key": "home"
+  },
+  {
+    "title": "Sobre nosotros",
+    "link": "/about",
+    "key": "about"
+  },
+  {
+    "title": "Servicios",
+    "link": "/service",
+    "key": "service",
+    "childern": [
+      {
         "title": "Servicios",
         "link": "/service",
-        "key": "service",
-        "childern": [
-            {
-                "title": "Servicios",
-                "link": "/service",
-                "key": "service1"
-            },
-            {
-                "title": "Servicios Dos",
-                "link": "/service-two",
-                "key": "servicetwo"
-            }
-        ]
-    },
-    {
-        "title": "Blog",
-        "link": "/blog",
-        "key": "blog"
-    },
-    {
-        "title": "Páginas",
-        "link": "#",
-        "key": "pages",
-        "childern": [
-            {
-                "title": "Equipo",
-                "link": "/team",
-                "key": "team"
-            },
-            {
-                "title": "Cita previa",
-                "link": "/appointment",
-                "key": "appointment"
-            },
-            {
-                "title": "Dashboard",
-                "link": "/invoices",
-                "key": "dashboard"
-            },
-            {
-                "title": "Nueva factura",
-                "link": "/create-invoice",
-                "key": "createinvoice"
-            },
-            {
-                "title": "Precios",
-                "link": "/pricing",
-                "key": "pricing"
-            },
-            {
-                "title": "Testimonios",
-                "link": "/testimonial",
-                "key": "testimonial"
-            },
-            {
-                "title": "Galería",
-                "link": "/gallery",
-                "key": "gallery"
-            },
-            {
-                "title": "Preguntas frecuentes",
-                "link": "/faq",
-                "key": "faq"
-            },
-            {
-                "title": "Próximamente",
-                "link": "/comming-soon",
-                "key": "commingsoon"
-            }
-        ]
-    },
-    {
-        "title": "Contacto",
-        "link": "/contact",
-        "key": "contact"
-    },
-    {
-        "title": "Login",
-        "link": "/login",
-        "key": "login"
-    }
+        "key": "service1"
+      },
+      {
+        "title": "Servicios Dos",
+        "link": "/service-two",
+        "key": "servicetwo"
+      }
+    ]
+  },
+  {
+    "title": "Blog",
+    "link": "/blog",
+    "key": "blog"
+  },
+  {
+    "title": "Páginas",
+    "link": "#",
+    "key": "pages",
+    "childern": [
+      {
+        "title": "Equipo",
+        "link": "/team",
+        "key": "team"
+      },
+      {
+        "title": "Cita previa",
+        "link": "/appointment",
+        "key": "appointment"
+      },
+
+      {
+        "title": "Precios",
+        "link": "/pricing",
+        "key": "pricing"
+      },
+      {
+        "title": "Testimonios",
+        "link": "/testimonial",
+        "key": "testimonial"
+      },
+      {
+        "title": "Galería",
+        "link": "/gallery",
+        "key": "gallery"
+      },
+      {
+        "title": "Preguntas frecuentes",
+        "link": "/faq",
+        "key": "faq"
+      },
+      {
+        "title": "Próximamente",
+        "link": "/comming-soon",
+        "key": "commingsoon"
+      }
+    ]
+  },
+  {
+    "title": "Contacto",
+    "link": "/contact",
+    "key": "contact"
+  }
 ]

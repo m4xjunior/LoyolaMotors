@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Main from "./layout/Main";
 import AOS from "aos";
@@ -24,6 +24,15 @@ import SingleInvoicePage from "./pages/SingleInvoicePage";
 import InvoiceFormPage from "./pages/InvoiceFormPage";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import InvoicesPage from "./pages/InvoicesPage";
+import DashboardPage from "./pages/DashboardPage";
+import ClientesManagementPage from "./pages/ClientesManagementPage";
+import NovoClientePage from "./pages/NovoClientePage";
+import NovoServicoPage from "./pages/NovoServicoPage";
+import VehiclesPage from "./pages/VehiclesPage";
+import VehicleServicesPage from "./pages/VehicleServicesPage";
+import ServicesPage from "./pages/ServicesPage";
+import UsersManagementPage from "./pages/UsersManagementPage";
+import ClienteDetailPage from "./pages/ClienteDetailPage";
 
 export default function App() {
   useEffect(() => {
@@ -53,29 +62,129 @@ export default function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/comming-soon" element={<CommingSoon />} />
-        <Route 
-          path="/invoices" 
+
+        {/* Dashboard Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/clientes"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <ClientesManagementPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/clientes/novo"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <NovoClientePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/clientes/:clienteId"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <ClienteDetailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/clientes/novo"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <NovoClientePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/clientes/editar/:clienteId"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <NovoClientePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/vehiculos"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <VehiclesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/vehiculos/:vehicleId/servicios"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <VehicleServicesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/servicios"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <ServicesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/servicios/nuevo"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <NovoServicoPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/servicios/nuevo"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <NovoServicoPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/usuarios"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <UsersManagementPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Legacy Invoice Routes */}
+        <Route
+          path="/invoices"
           element={
             <ProtectedRoute>
               <InvoicesPage />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/create-invoice" 
+        <Route
+          path="/create-invoice"
           element={
             <ProtectedRoute>
               <InvoiceFormPage />
             </ProtectedRoute>
-          } 
+          }
         />
-        <Route 
-          path="/invoice/:id" 
+        <Route
+          path="/invoice/:id"
           element={
             <ProtectedRoute>
               <SingleInvoicePage />
             </ProtectedRoute>
-          } 
+          }
         />
       </Route>
       <Route path="/*" element={<ErrorPages />}></Route>
