@@ -1,5 +1,5 @@
 
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
@@ -12,6 +12,14 @@ const MOCK_USER = {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+
+  // Restore user state from localStorage on component mount
+  useEffect(() => {
+    const isAuth = localStorage.getItem('isAuthenticated');
+    if (isAuth === 'true') {
+      setUser(MOCK_USER);
+    }
+  }, []);
 
   const login = (email, password) => {
     return new Promise((resolve, reject) => {
