@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { mockInvoices } from '../data/mockData';
-import { ButtonCommon } from '../components/Button/Button';
+import { mockInvoices } from '@/data/mockData';
+import { ButtonCommon } from '@/components/Button/Button';
 import { format } from 'date-fns';
-import CommonPageHero from '../components/CommonPageHero/CommonPageHero';
+import CommonPageHero from '@/components/CommonPageHero/CommonPageHero';
 
 const InvoicesPage = () => {
   const { logout } = useAuth();
@@ -74,6 +74,7 @@ const InvoicesPage = () => {
             ))}
           </tbody>
         </table>
+      </div>
       </div>
     </>
   );

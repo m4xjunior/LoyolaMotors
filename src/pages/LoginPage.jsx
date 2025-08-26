@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import CommonPageHero from '../components/CommonPageHero/CommonPageHero';
+import { useAuth } from '@/contexts/AuthContext';
+import CommonPageHero from '@/components/CommonPageHero/CommonPageHero';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('admin@loyolamotors.com');

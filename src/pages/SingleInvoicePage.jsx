@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { mockInvoices, mockInvoiceItems } from '../data/mockData';
-import CommonPageHero from '../components/CommonPageHero/CommonPageHero';
+import { mockInvoices, mockInvoiceItems } from '@/data/mockData';
+import CommonPageHero from '@/components/CommonPageHero/CommonPageHero';
 import { format } from 'date-fns';
 
 const SingleInvoicePage = () => {
