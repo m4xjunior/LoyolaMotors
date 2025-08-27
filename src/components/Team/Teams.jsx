@@ -1,4 +1,3 @@
-import React from "react";
 import SectionHeading from "../SectionHeading/SectionHeading";
 import { MoreBtn } from "../Button/Button";
 import TeamCard from "./TeamCard";

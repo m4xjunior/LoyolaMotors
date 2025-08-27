@@ -25,6 +25,7 @@
     "react-modal-video": "^2.0.1",
     "react-router-dom": "^6.23.1",
     "split-type": "^0.3.4",
+    "styled-components": "^6.1.19",
     "swiper": "^11.1.4"
   },
   "devDependencies": {

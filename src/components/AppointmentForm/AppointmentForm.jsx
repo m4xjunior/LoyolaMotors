@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import { useState } from 'react';
 
 const AppointmentForm = () => {
   const [formData, setFormData] = useState({

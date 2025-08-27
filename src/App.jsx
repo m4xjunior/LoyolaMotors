@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Main from "./layout/Main";
 import AOS from "aos";
 import ErrorPages from "./pages/ErrorPages";
@@ -28,6 +28,7 @@ import DashboardPage from "./pages/DashboardPage";
 import ClientesManagementPage from "./pages/ClientesManagementPage";
 import NovoClientePage from "./pages/NovoClientePage";
 import NovoServicoPage from "./pages/NovoServicoPage";
+import NovoVehiculoPage from "./pages/NovoVehiculoPage";
 import VehiclesPage from "./pages/VehiclesPage";
 import VehicleServicesPage from "./pages/VehicleServicesPage";
 import ServicesPage from "./pages/ServicesPage";
@@ -35,10 +36,17 @@ import UsersManagementPage from "./pages/UsersManagementPage";
 import ClienteDetailPage from "./pages/ClienteDetailPage";
 
 export default function App() {
+  const location = useLocation();
+
   useEffect(() => {
     AOS.init();
     AOS.refresh();
   }, []);
+
+  useEffect(() => {
+    console.log("Current route:", location.pathname);
+  }, [location.pathname]);
+
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
@@ -121,6 +129,14 @@ export default function App() {
           }
         />
         <Route
+          path="/dashboard/vehiculos/novo"
+          element={
+            <ProtectedRoute requiredRole="empleado">
+              <NovoVehiculoPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/dashboard/vehiculos/:vehicleId/servicios"
           element={
             <ProtectedRoute requiredRole="empleado">
@@ -133,14 +149,6 @@ export default function App() {
           element={
             <ProtectedRoute requiredRole="empleado">
               <ServicesPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/servicios/nuevo"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <NovoServicoPage />
             </ProtectedRoute>
           }
         />

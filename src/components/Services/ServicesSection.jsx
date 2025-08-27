@@ -1,4 +1,3 @@
-import React from "react";
 import { MoreBtn } from "../Button/Button";
 import SectionHeading from "../SectionHeading/SectionHeading";
 import { Link } from "react-router-dom";

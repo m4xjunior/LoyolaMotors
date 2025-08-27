@@ -1,4 +1,3 @@
-import React from "react";
 import { ServiceCardTwo } from "./ServiceCardTwo";
 import servicesDataTwo from "../../dataJson/servicesDataTwo.json";
 

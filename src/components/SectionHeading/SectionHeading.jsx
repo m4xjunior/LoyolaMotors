@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from 'prop-types';
 
 const SectionHeading = ({ title, bgText, desp, type }) => {
   return (
@@ -14,4 +14,12 @@ const SectionHeading = ({ title, bgText, desp, type }) => {
     </div>
   );
 };
+
+SectionHeading.propTypes = {
+  title: PropTypes.string.isRequired,
+  bgText: PropTypes.string,
+  desp: PropTypes.string,
+  type: PropTypes.string,
+};
+
 export default SectionHeading;

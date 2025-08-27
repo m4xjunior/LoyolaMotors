@@ -1,5 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
 
 export function ButtonCommon(props) {
   return (
@@ -9,6 +9,11 @@ export function ButtonCommon(props) {
   );
 }
 
+ButtonCommon.propTypes = {
+  to: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
 export function MoreBtn(props) {
   return (
     <Link to={props.to} className="more-btn">
@@ -16,6 +21,11 @@ export function MoreBtn(props) {
     </Link>
   );
 }
+
+MoreBtn.propTypes = {
+  to: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export function CtaBtn(props) {
   return (
@@ -25,3 +35,8 @@ export function CtaBtn(props) {
     </Link>
   );
 }
+
+CtaBtn.propTypes = {
+  to: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};

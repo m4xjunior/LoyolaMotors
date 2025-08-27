@@ -646,6 +646,7 @@ export const addActivity = db.addActivity.bind(db);
 // Helpers específicos
 export const clienteService = {
   create: (data) => db.create("clientes", data),
+  read: (id) => db.read("clientes", id),
   getAll: () => db.getAll("clientes"),
   update: (id, data) => db.update("clientes", id, data),
   delete: (id) => db.delete("clientes", id),

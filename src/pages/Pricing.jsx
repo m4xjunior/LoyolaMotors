@@ -1,4 +1,3 @@
-import React from "react";
 
 import PricingTable from "../components/Pricing/PricingTable";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";

@@ -1,5 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
 
 const TeamCard = ({ member, delay }) => {
   return (
@@ -32,6 +32,21 @@ const TeamCard = ({ member, delay }) => {
       </div>
     </div>
   );
+};
+
+TeamCard.propTypes = {
+  member: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    image: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    socialLinks: PropTypes.shape({
+      linkedin: PropTypes.string,
+      facebook: PropTypes.string,
+      twitter: PropTypes.string,
+    }),
+  }).isRequired,
+  delay: PropTypes.string,
 };
 
 export default TeamCard;

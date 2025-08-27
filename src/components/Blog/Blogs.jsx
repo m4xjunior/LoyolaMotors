@@ -1,4 +1,3 @@
-import React from "react";
 import BlogCard from "./BlogCard";
 import SectionHeading from "../SectionHeading/SectionHeading";
 import blogsData from "../../dataJson/blogsData.json";

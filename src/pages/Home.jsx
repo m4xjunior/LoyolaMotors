@@ -1,4 +1,3 @@
-import React from "react";
 
 import HeroSlider from "../components/Sliders/HeroSlider";
 import ServiceProgres from "../components/ServiceProgres/ServiceProgres";

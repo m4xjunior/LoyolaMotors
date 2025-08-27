@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { mockCustomers, mockVehicles, mockServiceHistory } from '../data/mockCustomers';
 import CommonPageHero from '../components/CommonPageHero/CommonPageHero';
 import { format } from 'date-fns';
 
-const ServiceCard = ({ service, customer, onEdit, onDelete }) => {
+const ServiceCard = ({ service, onEdit, onDelete }) => {
   const getStatusBadge = (status) => {
     const badges = {
       'completado': 'bg-success',
@@ -503,7 +504,6 @@ const VehicleServicesPage = () => {
             <ServiceCard
               key={service.id}
               service={service}
-              customer={customer}
               onEdit={handleEdit}
               onDelete={handleDelete}
             />
@@ -539,6 +539,24 @@ const VehicleServicesPage = () => {
       </div>
     </>
   );
+};
+
+// PropTypes for ServiceCard component
+ServiceCard.propTypes = {
+  service: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    tipoServicio: PropTypes.string.isRequired,
+    descripcion: PropTypes.string.isRequired,
+    fecha: PropTypes.string.isRequired,
+    tecnico: PropTypes.string.isRequired,
+    kilometraje: PropTypes.number.isRequired,
+    costo: PropTypes.number.isRequired,
+    estado: PropTypes.string.isRequired,
+    notas: PropTypes.string,
+    facturaId: PropTypes.string,
+  }).isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default VehicleServicesPage;

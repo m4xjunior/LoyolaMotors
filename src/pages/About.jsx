@@ -1,4 +1,3 @@
-import React from "react";
 
 import AboutPageHero from "../components/CommonPageHero/AboutPageHero";
 import CompanyTab from "../components/CompanyTab/CompanyTab";

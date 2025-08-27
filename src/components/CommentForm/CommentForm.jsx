@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 const CommentForm = ({ blogid }) => {
   const [name, setName] = useState("");
@@ -84,3 +85,7 @@ const CommentForm = ({ blogid }) => {
 };
 
 export default CommentForm;
+
+CommentForm.propTypes = {
+  blogid: PropTypes.string.isRequired,
+};

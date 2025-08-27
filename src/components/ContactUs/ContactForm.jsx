@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +9,6 @@ const ContactForm = () => {
     msg: "",
   });
 
-  const [alertMessage, setAlertMessage] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -94,11 +93,12 @@ const ContactForm = () => {
           <div>
             <h5 className="mb-3">¿Cómo podemos ayudarte?</h5>
             <p>
-              Rellena el formulario y te contactaremos en menos de 2 horas en horario laboral.
+              Rellena el formulario y te contactaremos en menos de 2 horas en
+              horario laboral.
             </p>
             <div className="ak-height-45 ak-height-lg-30"></div>
           </div>
-          <div id="ak-alert">{alertMessage && <p>{alertMessage}</p>}</div>
+          <div id="ak-alert"></div>
           <form method="POST" id="contact-form" onSubmit={handleSubmit}>
             <div className="from-inputs">
               <div className="type_1">

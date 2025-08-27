@@ -1,4 +1,3 @@
-import React from "react";
 import SectionHeading from "../SectionHeading/SectionHeading";
 
 const contactData = [
@@ -10,15 +9,12 @@ const contactData = [
   {
     label: "Ubicación",
     icon: "/assets/img/icon/location.svg",
-    info: [
-      "Calle Sant Ignasi de Loiola, 21 - BJ IZ",
-      "46008 Valencia, España",
-    ],
+    info: ["Calle Sant Ignasi de Loiola, 21 - BJ IZ", "46008 Valencia, España"],
   },
   {
     label: "Teléfono",
     icon: "/assets/img/icon/phone.svg",
-    info: ["963 846 955"],
+    info: ["+34 640 16 29 47"],
   },
   {
     label: "Horario",

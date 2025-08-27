@@ -1,4 +1,3 @@
-import React from "react";
 import { MoreBtn } from "../Button/Button";
 import blogsData from "../../dataJson/blogsData.json";
 

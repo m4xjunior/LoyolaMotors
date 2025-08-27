@@ -1,4 +1,3 @@
-import React from "react";
 
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 import Cta from "../components/Cta/Cta";

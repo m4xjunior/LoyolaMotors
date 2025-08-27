@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ModalVideo from "react-modal-video";
 
 import aboutVideoBg from "/assets/img/bg/car_video_bg.jpg";

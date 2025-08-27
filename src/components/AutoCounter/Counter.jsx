@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 
 const Counter = ({ end, delay, text }) => {
   const [count, setCount] = useState(0);
@@ -40,6 +41,12 @@ const Counter = ({ end, delay, text }) => {
       </div>
     </div>
   );
+};
+
+Counter.propTypes = {
+  end: PropTypes.number.isRequired,
+  delay: PropTypes.string,
+  text: PropTypes.string.isRequired,
 };
 
 export default Counter;

@@ -1,11 +1,10 @@
-import React from "react";
 import Accordion from "../Accordion/Accordion";
 
 import accordionImg from "/assets/img/accordion-side-img.jpg";
 
 const contactDetails = {
   title: " Preguntas frecuentes",
-  phone: "963 846 955",
+  phone: "+34 640 16 29 47",
   email: "info@loyolamotors.es",
   address: "Calle Sant Ignasi de Loiola, 21 - BJ IZ, 46008 Valencia",
   workingHours: "Lun - Vie: 9:00 - 18:00",

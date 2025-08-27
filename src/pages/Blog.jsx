@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import BlogCard from "../components/Blog/BlogCard";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";

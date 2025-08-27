@@ -1,5 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const CommonPageHero = ({ title }) => {
   return (
@@ -14,6 +14,10 @@ const CommonPageHero = ({ title }) => {
       <div className="primary-color-border"></div>
     </div>
   );
+};
+
+CommonPageHero.propTypes = {
+  title: PropTypes.string.isRequired,
 };
 
 export default CommonPageHero;

@@ -1,4 +1,3 @@
-import React from "react";
 
 import Videos from "../components/VideoPopUp/Videos";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";

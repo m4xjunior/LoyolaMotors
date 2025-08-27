@@ -1,4 +1,3 @@
-import React from "react";
 
 import AppointmentForm from "../components/AppointmentForm/AppointmentForm";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";

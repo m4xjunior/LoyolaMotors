@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const AccordionItem = ({ title, content, isOpen, onToggle, index }) => {
   return (
@@ -15,3 +15,11 @@ const AccordionItem = ({ title, content, isOpen, onToggle, index }) => {
 };
 
 export default AccordionItem;
+
+AccordionItem.propTypes = {
+  title: PropTypes.string.isRequired,
+  content: PropTypes.node.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  onToggle: PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
+};

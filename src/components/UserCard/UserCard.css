@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+.user-card {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+  border-radius: 15px;
+  border: 1px solid #333;
+  color: #e0e0e0;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  animation: fadeIn 0.5s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Header */
+.user-card__header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #333;
+  position: relative;
+}
+
+.user-card__avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+  overflow: hidden;
+  border: 2px solid var(--primary-color);
+  flex-shrink: 0;
+}
+
+.user-card__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-card__user-info {
+  flex-grow: 1;
+}
+
+.user-card__name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin: 0 0 5px 0;
+}
+
+.user-card__badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Badge colors based on role */
+.badge--administrador { background-color: #007bff; color: #fff; }
+.badge--jefe-de-taller { background-color: #ffc107; color: #212529; }
+.badge--tecnico-senior { background-color: #28a745; color: #fff; }
+.badge--especialista-en-chapa-y-pintura { background-color: #17a2b8; color: #fff; }
+.badge--tecnico-en-restauracion { background-color: #6c757d; color: #fff; }
+.badge--tecnico { background-color: #444; color: #eee; }
+
+.user-card__status {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #dc3545; /* Inactive */
+}
+
+.user-card__status--active {
+  background-color: #28a745;
+  box-shadow: 0 0 8px rgba(40, 167, 69, 0.7);
+}
+
+.user-card__status--active::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+  background-color: #28a745;
+  opacity: 0;
+}
+
+/* Body */
+.user-card__body {
+  padding: 20px;
+  font-size: 0.9rem;
+  flex-grow: 1;
+}
+
+.user-card__detail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #aab;
+}
+
+.user-card__detail i {
+  color: var(--primary-color);
+  width: 16px;
+  text-align: center;
+}
+
+/* Stats */
+.user-card__stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 20px;
+  border-top: 1px solid #333;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.user-card__stat-item {
+  text-align: center;
+}
+
+.user-card__rating-stars {
+  color: #ffc107;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.user-card__stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.user-card__stat-label {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+}
+
+/* Actions */
+.user-card__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid #333;
+}
+
+.user-card__btn {
+  padding: 12px;
+  background-color: transparent;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.user-card__btn--edit {
+  color: #00aaff;
+  border-right: 1px solid #333;
+}
+
+.user-card__btn--edit:hover {
+  background-color: rgba(0, 170, 255, 0.1);
+}
+
+.user-card__btn--delete {
+  color: #ff4444;
+}
+
+.user-card__btn--delete:hover {
+  background-color: rgba(255, 68, 68, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}

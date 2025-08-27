@@ -1,5 +1,5 @@
 import { isArray } from "lodash";
-import React, { useState } from "react";
+import { useState } from "react";
 import classNames from "classnames";
 import TextAnimation from "../TextAnimation/TextAnimation";
 import { useAuth } from "../../contexts/AuthContext";

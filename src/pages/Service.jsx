@@ -1,4 +1,3 @@
-import React from "react";
 
 import Services from "../components/Services/ServicesSection";
 import Cta from "../components/Cta/Cta";

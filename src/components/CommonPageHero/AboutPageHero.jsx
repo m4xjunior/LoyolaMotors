@@ -1,5 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import commpagesbg from "/assets/img/bg/commpagesbg.jpg";
 
@@ -21,6 +21,10 @@ const AboutPageHero = ({ title }) => {
       <div className="ak-height-100 ak-height-lg-100"></div>
     </div>
   );
+};
+
+AboutPageHero.propTypes = {
+  title: PropTypes.string.isRequired,
 };
 
 export default AboutPageHero;

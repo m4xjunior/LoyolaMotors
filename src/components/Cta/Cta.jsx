@@ -1,5 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import { CtaBtn } from "../Button/Button";
 
 const ctaData = {
@@ -22,7 +20,9 @@ const Cta = () => {
             {title}
           </h2>
           <p className="cta-desp">{description}</p>
-          <CtaBtn to="tel:+34640162947">Reserva tu plaza ahora – Llama +34 640 16 29 47</CtaBtn>
+          <CtaBtn to="tel:+34640162947">
+            Reserva tu plaza ahora – Llama +34 640 16 29 47
+          </CtaBtn>
         </div>
       </div>
     </div>

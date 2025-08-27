@@ -1,4 +1,3 @@
-import React from "react";
 
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 import PersonDetails from "../components/Team/PersonDetails";

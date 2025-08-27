@@ -338,6 +338,99 @@
   }
 }
 
+// Services Grid - Responsive
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1.5fr 120px 100px;
+  gap: 16px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+  color: var(--heading-color);
+  font-size: 14px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr 1fr 100px 80px;
+    gap: 12px;
+    padding: 16px;
+    font-size: 13px;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 12px;
+
+    & > div:nth-child(3),
+    & > div:nth-child(4),
+    & > div:nth-child(5) {
+      display: none;
+    }
+  }
+}
+
+.services-grid-item {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1.5fr 120px 100px;
+  gap: 16px;
+  padding: 20px;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr 1fr 100px 80px;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 12px;
+
+    & > div:nth-child(3),
+    & > div:nth-child(4),
+    & > div:nth-child(5) {
+      display: none;
+    }
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+    transform: translateX(4px);
+    box-shadow: 0 4px 20px rgba(255, 61, 36, 0.1);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(to bottom, #ff3d24, #ff6b4a);
+      border-radius: 2px 0 0 2px;
+    }
+  }
+}
+
+.services-grid-mobile-label {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    font-size: 11px;
+    color: var(--body-color);
+    opacity: 0.7;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
 // Status Badge
 .status-badge {
   padding: 6px 12px;
