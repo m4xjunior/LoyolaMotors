@@ -1,149 +1,111 @@
-# LoyolaMotors - Sistema de Gestão de Oficina Automotiva
+# LoyolaMotors - Dashboard de Gestão de Oficina
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Sass](https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white)
+![Project Banner](public/assets/img/icon/loyola-logo.svg)
 
-Um sistema completo para a gestão de clientes, veículos e serviços de uma oficina automotiva, construído com React e Vite.
+**Um sistema de gestão completo para oficinas automotivas, construído com React, Vite e um design moderno e responsivo.**
 
----
-
-## Tabela de Conteúdos
-
-1.  [Visão Geral do Projeto](#-visão-geral-do-projeto)
-2.  [Funcionalidades Principais](#-funcionalidades-principais)
-3.  [Tecnologias Utilizadas](#-tecnologias-utilizadas)
-4.  [Estrutura de Pastas](#-estrutura-de-pastas)
-5.  [Como Começar](#️-como-começar)
-6.  [Scripts Disponíveis](#-scripts-disponíveis)
-7.  [Deploy](#-deploy)
+[![Status do Projeto](https://img.shields.io/badge/status-ativo-brightgreen.svg)](https://github.com/m4xjunior/LoyolaMotors)
+[![Licença](https://img.shields.io/badge/licen%C3%A7a-MIT-blue.svg)](/LICENSE)
+[![React Version](https://img.shields.io/badge/react-18.2.0-blue?logo=react)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/vite-^5.1.4-yellowgreen?logo=vite&logoColor=white)](https://vitejs.dev/)
 
 ---
 
-## 📖 Visão Geral do Projeto
+## ❯ Sobre o Projeto
 
-**LoyolaMotors** é uma Single Page Application (SPA) projetada para centralizar e otimizar as operações diárias de uma oficina automotiva. A aplicação oferece uma interface de dashboard intuitiva para gerenciar todos os aspectos do negócio, desde o primeiro contato com o cliente até o histórico completo de manutenções de um veículo.
+**LoyolaMotors** é uma Single Page Application (SPA) projetada para centralizar e otimizar as operações diárias de uma oficina automotiva. A aplicação oferece um dashboard intuitivo para gerenciar todos os aspectos do negócio, desde o primeiro contato com o cliente até o histórico completo de manutenções de um veículo.
 
-O sistema utiliza o **Local Storage** do navegador para simular um banco de dados, permitindo a persistência de dados de forma local sem a necessidade de um backend complexo.
-
----
-
-## ✨ Funcionalidades Principais
-
--   **Dashboard Central:** Uma visão geral com estatísticas rápidas, como número total de clientes, veículos ativos e serviços em andamento.
--   **Gestão Completa de Clientes:**
-    -   Funcionalidades de Criar, Ler, Atualizar e Excluir (CRUD) para clientes.
-    -   Visualização detalhada de cada cliente, incluindo seus veículos e histórico de serviços.
-    -   Busca e filtragem por nome, status, tipo de cliente e cidade.
--   **Gestão de Veículos:**
-    -   CRUD completo para os veículos da oficina.
-    -   Associação de cada veículo a um cliente.
-    -   Registro de informações essenciais: marca, modelo, ano, matrícula, quilometragem, cor e VIN.
--   **Gestão de Serviços:**
-    -   Criação e acompanhamento de ordens de serviço.
-    -   Atribuição de status (Pendente, Em Processo, Concluído, Cancelado).
-    -   Registro de custos e detalhes do serviço.
--   **Autenticação Segura:** Sistema de login para proteger o acesso às informações do dashboard.
--   **Interface Responsiva:** O layout se adapta a diferentes tamanhos de tela, garantindo usabilidade em desktops, tablets e smartphones.
+O foco é fornecer uma experiência de usuário (UX) fluida e uma interface (UI) profissional, garantindo que a gestão de dados seja eficiente e visualmente agradável.
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## ✨ Principais Funcionalidades (Versão 2.0)
 
--   **Frontend:** [React.js](https://reactjs.org/)
--   **Build Tool:** [Vite](https://vitejs.dev/)
--   **Roteamento:** [React Router DOM](https://reactrouter.com/)
--   **Estilização:** [Sass (SCSS)](https://sass-lang.com/)
--   **Validação de Tipos:** [PropTypes](https://www.npmjs.com/package/prop-types)
--   **Banco de Dados (Simulado):** Local Storage do navegador.
+A **versão 2.0** representa uma evolução massiva em termos de design, usabilidade e qualidade de código, transformando a aplicação em uma ferramenta moderna e robusta.
+
+### 🎨 Modernização da UI/UX
+
+-   **Design Futurista:** Implementada uma nova identidade visual com gradientes suaves, efeitos de *backdrop-filter*, sombras profundas e animações que proporcionam uma experiência premium.
+-   **Tabela de Clientes Redesenhada:** A tabela de clientes foi completamente modernizada, com um layout mais limpo, avatares dinâmicos, badges de status com gradientes e ações interativas com *hover effects*.
+-   **Página de Serviços Aprimorada:**
+    -   **Cards de Estatísticas:** As métricas agora são apresentadas em cards de destaque com tipografia impactante e animações.
+    -   **Cards de Serviço:** O layout foi reestruturado para uma melhor hierarquia visual, facilitando a leitura das informações.
+    -   **Formulário Moderno:** O formulário de criação/edição de serviços foi totalmente estilizado para se alinhar ao novo design, melhorando a usabilidade.
+-   **Cards de Veículos Interativos:** Os cards de veículos também receberam o novo tratamento visual, com animações e um layout mais limpo.
+
+### 🧹 Qualidade de Código e Refatoração
+
+-   **Código Limpo:** Realizada uma varredura completa para corrigir todos os avisos e erros do ESLint, incluindo a remoção de variáveis não utilizadas e a correção de dependências de hooks.
+-   **Estilização Modular:** O CSS foi separado da lógica dos componentes, com a criação de arquivos dedicados (ex: `ServicesPage.css`), tornando o código mais organizado e de fácil manutenção.
+-   **Otimização de Desenvolvimento:** O código foi refatorado para garantir a melhor compatibilidade com o *React Fast Refresh*, melhorando a experiência de desenvolvimento.
+-   **Gestão de Repositório:** O histórico do Git foi limpo e padronizado para uma única branch `main`, seguindo as melhores práticas de versionamento.
 
 ---
 
-## 📂 Estrutura de Pastas
+## 🛠️ Tecnologias Utilizadas
 
-O projeto é organizado de forma modular para facilitar a manutenção e escalabilidade.
+-   **Frontend:** React 18, Vite
+-   **Estilização:** SCSS, CSS Modules, Estilos Inline para componentes dinâmicos
+-   **Roteamento:** React Router DOM
+-   **Linting:** ESLint
+-   **Contexto:** React Context API para gerenciamento de estado (Autenticação)
+
+---
+
+## 📂 Estrutura do Projeto
+
+O projeto é organizado de forma modular para facilitar a navegação e a manutenção.
 
 ```
 /
-├── dist/                  # Arquivos de produção (gerados pelo build)
-├── node_modules/          # Dependências do projeto
-├── public/                # Assets públicos
-└── src/
-    ├── assets/            # Imagens, fontes, etc.
-    ├── components/        # Componentes reutilizáveis (Header, Footer, etc.)
-    ├── constants/         # Constantes globais (tipos de cliente, marcas, etc.)
-    ├── contexts/          # React Context para gestão de estado (AuthContext)
-    ├── data/              # Camada de simulação do banco de dados (database.js)
-    ├── layout/            # Estruturas de layout da página (DashboardLayout)
-    ├── pages/             # Componentes de página para cada rota
-    ├── styles/            # Arquivos SASS globais, variáveis e mixins
-    ├── App.jsx            # Componente principal com a configuração de rotas
-    └── main.jsx           # Ponto de entrada da aplicação
+├── public/                # Arquivos estáticos, como imagens e fontes
+├── src/
+│   ├── components/        # Componentes reutilizáveis (botões, cards, etc.)
+│   ├── contexts/          # Context API para gerenciamento de estado global
+│   ├── data/              # Simulação de banco de dados (mock data)
+│   ├── layout/            # Estrutura principal da aplicação (Header, Footer, etc.)
+│   ├── pages/             # Componentes que representam as páginas da aplicação
+│   ├── styles/            # Arquivos de estilo globais e específicos de páginas
+│   └── App.jsx            # Componente principal e configuração de rotas
 ├── .eslintrc.cjs          # Configuração do ESLint
-├── .gitignore             # Arquivos ignorados pelo Git
-├── package.json           # Dependências e scripts do projeto
-├── README.md              # Este arquivo
-└── vite.config.js         # Configuração do Vite
+├── README.md              # Documentação do projeto
+└── package.json           # Dependências e scripts do projeto
 ```
 
 ---
 
-## 🛠️ Como Começar
+## 🚀 Como Executar o Projeto
 
-Siga os passos abaixo para executar o projeto em seu ambiente de desenvolvimento.
-
-### Pré-requisitos
-
--   [Node.js](https://nodejs.org/) (versão 18.x ou superior)
--   [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
-
-### Instalação e Execução
+Siga os passos abaixo para configurar e executar o projeto em seu ambiente local.
 
 1.  **Clone o repositório:**
-    ```sh
-    git clone https://github.com/seu-usuario/loyola-motors.git
+    ```bash
+    git clone https://github.com/m4xjunior/LoyolaMotors.git
     ```
 
 2.  **Navegue até o diretório do projeto:**
-    ```sh
+    ```bash
     cd LoyolaMotors
     ```
 
 3.  **Instale as dependências:**
-    ```sh
+    ```bash
     npm install
     ```
 
 4.  **Inicie o servidor de desenvolvimento:**
-    ```sh
+    ```bash
     npm run dev
     ```
 
-A aplicação estará disponível em `http://localhost:5173`.
+Após executar o último comando, a aplicação estará disponível em `http://localhost:5173` (ou em outra porta, caso a 5173 esteja ocupada).
 
 ---
 
-## 📜 Scripts Disponíveis
+## 📄 Licença
 
--   `npm run dev`: Inicia o servidor de desenvolvimento com Hot Module Replacement (HMR).
--   `npm run build`: Compila e otimiza a aplicação para produção. Os arquivos são gerados na pasta `dist/`.
--   `npm run lint`: Executa o ESLint para analisar o código e encontrar problemas.
--   `npm run preview`: Inicia um servidor local para visualizar os arquivos de produção da pasta `dist/`.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](/LICENSE) para mais detalhes.
 
 ---
 
-## ☁️ Deploy
-
-Este projeto é construído como uma aplicação estática, o que torna o deploy simples e rápido.
-
-1.  **Gere os arquivos de produção:**
-    ```sh
-    npm run build
-    ```
-2.  **Publique o conteúdo da pasta `dist/`** em qualquer serviço de hospedagem de sites estáticos.
-
-### Plataformas Recomendadas
-
--   [Vercel](https://vercel.com/)
--   [Netlify](https://www.netlify.com/)
--   [GitHub Pages](https://pages.github.com/)
+**Desenvolvido com ❤️ por m4xjunior**
