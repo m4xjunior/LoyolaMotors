@@ -342,30 +342,80 @@ const ClientesManagementPage = () => {
                 <button
                   onClick={() => setViewMode("cards")}
                   style={{
-                    padding: "8px 16px",
-                    borderRadius: "6px",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    padding: "12px 20px",
+                    borderRadius: "10px",
+                    border:
+                      viewMode === "cards"
+                        ? "2px solid #ff3d24"
+                        : "2px solid rgba(255, 255, 255, 0.2)",
                     background:
-                      viewMode === "cards" ? "#ff3d24" : "transparent",
+                      viewMode === "cards"
+                        ? "linear-gradient(135deg, #ff3d24, #ff6b4a)"
+                        : "rgba(255, 255, 255, 0.05)",
                     color: viewMode === "cards" ? "white" : "var(--body-color)",
                     cursor: "pointer",
+                    fontWeight: "600",
+                    fontSize: "14px",
+                    transition: "all 0.3s ease",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    backdropFilter: "blur(10px)",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (viewMode !== "cards") {
+                      e.target.style.background = "rgba(255, 255, 255, 0.1)";
+                      e.target.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (viewMode !== "cards") {
+                      e.target.style.background = "rgba(255, 255, 255, 0.05)";
+                      e.target.style.borderColor = "rgba(255, 255, 255, 0.2)";
+                    }
                   }}
                 >
-                  📋 Cards
+                  <span style={{ fontSize: "18px" }}>📋</span>
+                  Cards
                 </button>
                 <button
                   onClick={() => setViewMode("table")}
                   style={{
-                    padding: "8px 16px",
-                    borderRadius: "6px",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    padding: "12px 20px",
+                    borderRadius: "10px",
+                    border:
+                      viewMode === "table"
+                        ? "2px solid #ff3d24"
+                        : "2px solid rgba(255, 255, 255, 0.2)",
                     background:
-                      viewMode === "table" ? "#ff3d24" : "transparent",
+                      viewMode === "table"
+                        ? "linear-gradient(135deg, #ff3d24, #ff6b4a)"
+                        : "rgba(255, 255, 255, 0.05)",
                     color: viewMode === "table" ? "white" : "var(--body-color)",
                     cursor: "pointer",
+                    fontWeight: "600",
+                    fontSize: "14px",
+                    transition: "all 0.3s ease",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    backdropFilter: "blur(10px)",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (viewMode !== "table") {
+                      e.target.style.background = "rgba(255, 255, 255, 0.1)";
+                      e.target.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (viewMode !== "table") {
+                      e.target.style.background = "rgba(255, 255, 255, 0.05)";
+                      e.target.style.borderColor = "rgba(255, 255, 255, 0.2)";
+                    }
                   }}
                 >
-                  📊 Tabela
+                  <span style={{ fontSize: "18px" }}>📊</span>
+                  Tabla
                 </button>
               </div>
             </div>
@@ -770,11 +820,54 @@ const ClientesManagementPage = () => {
 
           {/* Lista de Clientes - Table View */}
           {viewMode === "table" && (
-            <div className="dashboard-panel">
-              <div className="panel-header">
-                <h3>Clientes ({filteredClientes.length})</h3>
+            <div
+              className="dashboard-panel"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(18, 18, 18, 0.98) 0%, rgba(26, 26, 26, 0.95) 100%)",
+                borderRadius: "20px",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                boxShadow:
+                  "0 20px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+                backdropFilter: "blur(20px)",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                className="panel-header"
+                style={{
+                  padding: "24px 32px",
+                  background:
+                    "linear-gradient(90deg, rgba(255, 61, 36, 0.1) 0%, rgba(255, 107, 74, 0.05) 100%)",
+                  borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                }}
+              >
+                <h3
+                  style={{
+                    color: "var(--heading-color)",
+                    margin: "0",
+                    fontSize: "1.5rem",
+                    fontWeight: "700",
+                    background:
+                      "linear-gradient(135deg, #ffffff 0%, #ff6b4a 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  Clientes ({filteredClientes.length})
+                </h3>
                 {currentClientes.length > 0 && (
-                  <label>
+                  <label
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      color: "rgba(255, 255, 255, 0.8)",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                    }}
+                  >
                     <input
                       type="checkbox"
                       checked={
@@ -782,21 +875,46 @@ const ClientesManagementPage = () => {
                         currentClientes.length > 0
                       }
                       onChange={toggleAllSelection}
+                      style={{
+                        width: "18px",
+                        height: "18px",
+                        accentColor: "#ff3d24",
+                        cursor: "pointer",
+                      }}
                     />
-                    <span style={{ marginLeft: "8px" }}>Selecionar Todos</span>
+                    <span>Selecionar Todos</span>
                   </label>
                 )}
               </div>
 
               <div style={{ overflowX: "auto" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <table
+                  style={{
+                    width: "100%",
+                    borderCollapse: "separate",
+                    borderSpacing: "0",
+                  }}
+                >
                   <thead>
                     <tr
                       style={{
-                        borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                        background:
+                          "linear-gradient(135deg, rgba(255, 61, 36, 0.15) 0%, rgba(255, 107, 74, 0.1) 100%)",
+                        backdropFilter: "blur(10px)",
                       }}
                     >
-                      <th style={{ padding: "12px 8px", textAlign: "left" }}>
+                      <th
+                        style={{
+                          padding: "20px 16px",
+                          textAlign: "left",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          fontWeight: "600",
+                          fontSize: "13px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.5px",
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                        }}
+                      >
                         <input
                           type="checkbox"
                           checked={
@@ -805,69 +923,210 @@ const ClientesManagementPage = () => {
                             currentClientes.length > 0
                           }
                           onChange={toggleAllSelection}
+                          style={{
+                            width: "18px",
+                            height: "18px",
+                            accentColor: "#ff3d24",
+                            cursor: "pointer",
+                          }}
                         />
                       </th>
-                      <th style={{ padding: "12px 8px", textAlign: "left" }}>
+                      <th
+                        style={{
+                          padding: "20px 16px",
+                          textAlign: "left",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          fontWeight: "600",
+                          fontSize: "13px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.5px",
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                        }}
+                      >
                         Cliente
                       </th>
-                      <th style={{ padding: "12px 8px", textAlign: "left" }}>
+                      <th
+                        style={{
+                          padding: "20px 16px",
+                          textAlign: "left",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          fontWeight: "600",
+                          fontSize: "13px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.5px",
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                        }}
+                      >
                         Email
                       </th>
-                      <th style={{ padding: "12px 8px", textAlign: "left" }}>
+                      <th
+                        style={{
+                          padding: "20px 16px",
+                          textAlign: "left",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          fontWeight: "600",
+                          fontSize: "13px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.5px",
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                        }}
+                      >
                         Telefone
                       </th>
-                      <th style={{ padding: "12px 8px", textAlign: "left" }}>
+                      <th
+                        style={{
+                          padding: "20px 16px",
+                          textAlign: "left",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          fontWeight: "600",
+                          fontSize: "13px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.5px",
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                        }}
+                      >
                         Tipo
                       </th>
-                      <th style={{ padding: "12px 8px", textAlign: "left" }}>
+                      <th
+                        style={{
+                          padding: "20px 16px",
+                          textAlign: "left",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          fontWeight: "600",
+                          fontSize: "13px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.5px",
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                        }}
+                      >
                         Cidade
                       </th>
-                      <th style={{ padding: "12px 8px", textAlign: "left" }}>
+                      <th
+                        style={{
+                          padding: "20px 16px",
+                          textAlign: "left",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          fontWeight: "600",
+                          fontSize: "13px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.5px",
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                        }}
+                      >
                         Status
                       </th>
-                      <th style={{ padding: "12px 8px", textAlign: "left" }}>
+                      <th
+                        style={{
+                          padding: "20px 16px",
+                          textAlign: "left",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          fontWeight: "600",
+                          fontSize: "13px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.5px",
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                        }}
+                      >
                         Registro
                       </th>
-                      <th style={{ padding: "12px 8px", textAlign: "left" }}>
+                      <th
+                        style={{
+                          padding: "20px 16px",
+                          textAlign: "center",
+                          color: "rgba(255, 255, 255, 0.9)",
+                          fontWeight: "600",
+                          fontSize: "13px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.5px",
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                        }}
+                      >
                         Ações
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {currentClientes.map((cliente) => (
+                    {currentClientes.map((cliente, index) => (
                       <tr
                         key={cliente.id}
                         style={{
+                          background:
+                            index % 2 === 0
+                              ? "rgba(255, 255, 255, 0.02)"
+                              : "rgba(255, 255, 255, 0.01)",
                           borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+                          transition: "all 0.3s ease",
+                          cursor: "pointer",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background =
+                            "rgba(255, 61, 36, 0.08)";
+                          e.currentTarget.style.transform = "translateX(4px)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background =
+                            index % 2 === 0
+                              ? "rgba(255, 255, 255, 0.02)"
+                              : "rgba(255, 255, 255, 0.01)";
+                          e.currentTarget.style.transform = "translateX(0)";
                         }}
                       >
-                        <td style={{ padding: "12px 8px" }}>
+                        <td
+                          style={{
+                            padding: "20px 16px",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+                          }}
+                        >
                           <input
                             type="checkbox"
                             checked={selectedClientes.includes(cliente.id)}
                             onChange={() => toggleClienteSelection(cliente.id)}
+                            style={{
+                              width: "18px",
+                              height: "18px",
+                              accentColor: "#ff3d24",
+                              cursor: "pointer",
+                            }}
                           />
                         </td>
-                        <td style={{ padding: "12px 8px" }}>
+                        <td
+                          style={{
+                            padding: "20px 16px",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+                          }}
+                        >
                           <div
                             style={{
                               display: "flex",
                               alignItems: "center",
-                              gap: "12px",
+                              gap: "16px",
                             }}
                           >
                             <div
                               style={{
-                                width: "32px",
-                                height: "32px",
-                                borderRadius: "50%",
+                                width: "48px",
+                                height: "48px",
+                                borderRadius: "14px",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
                                 color: "white",
-                                fontWeight: "600",
-                                fontSize: "12px",
-                                background: `linear-gradient(135deg, ${CUSTOMER_TYPES.find((t) => t.value === cliente.tipo)?.color || "#6b7280"}, ${CUSTOMER_TYPES.find((t) => t.value === cliente.tipo)?.color || "#6b7280"}dd)`,
+                                fontWeight: "700",
+                                fontSize: "16px",
+                                background: `linear-gradient(135deg, ${CUSTOMER_TYPES.find((t) => t.value === cliente.tipo)?.color || "#6b7280"} 0%, ${CUSTOMER_TYPES.find((t) => t.value === cliente.tipo)?.color || "#6b7280"}80 100%)`,
+                                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+                                transition: "all 0.3s ease",
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.transform =
+                                  "scale(1.1) rotate(5deg)";
+                                e.currentTarget.style.boxShadow =
+                                  "0 6px 20px rgba(0, 0, 0, 0.3)";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = "scale(1)";
+                                e.currentTarget.style.boxShadow =
+                                  "0 4px 12px rgba(0, 0, 0, 0.2)";
                               }}
                             >
                               {cliente.nombre.charAt(0)}
@@ -879,7 +1138,30 @@ const ClientesManagementPage = () => {
                                 style={{
                                   color: "var(--heading-color)",
                                   textDecoration: "none",
-                                  fontWeight: "500",
+                                  fontWeight: "600",
+                                  fontSize: "15px",
+                                  transition: "all 0.3s ease",
+                                  background:
+                                    "linear-gradient(135deg, #ffffff 0%, #ff6b4a 100%)",
+                                  WebkitBackgroundClip: "text",
+                                  WebkitTextFillColor: "transparent",
+                                  backgroundClip: "text",
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.target.style.background =
+                                    "linear-gradient(135deg, #ff3d24 0%, #ff6b4a 100%)";
+                                  e.target.style.WebkitBackgroundClip = "text";
+                                  e.target.style.WebkitTextFillColor =
+                                    "transparent";
+                                  e.target.style.backgroundClip = "text";
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.target.style.background =
+                                    "linear-gradient(135deg, #ffffff 0%, #ff6b4a 100%)";
+                                  e.target.style.WebkitBackgroundClip = "text";
+                                  e.target.style.WebkitTextFillColor =
+                                    "transparent";
+                                  e.target.style.backgroundClip = "text";
                                 }}
                               >
                                 {cliente.nombre} {cliente.apellidos}
@@ -889,34 +1171,75 @@ const ClientesManagementPage = () => {
                         </td>
                         <td
                           style={{
-                            padding: "12px 8px",
+                            padding: "20px 16px",
                             fontSize: "14px",
-                            color: "var(--body-color)",
+                            color: "rgba(255, 255, 255, 0.9)",
+                            fontWeight: "500",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
                           }}
                         >
-                          {cliente.email}
+                          <span
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "6px",
+                            }}
+                          >
+                            <span style={{ opacity: 0.7 }}>📧</span>
+                            {cliente.email}
+                          </span>
                         </td>
                         <td
                           style={{
-                            padding: "12px 8px",
+                            padding: "20px 16px",
                             fontSize: "14px",
-                            color: "var(--body-color)",
+                            color: "rgba(255, 255, 255, 0.9)",
+                            fontWeight: "500",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
                           }}
                         >
-                          {cliente.telefone}
-                        </td>
-                        <td style={{ padding: "12px 8px" }}>
                           <span
                             style={{
-                              background:
-                                CUSTOMER_TYPES.find(
-                                  (t) => t.value === cliente.tipo,
-                                )?.color || "#6b7280",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "6px",
+                            }}
+                          >
+                            <span style={{ opacity: 0.7 }}>📞</span>
+                            {cliente.telefone}
+                          </span>
+                        </td>
+                        <td
+                          style={{
+                            padding: "20px 16px",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+                          }}
+                        >
+                          <span
+                            style={{
+                              background: `linear-gradient(135deg, ${CUSTOMER_TYPES.find((t) => t.value === cliente.tipo)?.color || "#6b7280"} 0%, ${CUSTOMER_TYPES.find((t) => t.value === cliente.tipo)?.color || "#6b7280"}80 100%)`,
                               color: "white",
-                              padding: "4px 8px",
-                              borderRadius: "12px",
-                              fontSize: "11px",
-                              fontWeight: "600",
+                              padding: "8px 16px",
+                              borderRadius: "20px",
+                              fontSize: "12px",
+                              fontWeight: "700",
+                              textTransform: "uppercase",
+                              letterSpacing: "0.5px",
+                              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+                              display: "inline-block",
+                              minWidth: "80px",
+                              textAlign: "center",
+                              transition: "all 0.3s ease",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.target.style.transform = "translateY(-2px)";
+                              e.target.style.boxShadow =
+                                "0 6px 20px rgba(0, 0, 0, 0.3)";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.transform = "translateY(0)";
+                              e.target.style.boxShadow =
+                                "0 4px 12px rgba(0, 0, 0, 0.2)";
                             }}
                           >
                             {cliente.tipo}
@@ -924,24 +1247,57 @@ const ClientesManagementPage = () => {
                         </td>
                         <td
                           style={{
-                            padding: "12px 8px",
+                            padding: "20px 16px",
                             fontSize: "14px",
-                            color: "var(--body-color)",
+                            color: "rgba(255, 255, 255, 0.9)",
+                            fontWeight: "500",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
                           }}
                         >
-                          {cliente.ciudad}
+                          <span
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "6px",
+                            }}
+                          >
+                            <span style={{ opacity: 0.7 }}>🏙️</span>
+                            {cliente.ciudad}
+                          </span>
                         </td>
-                        <td style={{ padding: "12px 8px" }}>
+                        <td
+                          style={{
+                            padding: "20px 16px",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+                          }}
+                        >
                           <span
                             style={{
                               background: cliente.activo
-                                ? "#22c55e"
-                                : "#ef4444",
+                                ? "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)"
+                                : "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
                               color: "white",
-                              padding: "4px 8px",
-                              borderRadius: "12px",
-                              fontSize: "11px",
-                              fontWeight: "600",
+                              padding: "8px 16px",
+                              borderRadius: "20px",
+                              fontSize: "12px",
+                              fontWeight: "700",
+                              textTransform: "uppercase",
+                              letterSpacing: "0.5px",
+                              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+                              display: "inline-block",
+                              minWidth: "80px",
+                              textAlign: "center",
+                              transition: "all 0.3s ease",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.target.style.transform = "translateY(-2px)";
+                              e.target.style.boxShadow =
+                                "0 6px 20px rgba(0, 0, 0, 0.3)";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.transform = "translateY(0)";
+                              e.target.style.boxShadow =
+                                "0 4px 12px rgba(0, 0, 0, 0.2)";
                             }}
                           >
                             {cliente.activo ? "Ativo" : "Inativo"}
@@ -949,58 +1305,149 @@ const ClientesManagementPage = () => {
                         </td>
                         <td
                           style={{
-                            padding: "12px 8px",
+                            padding: "20px 16px",
                             fontSize: "14px",
-                            color: "var(--body-color)",
+                            color: "rgba(255, 255, 255, 0.8)",
+                            fontWeight: "500",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
                           }}
                         >
-                          {new Date(cliente.fechaRegistro).toLocaleDateString(
-                            "pt-BR",
-                          )}
+                          <span
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "6px",
+                            }}
+                          >
+                            <span style={{ opacity: 0.7 }}>📅</span>
+                            {new Date(cliente.fechaRegistro).toLocaleDateString(
+                              "pt-BR",
+                            )}
+                          </span>
                         </td>
-                        <td style={{ padding: "12px 8px" }}>
-                          <div style={{ display: "flex", gap: "8px" }}>
+                        <td
+                          style={{
+                            padding: "20px 16px",
+                            borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "12px",
+                              justifyContent: "center",
+                            }}
+                          >
                             <Link
                               to={`/dashboard/clientes/${cliente.id}`}
                               style={{
-                                padding: "4px 8px",
-                                background: "#ff3d24",
+                                padding: "12px",
+                                background:
+                                  "linear-gradient(135deg, #ff3d24 0%, #ff6b4a 100%)",
                                 color: "white",
                                 textDecoration: "none",
-                                borderRadius: "4px",
-                                fontSize: "11px",
+                                borderRadius: "12px",
+                                fontSize: "16px",
+                                width: "44px",
+                                height: "44px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                boxShadow: "0 4px 12px rgba(255, 61, 36, 0.3)",
+                                transition: "all 0.3s ease",
                               }}
                               title="Ver Detalhes"
+                              onMouseEnter={(e) => {
+                                e.target.style.transform =
+                                  "scale(1.1) translateY(-2px)";
+                                e.target.style.boxShadow =
+                                  "0 6px 20px rgba(255, 61, 36, 0.4)";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.target.style.transform = "scale(1)";
+                                e.target.style.boxShadow =
+                                  "0 4px 12px rgba(255, 61, 36, 0.3)";
+                              }}
                             >
                               👁️
                             </Link>
                             <Link
                               to={`/dashboard/clientes/editar/${cliente.id}`}
                               style={{
-                                padding: "4px 8px",
-                                background: "rgba(34, 197, 94, 0.2)",
-                                border: "1px solid rgba(34, 197, 94, 0.3)",
+                                padding: "12px",
+                                background:
+                                  "linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.3) 100%)",
+                                border: "1px solid rgba(34, 197, 94, 0.4)",
                                 color: "#22c55e",
                                 textDecoration: "none",
-                                borderRadius: "4px",
-                                fontSize: "11px",
+                                borderRadius: "12px",
+                                fontSize: "16px",
+                                width: "44px",
+                                height: "44px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                boxShadow: "0 4px 12px rgba(34, 197, 94, 0.2)",
+                                transition: "all 0.3s ease",
                               }}
                               title="Editar"
+                              onMouseEnter={(e) => {
+                                e.target.style.transform =
+                                  "scale(1.1) translateY(-2px)";
+                                e.target.style.boxShadow =
+                                  "0 6px 20px rgba(34, 197, 94, 0.3)";
+                                e.target.style.background =
+                                  "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)";
+                                e.target.style.color = "white";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.target.style.transform = "scale(1)";
+                                e.target.style.boxShadow =
+                                  "0 4px 12px rgba(34, 197, 94, 0.2)";
+                                e.target.style.background =
+                                  "linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.3) 100%)";
+                                e.target.style.color = "#22c55e";
+                              }}
                             >
                               ✏️
                             </Link>
                             <button
                               onClick={() => confirmDelete(cliente)}
                               style={{
-                                padding: "4px 8px",
-                                background: "rgba(239, 68, 68, 0.2)",
-                                border: "1px solid rgba(239, 68, 68, 0.3)",
+                                padding: "12px",
+                                background:
+                                  "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.3) 100%)",
+                                border: "1px solid rgba(239, 68, 68, 0.4)",
                                 color: "#ef4444",
-                                borderRadius: "4px",
-                                fontSize: "11px",
+                                borderRadius: "12px",
+                                fontSize: "16px",
+                                width: "44px",
+                                height: "44px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                                 cursor: "pointer",
+                                boxShadow: "0 4px 12px rgba(239, 68, 68, 0.2)",
+                                transition: "all 0.3s ease",
                               }}
                               title="Excluir"
+                              onMouseEnter={(e) => {
+                                e.target.style.transform =
+                                  "scale(1.1) translateY(-2px)";
+                                e.target.style.boxShadow =
+                                  "0 6px 20px rgba(239, 68, 68, 0.3)";
+                                e.target.style.background =
+                                  "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)";
+                                e.target.style.color = "white";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.target.style.transform = "scale(1)";
+                                e.target.style.boxShadow =
+                                  "0 4px 12px rgba(239, 68, 68, 0.2)";
+                                e.target.style.background =
+                                  "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.3) 100%)";
+                                e.target.style.color = "#ef4444";
+                              }}
                             >
                               🗑️
                             </button>

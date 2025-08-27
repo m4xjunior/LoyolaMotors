@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
 
 // Mock users data - in a real app, this would come from an API
 const MOCK_USERS = [

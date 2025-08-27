@@ -235,7 +235,7 @@ const NovoClientePage = () => {
 
     // Se não começar com +34, assume que é um número espanhol
     if (!numbers.startsWith("34") && numbers.length <= 9) {
-      return `+34 ${numbers.substring(0, 3)} ${numbers.substring(3, 6)} ${remaining.substring(6, 9)}`.trim();
+      return `+34 ${numbers.substring(0, 3)} ${numbers.substring(3, 6)} ${numbers.substring(6, 9)}`.trim();
     }
 
     return value;

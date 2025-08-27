@@ -1,9 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import { mockUsers } from "../data/mockCustomers";
 import { usuarioService } from "../data/database";
 import styled, { createGlobalStyle } from "styled-components";
 
@@ -38,31 +37,61 @@ const Header = styled.div`
 
 const StatsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-  margin-bottom: 48px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+  margin-bottom: 56px;
+
+  & > *:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  & > *:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  & > *:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  & > *:nth-child(4) {
+    animation-delay: 0.4s;
+  }
 `;
 
 const StatCard = styled.div`
   background: linear-gradient(
     135deg,
-    rgba(26, 26, 26, 0.95) 0%,
-    rgba(32, 32, 32, 0.98) 100%
+    rgba(26, 26, 26, 0.98) 0%,
+    rgba(32, 32, 32, 0.95) 100%
   );
-  padding: 30px 25px;
-  border-radius: 16px;
+  padding: 32px 28px;
+  border-radius: 20px;
   text-align: center;
-  border: 1px solid rgba(255, 61, 36, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 61, 36, 0.25);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  transform: translateY(0);
+  animation: statCardEntrance 0.6s ease-out;
+
+  @keyframes statCardEntrance {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(255, 61, 36, 0.25);
-    border-color: rgba(255, 61, 36, 0.4);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+      0 20px 60px rgba(255, 61, 36, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 61, 36, 0.5);
   }
 
   &::before {
@@ -72,37 +101,94 @@ const StatCard = styled.div`
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #ff3d24, #ff6b4a);
+    background: linear-gradient(90deg, #ff3d24, #ff6b4a, #ff3d24);
+    background-size: 200% 100%;
+    animation: gradientShift 3s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 61, 36, 0.1) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    transform: rotate(45deg);
+  }
+
+  &:hover::after {
+    opacity: 1;
   }
 
   img {
-    width: 56px;
-    height: 56px;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 4px 8px rgba(255, 61, 36, 0.3));
+    width: 64px;
+    height: 64px;
+    margin-bottom: 24px;
+    filter: drop-shadow(0 6px 12px rgba(255, 61, 36, 0.4)) brightness(1.1);
+    transition: all 0.3s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.1) rotate(5deg);
+    filter: drop-shadow(0 8px 16px rgba(255, 61, 36, 0.5)) brightness(1.2);
   }
 
   h4 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--heading-color);
-    margin: 0 0 8px 0;
-    font-weight: 700;
+    margin: 0 0 12px 0;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 0%, #ff6b4a 50%, #ff3d24 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  &:hover h4 {
+    transform: scale(1.05);
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
     background: linear-gradient(
       135deg,
-      var(--heading-color) 0%,
-      var(--primary-color) 100%
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.7) 100%
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    transition: all 0.3s ease;
   }
 
-  p {
-    color: var(--body-color);
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 500;
-    opacity: 0.9;
+  &:hover p {
+    transform: translateY(2px);
   }
 `;
 
@@ -279,7 +365,7 @@ const DangerButton = styled(Button)`
 `;
 
 const UsersManagementPage = () => {
-  const [users, setUsers] = useState(mockUsers);
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState("all");
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -299,6 +385,30 @@ const UsersManagementPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const loadUsers = () => {
+    try {
+      console.log("Loading users from database...");
+      const usersData = usuarioService.getAll();
+      console.log("Users loaded:", usersData);
+      console.log("Number of users:", usersData.length);
+
+      // Verificar estrutura dos usuários
+      if (usersData.length > 0) {
+        console.log("First user structure:", Object.keys(usersData[0]));
+        console.log("First user data:", usersData[0]);
+      }
+
+      setUsers(usersData);
+    } catch (error) {
+      console.error("Erro ao carregar usuários:", error);
+      setError("Erro ao carregar usuários: " + error.message);
+    }
+  };
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
@@ -355,17 +465,13 @@ const UsersManagementPage = () => {
     setTimeout(() => {
       try {
         if (editingUser) {
-          setUsers((prev) =>
-            prev.map((u) =>
-              u.id === editingUser.id
-                ? {
-                    ...editingUser,
-                    ...formData,
-                    fechaContratacion: new Date(formData.fechaContratacion),
-                  }
-                : u,
-            ),
-          );
+          const updatedUser = {
+            ...editingUser,
+            ...formData,
+            fechaContratacion: new Date(formData.fechaContratacion),
+          };
+          usuarioService.update(editingUser.id, updatedUser);
+          loadUsers();
           setSuccess("Usuário atualizado com sucesso");
         } else {
           const newUser = {
@@ -373,7 +479,8 @@ const UsersManagementPage = () => {
             id: Date.now().toString(),
             fechaContratacion: new Date(formData.fechaContratacion),
           };
-          setUsers((prev) => [newUser, ...prev]);
+          usuarioService.create(newUser);
+          loadUsers();
           setSuccess("Usuário criado com sucesso");
         }
         resetForm();
@@ -398,12 +505,20 @@ const UsersManagementPage = () => {
   const handleDelete = (userId) => {
     if (window.confirm("Tem certeza que deseja excluir este usuário?")) {
       try {
+        console.log("Deleting user with ID:", userId);
+        console.log("Current users before deletion:", users.length);
+
+        // Verificar se o usuário existe antes de deletar
+        const userToDelete = users.find((u) => u.id === userId);
+        console.log("User to delete:", userToDelete);
+
         usuarioService.delete(userId);
-        setUsers((prev) => prev.filter((u) => u.id !== userId));
+        // Recarregar usuários do banco de dados após exclusão
+        loadUsers();
         setSuccess("Usuário excluído com sucesso");
       } catch (error) {
-        setError("Erro ao excluir usuário");
         console.error("Erro ao excluir usuário:", error);
+        setError("Erro ao excluir usuário: " + error.message);
       }
     }
   };
@@ -458,54 +573,115 @@ const UsersManagementPage = () => {
 
     return (
       <UserCardStyled>
-        <div className="d-flex justify-content-between align-items-start mb-3">
+        <div className="d-flex justify-content-between align-items-start mb-4">
           <div>
-            <h4 className="title mb-1" style={{ fontSize: "1.25rem" }}>
+            <h4
+              className="title mb-2"
+              style={{
+                fontSize: "1.5rem",
+                color: "var(--heading-color)",
+                fontWeight: "700",
+              }}
+            >
               {user.nombre} {user.apellidos}
             </h4>
-            <Badge {...getRoleBadgeProps(user.role)}>{user.role}</Badge>
+            <Badge
+              {...getRoleBadgeProps(user.role)}
+              style={{ fontSize: "11px", padding: "6px 12px" }}
+            >
+              {user.role}
+            </Badge>
           </div>
-          <Badge bg={user.activo ? "#28a745" : "#dc3545"} color="#fff">
-            {user.activo ? "Ativo" : "Inativo"}
+          <Badge
+            bg={user.activo ? "#22c55e" : "#ef4444"}
+            color="#fff"
+            style={{ fontSize: "11px", padding: "6px 12px" }}
+          >
+            {user.activo ? "Activo" : "Inactivo"}
           </Badge>
         </div>
 
-        <div style={{ color: "#ccc", fontSize: "14px", flexGrow: 1 }}>
-          <p className="mb-2">
-            <i className="fas fa-envelope me-2 text-primary"></i>
-            {user.email}
+        <div
+          style={{
+            color: "var(--body-color)",
+            fontSize: "14px",
+            flexGrow: 1,
+            marginBottom: "20px",
+          }}
+        >
+          <p
+            className="mb-3"
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            <i
+              className="fas fa-envelope"
+              style={{ color: "#ff3d24", width: "16px" }}
+            ></i>
+            <span>{user.email}</span>
           </p>
-          <p className="mb-2">
-            <i className="fas fa-phone me-2 text-primary"></i>
-            {user.telefono}
+          <p
+            className="mb-3"
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            <i
+              className="fas fa-phone"
+              style={{ color: "#ff3d24", width: "16px" }}
+            ></i>
+            <span>{user.telefono}</span>
           </p>
-          <p className="mb-2">
-            <i className="fas fa-tools me-2 text-primary"></i>
-            {user.especialidad}
+          <p
+            className="mb-3"
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            <i
+              className="fas fa-tools"
+              style={{ color: "#ff3d24", width: "16px" }}
+            ></i>
+            <span>{user.especialidad}</span>
           </p>
-          <p className="mb-3">
-            <i className="fas fa-calendar me-2 text-primary"></i>Desde{" "}
-            {format(user.fechaContratacion, "MMM yyyy", { locale: es })}
+          <p
+            className="mb-4"
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            <i
+              className="fas fa-calendar"
+              style={{ color: "#ff3d24", width: "16px" }}
+            ></i>
+            <span>
+              Desde {format(user.fechaContratacion, "MMM yyyy", { locale: es })}
+            </span>
           </p>
 
-          <div className="d-flex justify-content-between align-items-center">
-            <div>
-              {getStarRating(user.calificacion)}{" "}
-              <small className="ms-1">({user.calificacion.toFixed(1)})</small>
+          <div
+            className="d-flex justify-content-between align-items-center"
+            style={{
+              padding: "12px",
+              background: "rgba(255, 255, 255, 0.03)",
+              borderRadius: "8px",
+              border: "1px solid rgba(255, 255, 255, 0.05)",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+              {getStarRating(user.calificacion)}
+              <small
+                className="ms-1"
+                style={{ color: "var(--heading-color)", fontWeight: "600" }}
+              >
+                ({user.calificacion.toFixed(1)})
+              </small>
             </div>
-            <small>{user.serviciosCompletados} serviços</small>
+            <small style={{ color: "var(--body-color)", fontWeight: "500" }}>
+              {user.serviciosCompletados} servicios
+            </small>
           </div>
         </div>
 
-        <div className="d-flex gap-2 mt-4">
-          <PrimaryButton onClick={() => onEdit(user)} className="flex-grow-1">
+        <div className="d-flex gap-3 mt-auto">
+          <PrimaryButton onClick={() => onEdit(user)} style={{ flex: 1 }}>
             <i className="fas fa-edit"></i>Editar
           </PrimaryButton>
-          <DangerButton
-            onClick={() => onDelete(user.id)}
-            className="flex-grow-1"
-          >
-            <i className="fas fa-trash"></i>Excluir
+          <DangerButton onClick={() => onDelete(user.id)} style={{ flex: 1 }}>
+            <i className="fas fa-trash"></i>Eliminar
           </DangerButton>
         </div>
       </UserCardStyled>

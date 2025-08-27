@@ -7,9 +7,9 @@ import { useAuth } from "../../contexts/AuthContext";
 // 1. Create the context for the dashboard layout
 const DashboardContext = createContext();
 
-// 2. Custom hook for easy access to the context
 export const useDashboard = () => useContext(DashboardContext);
 
+export const DashboardMain = ({ children }) => {
 // 3. Main Layout Component for the entire dashboard area
 const DashboardMain = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);

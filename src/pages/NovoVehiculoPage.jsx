@@ -161,8 +161,8 @@ const NovoVehiculoPage = () => {
               </h1>
               <p className="dashboard-subtitle">
                 {clienteId
-                  ? "Adicione um novo veículo para este cliente"
-                  : "Cadastre um novo veículo no sistema"}
+                  ? "Adicione um nuevo vehículo para este cliente"
+                  : "Registre un nuevo vehículo en el sistema"}
               </p>
             </div>
             <div className="dashboard-actions">
@@ -174,25 +174,61 @@ const NovoVehiculoPage = () => {
                 }
                 className="logout-btn"
               >
-                ← Voltar
+                ← Volver
               </Link>
             </div>
           </div>
 
-          <div className="dashboard-panel">
+          <div
+            className="dashboard-panel"
+            style={{ maxWidth: "900px", margin: "0 auto" }}
+          >
+            <div className="panel-header">
+              <h3>Información del Vehículo</h3>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <div
+                  style={{
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "8px",
+                    background: "linear-gradient(135deg, #ff3d24, #ff6b4a)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "white",
+                    fontSize: "16px",
+                  }}
+                >
+                  🚗
+                </div>
+                <span style={{ color: "var(--body-color)", fontSize: "14px" }}>
+                  Complete todos los campos obligatorios *
+                </span>
+              </div>
+            </div>
             <form onSubmit={handleSubmit}>
               <div className="row">
                 {/* Cliente (se não veio por parâmetro) */}
                 {!clienteId && (
                   <div className="col-md-6 mb-3">
                     <label className="form-label">Cliente *</label>
+                    <label className="form-label">Cliente *</label>
                     <select
                       name="clienteId"
                       value={formData.clienteId}
                       onChange={handleChange}
                       className={`form-control ${errors.clienteId ? "error" : ""}`}
+                      style={{
+                        background: "rgba(255, 255, 255, 0.05)",
+                        border: `1px solid ${errors.clienteId ? "#ef4444" : "rgba(255, 255, 255, 0.1)"}`,
+                        color: "var(--heading-color)",
+                        borderRadius: "8px",
+                        padding: "12px",
+                      }}
                     >
-                      <option value="">Selecione um cliente</option>
+                      <option value="">Seleccione un cliente</option>
                       {clientes.map((cliente) => (
                         <option key={cliente.id} value={cliente.id}>
                           {cliente.nombre} {cliente.apellidos}
@@ -214,7 +250,14 @@ const NovoVehiculoPage = () => {
                     value={formData.marca}
                     onChange={handleChange}
                     className={`form-control ${errors.marca ? "error" : ""}`}
-                    placeholder="Ex: Toyota, Volkswagen, Ford..."
+                    placeholder="Ej: Toyota, Volkswagen, Ford..."
+                    style={{
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: `1px solid ${errors.marca ? "#ef4444" : "rgba(255, 255, 255, 0.1)"}`,
+                      color: "var(--heading-color)",
+                      borderRadius: "8px",
+                      padding: "12px",
+                    }}
                   />
                   {errors.marca && (
                     <div className="error-text">{errors.marca}</div>
@@ -229,7 +272,14 @@ const NovoVehiculoPage = () => {
                     value={formData.modelo}
                     onChange={handleChange}
                     className={`form-control ${errors.modelo ? "error" : ""}`}
-                    placeholder="Ex: Corolla, Golf, Fiesta..."
+                    placeholder="Ej: Corolla, Golf, Fiesta..."
+                    style={{
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: `1px solid ${errors.modelo ? "#ef4444" : "rgba(255, 255, 255, 0.1)"}`,
+                      color: "var(--heading-color)",
+                      borderRadius: "8px",
+                      padding: "12px",
+                    }}
                   />
                   {errors.modelo && (
                     <div className="error-text">{errors.modelo}</div>
@@ -245,8 +295,15 @@ const NovoVehiculoPage = () => {
                     value={formData.matricula}
                     onChange={handleChange}
                     className={`form-control ${errors.matricula ? "error" : ""}`}
-                    placeholder="Ex: AB-12-CD"
-                    style={{ textTransform: "uppercase" }}
+                    placeholder="Ej: 1234ABC"
+                    style={{
+                      textTransform: "uppercase",
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: `1px solid ${errors.matricula ? "#ef4444" : "rgba(255, 255, 255, 0.1)"}`,
+                      color: "var(--heading-color)",
+                      borderRadius: "8px",
+                      padding: "12px",
+                    }}
                   />
                   {errors.matricula && (
                     <div className="error-text">{errors.matricula}</div>
@@ -254,7 +311,6 @@ const NovoVehiculoPage = () => {
                 </div>
 
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Ano *</label>
                   <input
                     type="number"
                     name="año"
@@ -270,7 +326,6 @@ const NovoVehiculoPage = () => {
 
                 {/* Cor e Combustível */}
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Cor</label>
                   <input
                     type="text"
                     name="color"
@@ -288,6 +343,13 @@ const NovoVehiculoPage = () => {
                     value={formData.combustible}
                     onChange={handleChange}
                     className="form-control"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                      color: "var(--heading-color)",
+                      borderRadius: "8px",
+                      padding: "12px",
+                    }}
                   >
                     {combustiveis.map((comb) => (
                       <option key={comb.value} value={comb.value}>
@@ -306,8 +368,15 @@ const NovoVehiculoPage = () => {
                     value={formData.kilometraje}
                     onChange={handleChange}
                     className={`form-control ${errors.kilometraje ? "error" : ""}`}
-                    placeholder="Ex: 50000"
+                    placeholder="Ej: 50000"
                     min="0"
+                    style={{
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: `1px solid ${errors.kilometraje ? "#ef4444" : "rgba(255, 255, 255, 0.1)"}`,
+                      color: "var(--heading-color)",
+                      borderRadius: "8px",
+                      padding: "12px",
+                    }}
                   />
                   {errors.kilometraje && (
                     <div className="error-text">{errors.kilometraje}</div>
@@ -315,7 +384,6 @@ const NovoVehiculoPage = () => {
                 </div>
 
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Potência (CV)</label>
                   <input
                     type="number"
                     name="potencia"
@@ -329,7 +397,6 @@ const NovoVehiculoPage = () => {
 
                 {/* VIN e ITV */}
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Número de Chassi (VIN)</label>
                   <input
                     type="text"
                     name="vin"
@@ -342,7 +409,6 @@ const NovoVehiculoPage = () => {
                 </div>
 
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Última ITV</label>
                   <input
                     type="date"
                     name="ultimaItv"
@@ -353,7 +419,6 @@ const NovoVehiculoPage = () => {
                 </div>
 
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Próxima ITV</label>
                   <input
                     type="date"
                     name="proximaItv"
@@ -365,7 +430,6 @@ const NovoVehiculoPage = () => {
 
                 {/* Notas */}
                 <div className="col-12 mb-3">
-                  <label className="form-label">Observações</label>
                   <textarea
                     name="notas"
                     value={formData.notas}
@@ -388,7 +452,7 @@ const NovoVehiculoPage = () => {
                   className="success-message"
                   style={{ marginBottom: "20px" }}
                 >
-                  ✅ Veículo criado com sucesso! Redirecionando...
+                  ✅ ¡Vehículo creado con éxito! Redirigiendo...
                 </div>
               )}
 
@@ -397,8 +461,20 @@ const NovoVehiculoPage = () => {
                   type="submit"
                   className="primary-action-btn"
                   disabled={loading}
+                  style={{
+                    background: "linear-gradient(135deg, #ff3d24, #ff6b4a)",
+                    border: "none",
+                    padding: "12px 24px",
+                    borderRadius: "8px",
+                    color: "white",
+                    fontWeight: "600",
+                    fontSize: "14px",
+                    cursor: loading ? "not-allowed" : "pointer",
+                    opacity: loading ? 0.7 : 1,
+                    transition: "all 0.3s ease",
+                  }}
                 >
-                  {loading ? "⏳ Criando..." : "✅ Criar Veículo"}
+                  {loading ? "⏳ Creando..." : "✅ Crear Vehículo"}
                 </button>
                 <Link
                   to={
@@ -407,6 +483,17 @@ const NovoVehiculoPage = () => {
                       : "/dashboard/vehiculos"
                   }
                   className="logout-btn"
+                  style={{
+                    padding: "12px 24px",
+                    background: "transparent",
+                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                    borderRadius: "8px",
+                    color: "var(--body-color)",
+                    textDecoration: "none",
+                    fontWeight: "500",
+                    fontSize: "14px",
+                    transition: "all 0.3s ease",
+                  }}
                 >
                   Cancelar
                 </Link>

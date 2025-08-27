@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -291,9 +291,13 @@ const ClienteDetailPage = () => {
                       minHeight: "150px",
                       cursor: "pointer",
                     }}
-                    onClick={() =>
-                      navigate(`/dashboard/vehiculos/${v.id}/servicios`)
-                    }
+                    onClick={() => {
+                      console.log(
+                        "Navigating to vehicle services for vehicle ID:",
+                        v.id,
+                      );
+                      navigate(`/dashboard/vehiculos/${v.id}/servicios`);
+                    }}
                   >
                     <div className="action-icon">🚗</div>
                     <h4 className="action-title" style={{ fontSize: "18px" }}>

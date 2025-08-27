@@ -16,14 +16,18 @@ const VehicleCard = ({
   return (
     <div
       style={{
-        background: "rgba(255, 255, 255, 0.02)",
-        border: "1px solid rgba(255, 255, 255, 0.05)",
-        borderRadius: "16px",
-        padding: "24px",
-        transition: "all 0.3s ease",
+        background:
+          "linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(32, 32, 32, 0.98) 100%)",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        borderRadius: "20px",
+        padding: "28px",
+        transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
         height: "100%",
         display: "flex",
         flexDirection: "column",
+        boxShadow:
+          "0 12px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+        backdropFilter: "blur(16px)",
       }}
     >
       <div
@@ -36,14 +40,16 @@ const VehicleCard = ({
       >
         <div
           style={{
-            width: "60px",
-            height: "60px",
-            borderRadius: "12px",
-            background: "linear-gradient(135deg, #3b82f6, #1d4ed8)",
+            width: "70px",
+            height: "70px",
+            borderRadius: "16px",
+            background: "linear-gradient(135deg, #ff3d24 0%, #ff6b4a 100%)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: "24px",
+            fontSize: "28px",
+            boxShadow: "0 8px 24px rgba(255, 61, 36, 0.3)",
+            transition: "all 0.3s ease",
           }}
         >
           🚗
@@ -57,24 +63,51 @@ const VehicleCard = ({
         >
           <span
             style={{
-              background: vehicle.activo ? "#22c55e" : "#ef4444",
+              background: vehicle.activo
+                ? "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)"
+                : "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
               color: "white",
-              padding: "4px 12px",
-              borderRadius: "16px",
+              padding: "8px 16px",
+              borderRadius: "20px",
               fontSize: "12px",
-              fontWeight: "600",
+              fontWeight: "700",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+              transition: "all 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = "translateY(-2px)";
+              e.target.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = "translateY(0)";
+              e.target.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.2)";
             }}
           >
             {vehicle.activo ? "Ativo" : "Inativo"}
           </span>
           <span
             style={{
-              background: "rgba(59, 130, 246, 0.2)",
+              background:
+                "linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(37, 99, 235, 0.3) 100%)",
               color: "#3b82f6",
-              padding: "4px 12px",
-              borderRadius: "16px",
+              padding: "8px 16px",
+              borderRadius: "20px",
               fontSize: "12px",
-              fontWeight: "600",
+              fontWeight: "700",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+              boxShadow: "0 4px 12px rgba(59, 130, 246, 0.2)",
+              transition: "all 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = "translateY(-2px)";
+              e.target.style.boxShadow = "0 6px 20px rgba(59, 130, 246, 0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = "translateY(0)";
+              e.target.style.boxShadow = "0 4px 12px rgba(59, 130, 246, 0.2)";
             }}
           >
             {getVehicleServiceCount(vehicle.id)} serviços
@@ -85,10 +118,28 @@ const VehicleCard = ({
       <div style={{ flex: 1 }}>
         <h4
           style={{
-            color: "var(--heading-color)",
-            fontSize: "20px",
-            fontWeight: "700",
+            background: "linear-gradient(135deg, #ffffff 0%, #ff6b4a 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            fontSize: "22px",
+            fontWeight: "800",
             marginBottom: "16px",
+            transition: "all 0.3s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background =
+              "linear-gradient(135deg, #ff3d24 0%, #ff6b4a 100%)";
+            e.target.style.WebkitBackgroundClip = "text";
+            e.target.style.WebkitTextFillColor = "transparent";
+            e.target.style.backgroundClip = "text";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background =
+              "linear-gradient(135deg, #ffffff 0%, #ff6b4a 100%)";
+            e.target.style.WebkitBackgroundClip = "text";
+            e.target.style.WebkitTextFillColor = "transparent";
+            e.target.style.backgroundClip = "text";
           }}
         >
           {vehicle.marca} {vehicle.modelo}
@@ -104,7 +155,13 @@ const VehicleCard = ({
             }}
           >
             <span>👤</span>
-            <span style={{ fontSize: "14px", color: "var(--body-color)" }}>
+            <span
+              style={{
+                fontSize: "14px",
+                color: "rgba(255, 255, 255, 0.9)",
+                fontWeight: "500",
+              }}
+            >
               {getCustomerName(vehicle.clienteId)}
             </span>
           </div>
@@ -113,11 +170,17 @@ const VehicleCard = ({
               display: "flex",
               alignItems: "center",
               gap: "8px",
-              marginBottom: "8px",
+              marginBottom: "12px",
             }}
           >
-            <span>🔢</span>
-            <span style={{ fontSize: "14px", color: "var(--body-color)" }}>
+            <span style={{ opacity: 0.8 }}>🔢</span>
+            <span
+              style={{
+                fontSize: "14px",
+                color: "rgba(255, 255, 255, 0.9)",
+                fontWeight: "500",
+              }}
+            >
               {vehicle.matricula}
             </span>
           </div>
@@ -126,11 +189,17 @@ const VehicleCard = ({
               display: "flex",
               alignItems: "center",
               gap: "8px",
-              marginBottom: "8px",
+              marginBottom: "12px",
             }}
           >
-            <span>📅</span>
-            <span style={{ fontSize: "14px", color: "var(--body-color)" }}>
+            <span style={{ opacity: 0.8 }}>📅</span>
+            <span
+              style={{
+                fontSize: "14px",
+                color: "rgba(255, 255, 255, 0.9)",
+                fontWeight: "500",
+              }}
+            >
               {vehicle.año} • {vehicle.color || "N/A"}
             </span>
           </div>
@@ -139,11 +208,17 @@ const VehicleCard = ({
               display: "flex",
               alignItems: "center",
               gap: "8px",
-              marginBottom: "8px",
+              marginBottom: "12px",
             }}
           >
-            <span>🛣️</span>
-            <span style={{ fontSize: "14px", color: "var(--body-color)" }}>
+            <span style={{ opacity: 0.8 }}>🛣️</span>
+            <span
+              style={{
+                fontSize: "14px",
+                color: "rgba(255, 255, 255, 0.9)",
+                fontWeight: "500",
+              }}
+            >
               {vehicle.kilometraje?.toLocaleString() || 0} km
             </span>
           </div>
@@ -160,8 +235,9 @@ const VehicleCard = ({
               <span
                 style={{
                   fontSize: "12px",
-                  color: "var(--body-color)",
+                  color: "rgba(255, 255, 255, 0.8)",
                   fontFamily: "monospace",
+                  fontWeight: "500",
                 }}
               >
                 {vehicle.vin}
@@ -174,7 +250,7 @@ const VehicleCard = ({
       <div
         style={{
           display: "flex",
-          gap: "8px",
+          gap: "12px",
           flexWrap: "wrap",
           marginTop: "auto",
         }}
@@ -183,15 +259,31 @@ const VehicleCard = ({
           onClick={() => onEdit(vehicle)}
           style={{
             flex: "1",
-            padding: "10px 16px",
-            background: "rgba(34, 197, 94, 0.1)",
-            border: "1px solid rgba(34, 197, 94, 0.3)",
-            borderRadius: "8px",
+            padding: "12px 16px",
+            background:
+              "linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.3) 100%)",
+            border: "1px solid rgba(34, 197, 94, 0.4)",
+            borderRadius: "12px",
             color: "#22c55e",
-            fontSize: "13px",
-            fontWeight: "600",
+            fontSize: "14px",
+            fontWeight: "700",
             cursor: "pointer",
             transition: "all 0.3s ease",
+            boxShadow: "0 4px 12px rgba(34, 197, 94, 0.2)",
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background =
+              "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)";
+            e.target.style.color = "white";
+            e.target.style.transform = "translateY(-2px)";
+            e.target.style.boxShadow = "0 6px 20px rgba(34, 197, 94, 0.3)";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background =
+              "linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.3) 100%)";
+            e.target.style.color = "#22c55e";
+            e.target.style.transform = "translateY(0)";
+            e.target.style.boxShadow = "0 4px 12px rgba(34, 197, 94, 0.2)";
           }}
         >
           ✏️ Editar
@@ -200,16 +292,32 @@ const VehicleCard = ({
           to={`/dashboard/vehiculos/${vehicle.id}/servicios`}
           style={{
             flex: "1",
-            padding: "10px 16px",
-            background: "rgba(59, 130, 246, 0.1)",
-            border: "1px solid rgba(59, 130, 246, 0.3)",
-            borderRadius: "8px",
+            padding: "12px 16px",
+            background:
+              "linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.3) 100%)",
+            border: "1px solid rgba(59, 130, 246, 0.4)",
+            borderRadius: "12px",
             color: "#3b82f6",
-            fontSize: "13px",
-            fontWeight: "600",
+            fontSize: "14px",
+            fontWeight: "700",
             textDecoration: "none",
             textAlign: "center",
             transition: "all 0.3s ease",
+            boxShadow: "0 4px 12px rgba(59, 130, 246, 0.2)",
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background =
+              "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)";
+            e.target.style.color = "white";
+            e.target.style.transform = "translateY(-2px)";
+            e.target.style.boxShadow = "0 6px 20px rgba(59, 130, 246, 0.3)";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background =
+              "linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.3) 100%)";
+            e.target.style.color = "#3b82f6";
+            e.target.style.transform = "translateY(0)";
+            e.target.style.boxShadow = "0 4px 12px rgba(59, 130, 246, 0.2)";
           }}
         >
           🔧 Serviços
@@ -217,15 +325,31 @@ const VehicleCard = ({
         <button
           onClick={() => onDelete(vehicle.id)}
           style={{
-            padding: "10px 12px",
-            background: "rgba(239, 68, 68, 0.1)",
-            border: "1px solid rgba(239, 68, 68, 0.3)",
-            borderRadius: "8px",
+            padding: "12px 14px",
+            background:
+              "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.3) 100%)",
+            border: "1px solid rgba(239, 68, 68, 0.4)",
+            borderRadius: "12px",
             color: "#ef4444",
-            fontSize: "13px",
-            fontWeight: "600",
+            fontSize: "14px",
+            fontWeight: "700",
             cursor: "pointer",
             transition: "all 0.3s ease",
+            boxShadow: "0 4px 12px rgba(239, 68, 68, 0.2)",
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background =
+              "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)";
+            e.target.style.color = "white";
+            e.target.style.transform = "translateY(-2px)";
+            e.target.style.boxShadow = "0 6px 20px rgba(239, 68, 68, 0.3)";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background =
+              "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.3) 100%)";
+            e.target.style.color = "#ef4444";
+            e.target.style.transform = "translateY(0)";
+            e.target.style.boxShadow = "0 4px 12px rgba(239, 68, 68, 0.2)";
           }}
         >
           🗑️
@@ -283,7 +407,9 @@ const VehiclesPage = () => {
       total: vehiclesData.length,
       activos: vehiclesData.filter((v) => v.activo).length,
       servicios: vehiclesData.reduce((count, v) => {
-        const services = mockServiceHistory.filter((s) => s.vehicleId === v.id);
+        const services = mockServiceHistory.filter(
+          (s) => s.vehiculoId === v.id,
+        );
         return count + services.length;
       }, 0),
     });
@@ -1150,31 +1276,272 @@ const VehiclesPage = () => {
                   <h3>Veículos ({filteredVehicles.length})</h3>
                 </div>
 
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                      "repeat(auto-fill, minmax(350px, 1fr))",
-                    gap: "24px",
-                    marginTop: "24px",
-                  }}
-                >
-                  {filteredVehicles
-                    .slice(
-                      (currentPage - 1) * itemsPerPage,
-                      currentPage * itemsPerPage,
-                    )
-                    .map((vehicle) => (
-                      <VehicleCard
-                        key={vehicle.id}
-                        vehicle={vehicle}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
-                        getCustomerName={getCustomerName}
-                        getVehicleServiceCount={getVehicleServiceCount}
-                      />
-                    ))}
-                </div>
+                {viewMode === "cards" ? (
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "repeat(auto-fill, minmax(350px, 1fr))",
+                      gap: "24px",
+                      marginTop: "24px",
+                    }}
+                  >
+                    {filteredVehicles
+                      .slice(
+                        (currentPage - 1) * itemsPerPage,
+                        currentPage * itemsPerPage,
+                      )
+                      .map((vehicle) => (
+                        <VehicleCard
+                          key={vehicle.id}
+                          vehicle={vehicle}
+                          onEdit={handleEdit}
+                          onDelete={handleDelete}
+                          getCustomerName={getCustomerName}
+                          getVehicleServiceCount={getVehicleServiceCount}
+                        />
+                      ))}
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      background: "rgba(255, 255, 255, 0.02)",
+                      border: "1px solid rgba(255, 255, 255, 0.05)",
+                      borderRadius: "12px",
+                      padding: "20px",
+                      marginTop: "24px",
+                      overflowX: "auto",
+                    }}
+                  >
+                    <table
+                      style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                        minWidth: "800px",
+                      }}
+                    >
+                      <thead>
+                        <tr
+                          style={{
+                            borderBottom: "2px solid rgba(255, 255, 255, 0.1)",
+                          }}
+                        >
+                          <th
+                            style={{
+                              padding: "12px",
+                              textAlign: "left",
+                              fontWeight: "600",
+                              color: "var(--heading-color)",
+                            }}
+                          >
+                            Veículo
+                          </th>
+                          <th
+                            style={{
+                              padding: "12px",
+                              textAlign: "left",
+                              fontWeight: "600",
+                              color: "var(--heading-color)",
+                            }}
+                          >
+                            Cliente
+                          </th>
+                          <th
+                            style={{
+                              padding: "12px",
+                              textAlign: "left",
+                              fontWeight: "600",
+                              color: "var(--heading-color)",
+                            }}
+                          >
+                            Matrícula
+                          </th>
+                          <th
+                            style={{
+                              padding: "12px",
+                              textAlign: "left",
+                              fontWeight: "600",
+                              color: "var(--heading-color)",
+                            }}
+                          >
+                            Ano/Cor
+                          </th>
+                          <th
+                            style={{
+                              padding: "12px",
+                              textAlign: "left",
+                              fontWeight: "600",
+                              color: "var(--heading-color)",
+                            }}
+                          >
+                            Km
+                          </th>
+                          <th
+                            style={{
+                              padding: "12px",
+                              textAlign: "left",
+                              fontWeight: "600",
+                              color: "var(--heading-color)",
+                            }}
+                          >
+                            Serviços
+                          </th>
+                          <th
+                            style={{
+                              padding: "12px",
+                              textAlign: "center",
+                              fontWeight: "600",
+                              color: "var(--heading-color)",
+                            }}
+                          >
+                            Ações
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredVehicles
+                          .slice(
+                            (currentPage - 1) * itemsPerPage,
+                            currentPage * itemsPerPage,
+                          )
+                          .map((vehicle) => (
+                            <tr
+                              key={vehicle.id}
+                              style={{
+                                borderBottom:
+                                  "1px solid rgba(255, 255, 255, 0.05)",
+                              }}
+                            >
+                              <td
+                                style={{
+                                  padding: "12px",
+                                  color: "var(--heading-color)",
+                                  fontWeight: "600",
+                                }}
+                              >
+                                {vehicle.marca} {vehicle.modelo}
+                              </td>
+                              <td
+                                style={{
+                                  padding: "12px",
+                                  color: "var(--body-color)",
+                                }}
+                              >
+                                {getCustomerName(vehicle.clienteId)}
+                              </td>
+                              <td
+                                style={{
+                                  padding: "12px",
+                                  color: "var(--body-color)",
+                                  fontFamily: "monospace",
+                                }}
+                              >
+                                {vehicle.matricula}
+                              </td>
+                              <td
+                                style={{
+                                  padding: "12px",
+                                  color: "var(--body-color)",
+                                }}
+                              >
+                                {vehicle.año} • {vehicle.color || "N/A"}
+                              </td>
+                              <td
+                                style={{
+                                  padding: "12px",
+                                  color: "var(--body-color)",
+                                }}
+                              >
+                                {vehicle.kilometraje?.toLocaleString() || 0} km
+                              </td>
+                              <td
+                                style={{
+                                  padding: "12px",
+                                  color: "var(--body-color)",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    background: "rgba(59, 130, 246, 0.2)",
+                                    color: "#3b82f6",
+                                    padding: "4px 12px",
+                                    borderRadius: "16px",
+                                    fontSize: "12px",
+                                    fontWeight: "600",
+                                  }}
+                                >
+                                  {getVehicleServiceCount(vehicle.id)} serviços
+                                </span>
+                              </td>
+                              <td
+                                style={{
+                                  padding: "12px",
+                                  textAlign: "center",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    gap: "8px",
+                                    justifyContent: "center",
+                                  }}
+                                >
+                                  <button
+                                    onClick={() => handleEdit(vehicle)}
+                                    style={{
+                                      padding: "6px 12px",
+                                      background: "rgba(34, 197, 94, 0.1)",
+                                      border:
+                                        "1px solid rgba(34, 197, 94, 0.3)",
+                                      borderRadius: "6px",
+                                      color: "#22c55e",
+                                      fontSize: "12px",
+                                      fontWeight: "600",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    ✏️
+                                  </button>
+                                  <Link
+                                    to={`/dashboard/vehiculos/${vehicle.id}/servicios`}
+                                    style={{
+                                      padding: "6px 12px",
+                                      background: "rgba(59, 130, 246, 0.1)",
+                                      border:
+                                        "1px solid rgba(59, 130, 246, 0.3)",
+                                      borderRadius: "6px",
+                                      color: "#3b82f6",
+                                      fontSize: "12px",
+                                      fontWeight: "600",
+                                      textDecoration: "none",
+                                    }}
+                                  >
+                                    🔧
+                                  </Link>
+                                  <button
+                                    onClick={() => handleDelete(vehicle.id)}
+                                    style={{
+                                      padding: "6px 12px",
+                                      background: "rgba(239, 68, 68, 0.1)",
+                                      border:
+                                        "1px solid rgba(239, 68, 68, 0.3)",
+                                      borderRadius: "6px",
+                                      color: "#ef4444",
+                                      fontSize: "12px",
+                                      fontWeight: "600",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    🗑️
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
 
               {/* Pagination */}
