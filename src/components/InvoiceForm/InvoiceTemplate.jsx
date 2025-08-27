@@ -39,7 +39,7 @@ const InvoiceTemplate = forwardRef(({ data }, ref) => {
       >
         <div>
           <img
-            src="/assets/img/icon/loyola-logo.svg"
+            src="/assets/img/icon/loyola-logo-v2.png"
             alt="Loyola Motors Logo"
             style={{ maxWidth: "200px" }}
           />

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import MenuItem from "./MenuItem";
 import { useAuth } from "../../contexts/AuthContext";
 
-import logo from "/assets/img/icon/loyola-logo.svg";
+import logo from "/assets/img/icon/loyola-logo-v2.png";
 
 import navitemlist from "../../dataJson/navitemlist.json";
 

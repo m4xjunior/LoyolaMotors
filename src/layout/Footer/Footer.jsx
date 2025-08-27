@@ -2,15 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import TextAnimation from "../../components/TextAnimation/TextAnimation";
 
-import footerLogo from "/assets/img/icon/loyola-logo.svg";
+import footerLogo from "/assets/img/icon/loyola-logo-v2.png";
 
 const footerDataArray = [
   {
     className: "footer-info",
     dataAosDelay: "0",
     phone: "+34 640 16 29 47",
-    desp:
-      "Loyola Motors Valencia — Taller especializado en chapa, pintura y mecánica general con más de 20 años de experiencia en el centro de Valencia.",
+    desp: "Loyola Motors Valencia — Taller especializado en chapa, pintura y mecánica general con más de 20 años de experiencia en el centro de Valencia.",
   },
   {
     className: "footer-menu-one",
@@ -122,7 +121,11 @@ const Footer = () => {
           <div className="primary-color-border"></div>
           <div className="ak-height-35 ak-height-lg-30"></div>
           <div className="footer-logo">
-            <img src={footerLogo} alt="footer-logo" />
+            <img
+              src={footerLogo}
+              alt="footer-logo"
+              style={{ maxWidth: "200px" }}
+            />
             <div className="ak-height-15 ak-height-lg-10"></div>
           </div>
           <div className="footer-content">
@@ -202,7 +205,15 @@ const Footer = () => {
           <div className="ak-height-70 ak-height-lg-30"></div>
           <div className="primary-color-border"></div>
           <div className="copy-right">
-            <p className="title  text-hover-animaiton">© 2025 Loyola Motors Valencia. Todos los derechos reservados. | <Link to="/login" style={{ textDecoration: 'underline', opacity: 0.7 }}>Admin</Link></p>
+            <p className="title  text-hover-animaiton">
+              © 2025 Loyola Motors Valencia. Todos los derechos reservados. |{" "}
+              <Link
+                to="/login"
+                style={{ textDecoration: "underline", opacity: 0.7 }}
+              >
+                Admin
+              </Link>
+            </p>
             <div className="social-icon">
               <Link to="https://www.facebook.com/">
                 <img src="/assets/img/icon/facebookicon.svg" alt="..." />

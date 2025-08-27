@@ -1,6 +1,6 @@
 # LoyolaMotors - Dashboard de Gestão de Oficina
 
-![Project Banner](public/assets/img/icon/loyola-logo.svg)
+<img src="/public/assets/img/icon/loyola-logo-v2.png" alt="Project Banner" width="200" />
 
 **Um sistema de gestão completo para oficinas automotivas, construído com React, Vite e um design moderno e responsivo.**
 
