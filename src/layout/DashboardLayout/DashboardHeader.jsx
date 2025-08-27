@@ -4,7 +4,7 @@ import { useDashboard } from "./DashboardMain";
 
 const DashboardHeader = () => {
   const { user } = useAuth();
-  const { setSidebarOpen } = useDashboard();
+  const { toggleSidebar } = useDashboard();
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const handleLogout = () => {

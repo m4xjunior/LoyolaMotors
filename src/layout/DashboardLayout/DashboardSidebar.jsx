@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useDashboard } from "./DashboardMain";
@@ -49,13 +48,6 @@ const DashboardSidebar = () => {
     return (
       location.pathname === path || location.pathname.startsWith(path + "/")
     );
-  };
-
-  const toggleExpand = (title) => {
-    setExpandedItems((prev) => ({
-      ...prev,
-      [title]: !prev[title],
-    }));
   };
 
   return (
