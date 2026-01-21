@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 
 const TermsConditions = () => {
@@ -59,7 +60,11 @@ const TermsConditions = () => {
           <div data-aos="fade-up" data-aos-duration="500" data-aos-delay="700">
             <h4 style={{ marginBottom: "20px", color: "#333" }}>8. Protección de Datos</h4>
             <p style={{ marginBottom: "30px", lineHeight: "1.8", color: "#666" }}>
-              Los datos personales proporcionados serán tratados de acuerdo con nuestra Política de Privacidad y el Reglamento General de Protección de Datos (RGPD). Al utilizar nuestros servicios, usted consiente el tratamiento de sus datos personales para la prestación del servicio solicitado y para comunicaciones relacionadas con nuestros servicios.
+              Los datos personales proporcionados serán tratados de acuerdo con nuestra{" "}
+              <Link to="/privacy-policy" style={{ color: "#007bff", textDecoration: "underline" }}>
+                Política de Privacidad
+              </Link>{" "}
+              y el Reglamento General de Protección de Datos (RGPD). Al utilizar nuestros servicios, usted consiente el tratamiento de sus datos personales para la prestación del servicio solicitado y para comunicaciones relacionadas con nuestros servicios.
             </p>
           </div>
 

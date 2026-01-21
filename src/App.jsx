@@ -35,6 +35,7 @@ import ServicesPage from "./pages/ServicesPage";
 import UsersManagementPage from "./pages/UsersManagementPage";
 import ClienteDetailPage from "./pages/ClienteDetailPage";
 import TermsConditions from "./pages/TermsConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 export default function App() {
   const location = useLocation();
@@ -72,6 +73,7 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/comming-soon" element={<CommingSoon />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
         {/* Dashboard Routes */}
         <Route

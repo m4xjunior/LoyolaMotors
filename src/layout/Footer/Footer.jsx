@@ -30,6 +30,7 @@ const footerDataArray = [
       { title: "Blog", link: "/blog" },
       { title: "Preguntas frecuentes", link: "/faq" },
       { title: "Términos y Condiciones", link: "/terms-conditions" },
+      { title: "Política de Privacidad", link: "/privacy-policy" },
     ],
   },
   {
@@ -212,6 +213,13 @@ const Footer = () => {
                 style={{ textDecoration: "underline", opacity: 0.7 }}
               >
                 Términos y Condiciones
+              </Link>
+              {" | "}
+              <Link
+                to="/privacy-policy"
+                style={{ textDecoration: "underline", opacity: 0.7 }}
+              >
+                Política de Privacidad
               </Link>
               {" | "}
               <Link
