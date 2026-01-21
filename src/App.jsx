@@ -34,6 +34,7 @@ import VehicleServicesPage from "./pages/VehicleServicesPage";
 import ServicesPage from "./pages/ServicesPage";
 import UsersManagementPage from "./pages/UsersManagementPage";
 import ClienteDetailPage from "./pages/ClienteDetailPage";
+import TermsConditions from "./pages/TermsConditions";
 
 export default function App() {
   const location = useLocation();
@@ -70,6 +71,7 @@ export default function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/comming-soon" element={<CommingSoon />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
 
         {/* Dashboard Routes */}
         <Route

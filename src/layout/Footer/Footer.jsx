@@ -29,7 +29,7 @@ const footerDataArray = [
       { title: "Cita previa", link: "/appointment" },
       { title: "Blog", link: "/blog" },
       { title: "Preguntas frecuentes", link: "/faq" },
-      { title: "Equipo", link: "/team" },
+      { title: "Términos y Condiciones", link: "/terms-conditions" },
     ],
   },
   {
@@ -207,6 +207,13 @@ const Footer = () => {
           <div className="copy-right">
             <p className="title  text-hover-animaiton">
               © 2025 Loyola Motors Valencia. Todos los derechos reservados. |{" "}
+              <Link
+                to="/terms-conditions"
+                style={{ textDecoration: "underline", opacity: 0.7 }}
+              >
+                Términos y Condiciones
+              </Link>
+              {" | "}
               <Link
                 to="/login"
                 style={{ textDecoration: "underline", opacity: 0.7 }}
