@@ -83,6 +83,39 @@
     --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* === Tokens Automotive Industrial Dark === */
+:root {
+  --fondo: #0F172A;
+  --fondo-tarjeta: #1E293B;
+  --fondo-elevado: #334155;
+  --texto-principal: #F8FAFC;
+  --texto-secundario: #94A3B8;
+  --texto-deshabilitado: #64748B;
+  --acento: #DC2626;
+  --acento-hover: #B91C1C;
+  --exito: #22C55E;
+  --advertencia: #F59E0B;
+  --peligro: #EF4444;
+  --info: #3B82F6;
+  --borde: #334155;
+  --borde-enfoque: #DC2626;
+  --radio-sm: 6px;
+  --radio-md: 8px;
+  --radio-lg: 12px;
+  --radio-xl: 16px;
+  --fuente-encabezado: 'Inter', sans-serif;
+  --fuente-cuerpo: 'Fira Sans', sans-serif;
+  --fuente-datos: 'Fira Code', monospace;
+  --texto-xs: 0.75rem;
+  --texto-sm: 0.875rem;
+  --texto-base: 1rem;
+  --texto-lg: 1.125rem;
+  --texto-xl: 1.25rem;
+  --texto-2xl: 1.5rem;
+  --texto-3xl: 1.875rem;
+  --texto-4xl: 2.25rem;
+}
+
 /* .dark class removed — :root already defines dark theme for Loyola Motors brand */
 
 /* Base resets removidos para não conflitar com Bootstrap/CSS existente.
