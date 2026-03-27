@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAutenticacion } from "../contextos/ContextoAutenticacion";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 import {
   clienteService,
@@ -12,7 +12,7 @@ import "../styles/Dashboard.scss";
 
 const ClienteDetailPage = () => {
   const { clienteId } = useParams();
-  const { user } = useAuth();
+  const { user } = useAutenticacion();
   const navigate = useNavigate();
 
   const [cliente, setCliente] = useState(null);

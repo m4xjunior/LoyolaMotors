@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAutenticacion } from "../contextos/ContextoAutenticacion";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 import { vehiculoService, clienteService } from "../data/database";
 import "../styles/Dashboard.scss";
 
 const NovoVehiculoPage = () => {
-  const { user } = useAuth();
+  const { user } = useAutenticacion();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const clienteId = searchParams.get("clienteId");

@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Header from "./Header/Header";
-import Footer from "./Footer/Footer";
+import Cabecera from "./Cabecera/Cabecera";
+import PiePagina from "./PiePagina/PiePagina";
 import { pageScrollUp } from "../helper/main";
 import ScrollUpButton from "../components/ScrollUp/Scrollup";
 import AdminNavBar from "../components/AdminNav/AdminNavBar";
 
-const Main = () => {
+const Principal = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -15,13 +15,13 @@ const Main = () => {
 
   return (
     <>
-      <Header />
+      <Cabecera />
       <Outlet />
-      <Footer />
+      <PiePagina />
       <ScrollUpButton />
       <AdminNavBar />
     </>
   );
 };
 
-export default Main;
+export default Principal;

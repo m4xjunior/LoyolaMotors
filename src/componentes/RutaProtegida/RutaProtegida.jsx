@@ -1,10 +1,10 @@
 
 import { Navigate, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAutenticacion } from '../../contextos/ContextoAutenticacion';
 
 const ProtectedRoute = ({ children, requiredRole = null }) => {
-  const { isAuthenticated, hasRole, loading } = useAuth();
+  const { isAuthenticated, hasRole, loading } = useAutenticacion();
   const location = useLocation();
 
   // Wait for auth state to be restored from localStorage

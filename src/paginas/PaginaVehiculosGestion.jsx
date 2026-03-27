@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { useAuth } from "../contexts/AuthContext";
+import { useAutenticacion } from "../contextos/ContextoAutenticacion";
 import { useNavigate, Link } from "react-router-dom";
 import {
   vehiculoService,
@@ -17,7 +17,7 @@ import {
 import "../styles/Dashboard.scss";
 
 const VehiclesManagementPage = () => {
-  const { user } = useAuth();
+  const { user } = useAutenticacion();
   const navigate = useNavigate();
 
   const [vehiculos, setVehiculos] = useState([]);

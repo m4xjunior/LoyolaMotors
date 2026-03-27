@@ -41,7 +41,7 @@ const footerDataArray = [
   },
 ];
 
-const Footer = () => {
+const PiePagina = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
@@ -247,4 +247,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default PiePagina;

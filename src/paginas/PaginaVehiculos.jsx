@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { useAuth } from "../contexts/AuthContext";
+import { useAutenticacion } from "../contextos/ContextoAutenticacion";
 import { useNavigate, Link } from "react-router-dom";
 import { mockServiceHistory } from "../data/mockCustomers";
 import { vehiculoService, clienteService } from "../data/database";
@@ -368,7 +368,7 @@ VehicleCard.propTypes = {
 };
 
 const VehiclesPage = () => {
-  const { user } = useAuth();
+  const { user } = useAutenticacion();
   const navigate = useNavigate();
   const [vehicles, setVehicles] = useState([]);
   const [clientes, setClientes] = useState([]);

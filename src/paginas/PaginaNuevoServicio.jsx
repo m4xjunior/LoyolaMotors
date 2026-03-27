@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAutenticacion } from "../contextos/ContextoAutenticacion";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 import {
   servicioService,
@@ -10,7 +10,7 @@ import {
 import "../styles/Dashboard.scss";
 
 const NovoServicoPage = () => {
-  const { user } = useAuth();
+  const { user } = useAutenticacion();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({

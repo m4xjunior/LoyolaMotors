@@ -1,42 +1,42 @@
 import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Main from "./layout/Main";
-import DashboardMain from "./layout/DashboardLayout/DashboardMain";
+import Principal from "./disposicion/Principal";
+import PanelPrincipal from "./disposicion/PanelDisposicion/PanelPrincipal";
 import AOS from "aos";
-import ErrorPages from "./pages/ErrorPages";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Service from "./pages/Service";
-import ServicesTwo from "./pages/ServicesTwo";
-import Blog from "./pages/Blog";
-import SingleBlog from "./pages/SingleBlog";
-import Team from "./pages/Team";
-import TeamMemberDetails from "./pages/TeamMemberDetails";
-import Testimonials from "./pages/Testimonial";
-import Gallery from "./pages/Gallery";
-import Appointment from "./pages/Appointment";
-import Pricing from "./pages/Pricing";
-import CommingSoon from "./pages/CommingSoon";
-import Faq from "./pages/Faq";
-import Contact from "./pages/Contact";
-import SingleService from "./pages/SingleService";
-import LoginPage from "./pages/LoginPage";
-import SingleInvoicePage from "./pages/SingleInvoicePage";
+import PaginaError from "./paginas/PaginaError";
+import PaginaInicio from "./paginas/PaginaInicio";
+import PaginaSobreNosotros from "./paginas/PaginaSobreNosotros";
+import PaginaServicio from "./paginas/PaginaServicio";
+import PaginaServiciosDos from "./paginas/PaginaServiciosDos";
+import PaginaBlog from "./paginas/PaginaBlog";
+import PaginaArticuloBlog from "./paginas/PaginaArticuloBlog";
+import PaginaEquipo from "./paginas/PaginaEquipo";
+import PaginaDetalleMiembro from "./paginas/PaginaDetalleMiembro";
+import PaginaTestimonios from "./paginas/PaginaTestimonios";
+import PaginaGaleria from "./paginas/PaginaGaleria";
+import PaginaCita from "./paginas/PaginaCita";
+import PaginaPrecios from "./paginas/PaginaPrecios";
+import PaginaProximamente from "./paginas/PaginaProximamente";
+import PaginaPreguntas from "./paginas/PaginaPreguntas";
+import PaginaContacto from "./paginas/PaginaContacto";
+import PaginaDetalleServicio from "./paginas/PaginaDetalleServicio";
+import PaginaInicioSesion from "./paginas/PaginaInicioSesion";
+import PaginaDetalleFactura from "./paginas/PaginaDetalleFactura";
 import InvoiceForm from "./components/InvoiceForm/InvoiceForm";
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
-import InvoicesPage from "./pages/InvoicesPage";
-import DashboardPage from "./pages/DashboardPage";
-import ClientesManagementPage from "./pages/ClientesManagementPage";
-import NovoClientePage from "./pages/NovoClientePage";
-import NovoServicoPage from "./pages/NovoServicoPage";
-import NovoVehiculoPage from "./pages/NovoVehiculoPage";
-import VehiclesPage from "./pages/VehiclesPage";
-import VehicleServicesPage from "./pages/VehicleServicesPage";
-import ServicesPage from "./pages/ServicesPage";
-import UsersManagementPage from "./pages/UsersManagementPage";
-import ClienteDetailPage from "./pages/ClienteDetailPage";
-import TermsConditions from "./pages/TermsConditions";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ProtectedRoute from "./componentes/RutaProtegida/RutaProtegida";
+import PaginaFacturas from "./paginas/PaginaFacturas";
+import PaginaPanel from "./paginas/PaginaPanel";
+import PaginaClientes from "./paginas/PaginaClientes";
+import PaginaNuevoCliente from "./paginas/PaginaNuevoCliente";
+import PaginaNuevoServicio from "./paginas/PaginaNuevoServicio";
+import PaginaNuevoVehiculo from "./paginas/PaginaNuevoVehiculo";
+import PaginaVehiculos from "./paginas/PaginaVehiculos";
+import PaginaServiciosVehiculo from "./paginas/PaginaServiciosVehiculo";
+import PaginaServicios from "./paginas/PaginaServicios";
+import PaginaUsuarios from "./paginas/PaginaUsuarios";
+import PaginaDetalleCliente from "./paginas/PaginaDetalleCliente";
+import PaginaTerminos from "./paginas/PaginaTerminos";
+import PaginaPrivacidad from "./paginas/PaginaPrivacidad";
 
 export default function App() {
   const location = useLocation();
@@ -52,64 +52,64 @@ export default function App() {
 
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/login" element={<PaginaInicioSesion />} />
 
       {/* Public site routes under Main layout (Header + Footer) */}
-      <Route path="/" element={<Main />}>
-        <Route index element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path="service" element={<Service />} />
-        <Route path="service-two" element={<ServicesTwo />} />
-        <Route path="service-single/:serviceId" element={<SingleService />} />
-        <Route path="blog" element={<Blog />} />
-        <Route path="blog-single/:blogId" element={<SingleBlog />} />
-        <Route path="team" element={<Team />} />
-        <Route path="team-member/:teamId" element={<TeamMemberDetails />} />
-        <Route path="testimonial" element={<Testimonials />} />
-        <Route path="appointment" element={<Appointment />} />
-        <Route path="pricing" element={<Pricing />} />
-        <Route path="faq" element={<Faq />} />
-        <Route path="gallery" element={<Gallery />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="comming-soon" element={<CommingSoon />} />
-        <Route path="terms-conditions" element={<TermsConditions />} />
-        <Route path="privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/" element={<Principal />}>
+        <Route index element={<PaginaInicio />} />
+        <Route path="about" element={<PaginaSobreNosotros />} />
+        <Route path="service" element={<PaginaServicio />} />
+        <Route path="service-two" element={<PaginaServiciosDos />} />
+        <Route path="service-single/:serviceId" element={<PaginaDetalleServicio />} />
+        <Route path="blog" element={<PaginaBlog />} />
+        <Route path="blog-single/:blogId" element={<PaginaArticuloBlog />} />
+        <Route path="team" element={<PaginaEquipo />} />
+        <Route path="team-member/:teamId" element={<PaginaDetalleMiembro />} />
+        <Route path="testimonial" element={<PaginaTestimonios />} />
+        <Route path="appointment" element={<PaginaCita />} />
+        <Route path="pricing" element={<PaginaPrecios />} />
+        <Route path="faq" element={<PaginaPreguntas />} />
+        <Route path="gallery" element={<PaginaGaleria />} />
+        <Route path="contact" element={<PaginaContacto />} />
+        <Route path="comming-soon" element={<PaginaProximamente />} />
+        <Route path="terms-conditions" element={<PaginaTerminos />} />
+        <Route path="privacy-policy" element={<PaginaPrivacidad />} />
       </Route>
 
-      {/* Dashboard routes under DashboardMain layout (Sidebar + DashboardHeader) */}
+      {/* Dashboard routes under PanelPrincipal layout (Sidebar + PanelCabecera) */}
       <Route
         path="/dashboard"
         element={
           <ProtectedRoute requiredRole="empleado">
-            <DashboardMain />
+            <PanelPrincipal />
           </ProtectedRoute>
         }
       >
-        <Route index element={<DashboardPage />} />
-        <Route path="clientes" element={<ClientesManagementPage />} />
-        <Route path="clientes/novo" element={<NovoClientePage />} />
-        <Route path="clientes/:clienteId" element={<ClienteDetailPage />} />
-        <Route path="clientes/editar/:clienteId" element={<NovoClientePage />} />
-        <Route path="vehiculos" element={<VehiclesPage />} />
-        <Route path="vehiculos/novo" element={<NovoVehiculoPage />} />
-        <Route path="vehiculos/:vehicleId/servicios" element={<VehicleServicesPage />} />
-        <Route path="servicios" element={<ServicesPage />} />
-        <Route path="servicios/nuevo" element={<NovoServicoPage />} />
+        <Route index element={<PaginaPanel />} />
+        <Route path="clientes" element={<PaginaClientes />} />
+        <Route path="clientes/novo" element={<PaginaNuevoCliente />} />
+        <Route path="clientes/:clienteId" element={<PaginaDetalleCliente />} />
+        <Route path="clientes/editar/:clienteId" element={<PaginaNuevoCliente />} />
+        <Route path="vehiculos" element={<PaginaVehiculos />} />
+        <Route path="vehiculos/novo" element={<PaginaNuevoVehiculo />} />
+        <Route path="vehiculos/:vehicleId/servicios" element={<PaginaServiciosVehiculo />} />
+        <Route path="servicios" element={<PaginaServicios />} />
+        <Route path="servicios/nuevo" element={<PaginaNuevoServicio />} />
         <Route
           path="usuarios"
           element={
             <ProtectedRoute requiredRole="admin">
-              <UsersManagementPage />
+              <PaginaUsuarios />
             </ProtectedRoute>
           }
         />
         {/* Invoice routes - moved from /invoices to /dashboard/invoices */}
-        <Route path="invoices" element={<InvoicesPage />} />
+        <Route path="invoices" element={<PaginaFacturas />} />
         <Route path="create-invoice" element={<InvoiceForm />} />
-        <Route path="invoice/:id" element={<SingleInvoicePage />} />
+        <Route path="invoice/:id" element={<PaginaDetalleFactura />} />
       </Route>
 
-      <Route path="/*" element={<ErrorPages />} />
+      <Route path="/*" element={<PaginaError />} />
     </Routes>
   );
 }

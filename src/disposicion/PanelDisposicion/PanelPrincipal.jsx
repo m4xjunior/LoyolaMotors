@@ -1,20 +1,20 @@
 import { useState, createContext, useContext, useEffect, useCallback } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import DashboardSidebar from "./DashboardSidebar";
-import DashboardHeader from "./DashboardHeader";
-import { useAuth } from "../../contexts/AuthContext";
-import useInactivityMonitor from "../../hooks/useInactivityMonitor";
-import InactivityWarningModal from "../../components/InactivityWarning/InactivityWarningModal";
+import PanelBarraLateral from "./PanelBarraLateral";
+import PanelCabecera from "./PanelCabecera";
+import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
+import useMonitorInactividad from "../../hooks/useMonitorInactividad";
+import AvisoInactividad from "../../componentes/AvisoInactividad/AvisoInactividad";
 
 // 1. Create the context for the dashboard layout
-const DashboardContext = createContext();
+const ContextoPanel = createContext();
 
-export const useDashboard = () => useContext(DashboardContext);
+export const usarPanel = () => useContext(ContextoPanel);
 
 // 3. Main Layout Component for the entire dashboard area
-const DashboardMain = () => {
+const PanelPrincipal = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const { user, loading, logout } = useAuth();
+  const { user, loading, logout } = useAutenticacion();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,7 +30,7 @@ const DashboardMain = () => {
     navigate("/login", { replace: true });
   }, [logout, navigate]);
 
-  const { isWarning, remainingSeconds, resetTimer } = useInactivityMonitor({
+  const { isWarning, remainingSeconds, resetTimer } = useMonitorInactividad({
     timeout: 900000,      // 15 minutes
     warningTime: 60000,   // 60 seconds warning
     onTimeout: handleInactivityLogout,
@@ -70,9 +70,9 @@ const DashboardMain = () => {
   // Provide sidebar state to all children of the layout
   return (
     <>
-      <DashboardContext.Provider value={{ isSidebarOpen, toggleSidebar }}>
+      <ContextoPanel.Provider value={{ isSidebarOpen, toggleSidebar }}>
         <div style={styles.layoutContainer}>
-          <DashboardSidebar />
+          <PanelBarraLateral />
           <main
             style={{
               ...styles.mainContent,
@@ -81,15 +81,15 @@ const DashboardMain = () => {
                 : styles.sidebar.closedWidth,
             }}
           >
-            <DashboardHeader />
+            <PanelCabecera />
             <div style={styles.pageContent}>
               {/* Renders the specific dashboard page (e.g., Clientes, Veiculos) */}
               <Outlet />
             </div>
           </main>
         </div>
-      </DashboardContext.Provider>
-      <InactivityWarningModal
+      </ContextoPanel.Provider>
+      <AvisoInactividad
         isVisible={isWarning}
         remainingSeconds={remainingSeconds}
         onStayLoggedIn={resetTimer}
@@ -123,4 +123,4 @@ const styles = {
   },
 };
 
-export default DashboardMain;
+export default PanelPrincipal;

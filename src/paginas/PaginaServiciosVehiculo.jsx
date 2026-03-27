@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAutenticacion } from "../contextos/ContextoAutenticacion";
 import {
   mockCustomers,
   mockVehicles,
@@ -122,7 +122,7 @@ const VehicleServicesPage = () => {
   console.log("mockVehicles:", mockVehicles);
   console.log("mockServiceHistory:", mockServiceHistory);
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout } = useAutenticacion();
 
   const [vehicle, setVehicle] = useState(null);
   const [customer, setCustomer] = useState(null);

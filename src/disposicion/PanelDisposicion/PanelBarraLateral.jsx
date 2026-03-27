@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
-import { useDashboard } from "./DashboardMain";
+import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
+import { usarPanel } from "./PanelPrincipal";
 
-const DashboardSidebar = () => {
-  const { user, hasRole } = useAuth();
-  const { isSidebarOpen } = useDashboard();
+const PanelBarraLateral = () => {
+  const { user, hasRole } = useAutenticacion();
+  const { isSidebarOpen } = usarPanel();
   const location = useLocation();
 
   const menuItems = [
@@ -274,4 +274,4 @@ const styles = {
   },
 };
 
-export default DashboardSidebar;
+export default PanelBarraLateral;

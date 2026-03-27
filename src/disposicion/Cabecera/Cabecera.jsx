@@ -3,7 +3,7 @@ import classNames from "classnames";
 import NavMenu from "../../components/Nav/NavMenu";
 import navitemlist from "../../dataJson/navitemlist.json";
 
-const Header = () => {
+const Cabecera = () => {
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isSticky, setIsSticky] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(false);
@@ -53,4 +53,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Cabecera;

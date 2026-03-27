@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-export const AuthContext = createContext(null);
+export const ContextoAutenticacion = createContext(null);
 
 // Mock users data - in a real app, this would come from an API
 const MOCK_USERS = [
@@ -29,7 +29,7 @@ const MOCK_USERS = [
   },
 ];
 
-export const AuthProvider = ({ children }) => {
+export const ProveedorAutenticacion = ({ children }) => {
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState(MOCK_USERS);
   const [loading, setLoading] = useState(true);
@@ -198,17 +198,17 @@ export const AuthProvider = ({ children }) => {
     getAllUsers,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <ContextoAutenticacion.Provider value={value}>{children}</ContextoAutenticacion.Provider>;
 };
 
-AuthProvider.propTypes = {
+ProveedorAutenticacion.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
+export const useAutenticacion = () => {
+  const context = useContext(ContextoAutenticacion);
   if (!context) {
-    throw new Error("useAuth debe ser usado dentro de un AuthProvider");
+    throw new Error("useAutenticacion debe ser usado dentro de un ProveedorAutenticacion");
   }
   return context;
 };

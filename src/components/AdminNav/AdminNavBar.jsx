@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
 import { Menu, Home, LayoutDashboard, Car, Wrench, Users } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import "./AdminNavBar.scss";
 
 const BarraNavegacaoAdmin = () => {
   const [estaAberto, setEstaAberto] = useState(false);
-  const { user: usuario, hasRole: temPermissao } = useAuth();
+  const { user: usuario, hasRole: temPermissao } = useAutenticacion();
   const localizacao = useLocation();
 
   const itensMenuAdmin = [

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
-import { useDashboard } from "./DashboardMain";
+import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
+import { usarPanel } from "./PanelPrincipal";
 
-const DashboardHeader = () => {
-  const { user, logout } = useAuth();
-  const { toggleSidebar } = useDashboard();
+const PanelCabecera = () => {
+  const { user, logout } = useAutenticacion();
+  const { toggleSidebar } = usarPanel();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
 
@@ -246,4 +246,4 @@ const styles = {
   },
 };
 
-export default DashboardHeader;
+export default PanelCabecera;

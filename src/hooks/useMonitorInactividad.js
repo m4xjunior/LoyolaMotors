@@ -6,7 +6,7 @@ const DEFAULT_WARNING_TIME = 60000; // 60 seconds
 const THROTTLE_INTERVAL = 1000;    // 1 second throttle on activity resets
 
 /**
- * useInactivityMonitor
+ * useMonitorInactividad
  *
  * Monitors user activity and triggers callbacks when the user has been
  * inactive for a configurable period. Provides a warning countdown before
@@ -21,7 +21,7 @@ const THROTTLE_INTERVAL = 1000;    // 1 second throttle on activity resets
  *
  * @returns {{ isWarning: boolean, remainingSeconds: number, resetTimer: function }}
  */
-const useInactivityMonitor = ({
+const useMonitorInactividad = ({
   timeout = DEFAULT_TIMEOUT,
   warningTime = DEFAULT_WARNING_TIME,
   onTimeout,
@@ -227,4 +227,4 @@ const useInactivityMonitor = ({
   return { isWarning, remainingSeconds, resetTimer };
 };
 
-export default useInactivityMonitor;
+export default useMonitorInactividad;

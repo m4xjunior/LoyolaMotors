@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAutenticacion } from '../contextos/ContextoAutenticacion';
 import Orb from '../components/Orb/Orb';
 
 export default function LoginPage() {
@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { login } = useAutenticacion();
 
   const from = location.state?.from?.pathname || "/dashboard";
 

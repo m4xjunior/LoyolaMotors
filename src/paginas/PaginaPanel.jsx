@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useAuth } from "../contexts/AuthContext";
+import { useAutenticacion } from "../contextos/ContextoAutenticacion";
 import { useNavigate, Link } from "react-router-dom";
 import { mockCustomers } from "../data/mockCustomers";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
@@ -19,7 +19,7 @@ import db, {
 } from "../data/database";
 
 const DashboardPage = () => {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAutenticacion();
   const navigate = useNavigate();
   const [stats, setStats] = useState({
     totalClientes: 0,

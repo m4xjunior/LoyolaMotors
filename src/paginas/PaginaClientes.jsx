@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAutenticacion } from "../contextos/ContextoAutenticacion";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 import { clienteService } from "../data/database";
 import {
@@ -48,7 +48,7 @@ import {
 } from "@/components/ui/pagination";
 
 const ClientesManagementPage = () => {
-  const { user } = useAuth();
+  const { user } = useAutenticacion();
   const navigate = useNavigate();
   const location = useLocation();
 

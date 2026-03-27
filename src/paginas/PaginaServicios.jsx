@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useAuth } from "../contexts/AuthContext";
+import { useAutenticacion } from "../contextos/ContextoAutenticacion";
 import "../styles/ServicesPage.css";
 import { useNavigate, Link } from "react-router-dom";
 import {
@@ -134,7 +134,7 @@ const ServiceCard = ({ service, customer, vehicle, onEdit, onDelete }) => {
 };
 
 const ServicesPage = () => {
-  const { logout } = useAuth();
+  const { logout } = useAutenticacion();
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
   const [filteredServices, setFilteredServices] = useState([]);

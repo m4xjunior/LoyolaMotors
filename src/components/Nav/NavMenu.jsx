@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import MenuItem from "./MenuItem";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
 
 import logo from "/assets/img/icon/loyola-logo-v2.png";
 
 import navitemlist from "../../dataJson/navitemlist.json";
 
 export default function NavMenu() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAutenticacion();
   const [navBar, setNavbar] = useState("");
   const [navlist, setNavList] = useState("");
 

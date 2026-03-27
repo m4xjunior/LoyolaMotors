@@ -2,11 +2,11 @@ import { isArray } from "lodash";
 import { useState } from "react";
 import classNames from "classnames";
 import TextAnimation from "../TextAnimation/TextAnimation";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
 
 export default function MenuItem({ props }) {
   const [showMenu, setShowMenu] = useState(false);
-  const { isAuthenticated, hasRole } = useAuth();
+  const { isAuthenticated, hasRole } = useAutenticacion();
 
   const showsubnav = () => {
     setShowMenu(!showMenu);
