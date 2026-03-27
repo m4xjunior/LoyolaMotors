@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Main from "./layout/Main";
+import DashboardMain from "./layout/DashboardLayout/DashboardMain";
 import AOS from "aos";
 import ErrorPages from "./pages/ErrorPages";
 import Home from "./pages/Home";
@@ -52,154 +53,63 @@ export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<Main />}>
-        <Route index element={<Home />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/service" element={<Service />}></Route>
-        <Route path="/service-two" element={<ServicesTwo />}></Route>
-        <Route
-          path="/service-single/:serviceId"
-          element={<SingleService />}
-        ></Route>
-        <Route path="/blog" element={<Blog />}></Route>
-        <Route path="/blog-single/:blogId" element={<SingleBlog />} />
-        <Route path="/team" element={<Team />} />
-        <Route path="/team-member/:teamId" element={<TeamMemberDetails />} />
-        <Route path="/testimonial" element={<Testimonials />} />
-        <Route path="/appointment" element={<Appointment />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/faq" element={<Faq />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/comming-soon" element={<CommingSoon />} />
-        <Route path="/terms-conditions" element={<TermsConditions />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
-        {/* Dashboard Routes */}
+      {/* Public site routes under Main layout (Header + Footer) */}
+      <Route path="/" element={<Main />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="service" element={<Service />} />
+        <Route path="service-two" element={<ServicesTwo />} />
+        <Route path="service-single/:serviceId" element={<SingleService />} />
+        <Route path="blog" element={<Blog />} />
+        <Route path="blog-single/:blogId" element={<SingleBlog />} />
+        <Route path="team" element={<Team />} />
+        <Route path="team-member/:teamId" element={<TeamMemberDetails />} />
+        <Route path="testimonial" element={<Testimonials />} />
+        <Route path="appointment" element={<Appointment />} />
+        <Route path="pricing" element={<Pricing />} />
+        <Route path="faq" element={<Faq />} />
+        <Route path="gallery" element={<Gallery />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="comming-soon" element={<CommingSoon />} />
+        <Route path="terms-conditions" element={<TermsConditions />} />
+        <Route path="privacy-policy" element={<PrivacyPolicy />} />
+      </Route>
+
+      {/* Dashboard routes under DashboardMain layout (Sidebar + DashboardHeader) */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute requiredRole="empleado">
+            <DashboardMain />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<DashboardPage />} />
+        <Route path="clientes" element={<ClientesManagementPage />} />
+        <Route path="clientes/novo" element={<NovoClientePage />} />
+        <Route path="clientes/:clienteId" element={<ClienteDetailPage />} />
+        <Route path="clientes/editar/:clienteId" element={<NovoClientePage />} />
+        <Route path="vehiculos" element={<VehiclesPage />} />
+        <Route path="vehiculos/novo" element={<NovoVehiculoPage />} />
+        <Route path="vehiculos/:vehicleId/servicios" element={<VehicleServicesPage />} />
+        <Route path="servicios" element={<ServicesPage />} />
+        <Route path="servicios/nuevo" element={<NovoServicoPage />} />
         <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/clientes"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <ClientesManagementPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/clientes/novo"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <NovoClientePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/clientes/:clienteId"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <ClienteDetailPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/clientes/novo"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <NovoClientePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/clientes/editar/:clienteId"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <NovoClientePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/vehiculos"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <VehiclesPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/vehiculos/novo"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <NovoVehiculoPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/vehiculos/:vehicleId/servicios"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <VehicleServicesPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/servicios"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <ServicesPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/servicios/nuevo"
-          element={
-            <ProtectedRoute requiredRole="empleado">
-              <NovoServicoPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/usuarios"
+          path="usuarios"
           element={
             <ProtectedRoute requiredRole="admin">
               <UsersManagementPage />
             </ProtectedRoute>
           }
         />
-
-        {/* Legacy Invoice Routes */}
-        <Route
-          path="/invoices"
-          element={
-            <ProtectedRoute>
-              <InvoicesPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/create-invoice"
-          element={
-            <ProtectedRoute>
-              <InvoiceForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/invoice/:id"
-          element={
-            <ProtectedRoute>
-              <SingleInvoicePage />
-            </ProtectedRoute>
-          }
-        />
+        {/* Invoice routes - moved from /invoices to /dashboard/invoices */}
+        <Route path="invoices" element={<InvoicesPage />} />
+        <Route path="create-invoice" element={<InvoiceForm />} />
+        <Route path="invoice/:id" element={<SingleInvoicePage />} />
       </Route>
-      <Route path="/*" element={<ErrorPages />}></Route>
+
+      <Route path="/*" element={<ErrorPages />} />
     </Routes>
   );
 }

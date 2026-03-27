@@ -4,8 +4,13 @@ import PropTypes from 'prop-types';
 import { useAuth } from '../../contexts/AuthContext';
 
 const ProtectedRoute = ({ children, requiredRole = null }) => {
-  const { isAuthenticated, hasRole } = useAuth();
+  const { isAuthenticated, hasRole, loading } = useAuth();
   const location = useLocation();
+
+  // Wait for auth state to be restored from localStorage
+  if (loading) {
+    return null;
+  }
 
   if (!isAuthenticated()) {
     // Redirect them to the /login page, but save the current location they were
