@@ -1,3 +1,4 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 
 /**
@@ -5,18 +6,27 @@ import PropTypes from "prop-types";
  * e.g. 30 → "0:30", 60 → "1:00", 90 → "1:30"
  */
 const formatCountdown = (totalSeconds) => {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
+  const clamped = Math.max(0, Math.floor(totalSeconds));
+  const minutes = Math.floor(clamped / 60);
+  const seconds = clamped % 60;
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
 };
 
 const InactivityWarningModal = ({ isVisible, remainingSeconds, onStayLoggedIn }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   if (!isVisible) return null;
 
   const isUrgent = remainingSeconds < 10;
 
   return (
-    <div style={styles.overlay}>
+    <div
+      style={styles.overlay}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="inactivity-modal-title"
+      aria-describedby="inactivity-modal-description"
+    >
       <div style={styles.card}>
         {/* Warning icon */}
         <div style={styles.iconWrapper}>
@@ -24,10 +34,10 @@ const InactivityWarningModal = ({ isVisible, remainingSeconds, onStayLoggedIn })
         </div>
 
         {/* Title */}
-        <h2 style={styles.title}>Sessão Inativa</h2>
+        <h2 id="inactivity-modal-title" style={styles.title}>Sessão Inativa</h2>
 
         {/* Message */}
-        <p style={styles.message}>
+        <p id="inactivity-modal-description" style={styles.message}>
           Sua sessão será encerrada automaticamente por inatividade. Clique em
           continuar para permanecer conectado.
         </p>
@@ -48,18 +58,20 @@ const InactivityWarningModal = ({ isVisible, remainingSeconds, onStayLoggedIn })
 
         {/* Action button */}
         <button
-          style={styles.button}
+          type="button"
+          style={{
+            ...styles.button,
+            ...(isHovered
+              ? {
+                  backgroundColor: "#e02912",
+                  transform: "translateY(-1px)",
+                  boxShadow: "0 8px 24px rgba(255, 61, 36, 0.45)",
+                }
+              : {}),
+          }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           onClick={onStayLoggedIn}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#e02912";
-            e.currentTarget.style.transform = "translateY(-1px)";
-            e.currentTarget.style.boxShadow = "0 8px 24px rgba(255, 61, 36, 0.45)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#ff3d24";
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 4px 16px rgba(255, 61, 36, 0.3)";
-          }}
         >
           Continuar Sessão
         </button>
