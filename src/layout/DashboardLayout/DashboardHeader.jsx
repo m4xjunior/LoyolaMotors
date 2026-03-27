@@ -1,15 +1,18 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useDashboard } from "./DashboardMain";
 
 const DashboardHeader = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { toggleSidebar } = useDashboard();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Logout logic would be handled by AuthContext
     setShowUserMenu(false);
+    logout();
+    navigate("/login", { replace: true });
   };
 
   return (

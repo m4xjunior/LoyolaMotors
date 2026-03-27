@@ -1,8 +1,10 @@
-import { useState, createContext, useContext, useEffect } from "react";
+import { useState, createContext, useContext, useEffect, useCallback } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardHeader from "./DashboardHeader";
 import { useAuth } from "../../contexts/AuthContext";
+import { useInactivityMonitor } from "../../hooks/useInactivityMonitor";
+import InactivityWarningModal from "../../components/InactivityWarning/InactivityWarningModal";
 
 // 1. Create the context for the dashboard layout
 const DashboardContext = createContext();
@@ -12,7 +14,7 @@ export const useDashboard = () => useContext(DashboardContext);
 // 3. Main Layout Component for the entire dashboard area
 const DashboardMain = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -22,6 +24,18 @@ const DashboardMain = () => {
       navigate("/login", { replace: true });
     }
   }, [user, loading, navigate]);
+
+  const handleInactivityLogout = useCallback(() => {
+    logout();
+    navigate("/login", { replace: true });
+  }, [logout, navigate]);
+
+  const { isWarning, remainingSeconds, resetTimer } = useInactivityMonitor({
+    timeout: 900000,      // 15 minutes
+    warningTime: 60000,   // 60 seconds warning
+    onTimeout: handleInactivityLogout,
+    enabled: !loading && !!user,
+  });
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -55,25 +69,32 @@ const DashboardMain = () => {
 
   // Provide sidebar state to all children of the layout
   return (
-    <DashboardContext.Provider value={{ isSidebarOpen, toggleSidebar }}>
-      <div style={styles.layoutContainer}>
-        <DashboardSidebar />
-        <main
-          style={{
-            ...styles.mainContent,
-            marginLeft: isSidebarOpen
-              ? styles.sidebar.openWidth
-              : styles.sidebar.closedWidth,
-          }}
-        >
-          <DashboardHeader />
-          <div style={styles.pageContent}>
-            {/* Renders the specific dashboard page (e.g., Clientes, Veiculos) */}
-            <Outlet />
-          </div>
-        </main>
-      </div>
-    </DashboardContext.Provider>
+    <>
+      <DashboardContext.Provider value={{ isSidebarOpen, toggleSidebar }}>
+        <div style={styles.layoutContainer}>
+          <DashboardSidebar />
+          <main
+            style={{
+              ...styles.mainContent,
+              marginLeft: isSidebarOpen
+                ? styles.sidebar.openWidth
+                : styles.sidebar.closedWidth,
+            }}
+          >
+            <DashboardHeader />
+            <div style={styles.pageContent}>
+              {/* Renders the specific dashboard page (e.g., Clientes, Veiculos) */}
+              <Outlet />
+            </div>
+          </main>
+        </div>
+      </DashboardContext.Provider>
+      <InactivityWarningModal
+        isVisible={isWarning}
+        remainingSeconds={remainingSeconds}
+        onStayLoggedIn={resetTimer}
+      />
+    </>
   );
 };
 
