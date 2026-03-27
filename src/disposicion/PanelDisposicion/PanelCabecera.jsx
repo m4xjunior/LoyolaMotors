@@ -1,13 +1,51 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
 import { usarPanel } from "./PanelPrincipal";
+import { List, Bell, SignOut, UserCircle, GearSix } from "@phosphor-icons/react";
+
+const titulos = {
+  "/panel": "Panel Principal",
+  "/panel/clientes": "Gestion de Clientes",
+  "/panel/vehiculos": "Gestion de Vehiculos",
+  "/panel/servicios": "Gestion de Servicios",
+  "/panel/facturas": "Facturacion",
+  "/panel/usuarios": "Gestion de Usuarios",
+  "/panel/repuestos": "Inventario de Repuestos",
+  "/panel/citas": "Agenda de Citas",
+  "/panel/reportes": "Reportes",
+  "/panel/admin/diapositivas": "Diapositivas del Sitio",
+  "/panel/admin/servicios": "Servicios del Sitio",
+  "/panel/admin/blog": "Gestion de Blog",
+  "/panel/admin/equipo": "Equipo del Taller",
+  "/panel/admin/galeria": "Galeria de Imagenes",
+  "/panel/admin/testimonios": "Testimonios",
+  "/panel/admin/preguntas": "Preguntas Frecuentes",
+  "/panel/admin/precios": "Tabla de Precios",
+  "/panel/admin/configuracion": "Configuracion del Sitio",
+};
+
+const capitalize = (str) =>
+  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 const PanelCabecera = () => {
   const { user, logout } = useAutenticacion();
   const { toggleSidebar } = usarPanel();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const menuRef = useRef(null);
+
+  const pageTitle = titulos[location.pathname] || "Panel";
+
+  // Generate breadcrumbs from pathname
+  const segments = location.pathname.split("/").filter(Boolean);
+  const breadcrumbs = segments.map((seg, index) => {
+    const path = "/" + segments.slice(0, index + 1).join("/");
+    const label = titulos[path] ? titulos[path] : capitalize(seg);
+    const isLast = index === segments.length - 1;
+    return { label, path, isLast };
+  });
 
   const handleLogout = () => {
     setShowUserMenu(false);
@@ -15,235 +53,136 @@ const PanelCabecera = () => {
     navigate("/login", { replace: true });
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowUserMenu(false);
+      }
+    };
+    if (showUserMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showUserMenu]);
+
+  const userInitial = user?.nombre?.charAt(0)?.toUpperCase() || "U";
+  const userName = user?.nombre || "Usuario";
+
   return (
-    <header style={styles.header}>
-      <div style={styles.headerContent}>
-        <div style={styles.leftSection}>
+    <header className="bg-[var(--fondo)] border-b border-[var(--borde)] px-6 py-4">
+      <div className="flex items-center justify-between">
+        {/* Left section: toggle + title + breadcrumbs */}
+        <div className="flex items-center gap-4">
           <button
             onClick={toggleSidebar}
-            style={styles.menuButton}
             aria-label="Toggle sidebar"
+            className="p-2 rounded-[var(--radio-md)] hover:bg-[var(--fondo-elevado)] text-[var(--texto-secundario)] transition-colors"
           >
-            <span style={styles.menuIcon}>☰</span>
+            <List size={24} />
           </button>
-          <h1 style={styles.title}>Painel de Controle</h1>
+
+          <div className="flex flex-col">
+            <h1 className="text-xl font-semibold text-[var(--texto-principal)] font-[family-name:var(--fuente-encabezado)]">
+              {pageTitle}
+            </h1>
+            {breadcrumbs.length > 1 && (
+              <nav className="flex items-center gap-1 text-sm text-[var(--texto-deshabilitado)]">
+                {breadcrumbs.map((crumb, index) => (
+                  <span key={crumb.path} className="flex items-center gap-1">
+                    {index > 0 && <span className="select-none">&gt;</span>}
+                    {crumb.isLast ? (
+                      <span>{crumb.label}</span>
+                    ) : (
+                      <button
+                        onClick={() => navigate(crumb.path)}
+                        className="hover:text-[var(--texto-secundario)] transition-colors"
+                      >
+                        {crumb.label}
+                      </button>
+                    )}
+                  </span>
+                ))}
+              </nav>
+            )}
+          </div>
         </div>
 
-        <div style={styles.rightSection}>
-          <div style={styles.userInfo}>
-            <span style={styles.welcomeText}>
-              Bem-vindo, <strong>{user?.nombre || "Usuário"}</strong>
-            </span>
-            <div style={styles.userMenuContainer}>
-              <button
-                onClick={() => setShowUserMenu(!showUserMenu)}
-                style={styles.userButton}
-                aria-label="Menu do usuário"
-              >
-                <div style={styles.userAvatar}>
-                  {user?.nombre?.charAt(0) || "U"}
-                </div>
-                <span style={styles.userName}>{user?.nombre || "Usuário"}</span>
-              </button>
+        {/* Right section: user menu */}
+        <div className="flex items-center gap-3">
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              aria-label="Menu de usuario"
+              className="flex items-center gap-2 px-3 py-2 rounded-[var(--radio-md)] hover:bg-[var(--fondo-elevado)] transition-colors"
+            >
+              <div className="w-9 h-9 rounded-full bg-[var(--acento)] flex items-center justify-center text-white font-semibold text-sm">
+                {userInitial}
+              </div>
+              <span className="text-sm font-medium text-[var(--texto-principal)] hidden sm:block">
+                {userName}
+              </span>
+            </button>
 
-              {showUserMenu && (
-                <div style={styles.userMenu}>
-                  <div style={styles.userMenuHeader}>
-                    <div style={styles.userMenuAvatar}>
-                      {user?.nombre?.charAt(0) || "U"}
-                    </div>
-                    <div style={styles.userMenuInfo}>
-                      <div style={styles.userMenuName}>
-                        {user?.nombre} {user?.apellidos}
-                      </div>
-                      <div style={styles.userMenuEmail}>{user?.email}</div>
-                      <div style={styles.userMenuRole}>
-                        {user?.rol === "admin"
-                          ? "Administrador"
-                          : "Funcionário"}
-                      </div>
-                    </div>
+            {showUserMenu && (
+              <div className="absolute right-0 top-full mt-2 w-72 z-50 bg-[var(--fondo-elevado)] border border-[var(--borde)] rounded-[var(--radio-lg)] shadow-xl overflow-hidden">
+                {/* Dropdown header */}
+                <div className="flex items-center gap-3 px-4 py-4 border-b border-[var(--borde)]">
+                  <div className="w-12 h-12 rounded-full bg-[var(--acento)] flex items-center justify-center text-white font-semibold text-lg flex-shrink-0">
+                    {userInitial}
                   </div>
-                  <div style={styles.userMenuItems}>
-                    <button style={styles.userMenuItem}>
-                      <span>👤</span>
-                      Meu Perfil
-                    </button>
-                    <button style={styles.userMenuItem}>
-                      <span>⚙️</span>
-                      Configurações
-                    </button>
-                    <button style={styles.userMenuItem} onClick={handleLogout}>
-                      <span>🚪</span>
-                      Sair
-                    </button>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-sm font-semibold text-[var(--texto-principal)] truncate">
+                      {user?.nombre} {user?.apellidos}
+                    </span>
+                    <span className="text-xs text-[var(--texto-secundario)] truncate">
+                      {user?.email}
+                    </span>
+                    <span className="text-xs text-[var(--acento)] font-medium uppercase mt-0.5">
+                      {user?.rol === "admin" ? "Administrador" : "Empleado"}
+                    </span>
                   </div>
                 </div>
-              )}
-            </div>
+
+                {/* Dropdown items */}
+                <div className="p-2 flex flex-col gap-0.5">
+                  <button
+                    className="flex items-center gap-3 w-full px-4 py-2.5 rounded-[var(--radio-md)] text-sm text-[var(--texto-principal)] hover:bg-[var(--fondo)] transition-colors text-left"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    <UserCircle size={18} className="text-[var(--texto-secundario)]" />
+                    Mi Perfil
+                  </button>
+                  <button
+                    className="flex items-center gap-3 w-full px-4 py-2.5 rounded-[var(--radio-md)] text-sm text-[var(--texto-principal)] hover:bg-[var(--fondo)] transition-colors text-left"
+                    onClick={() => {
+                      setShowUserMenu(false);
+                      navigate("/panel/admin/configuracion");
+                    }}
+                  >
+                    <GearSix size={18} className="text-[var(--texto-secundario)]" />
+                    Configuracion
+                  </button>
+
+                  <div className="my-1 h-px bg-[var(--borde)]" />
+
+                  <button
+                    className="flex items-center gap-3 w-full px-4 py-2.5 rounded-[var(--radio-md)] text-sm text-red-500 hover:bg-red-500/10 transition-colors text-left"
+                    onClick={handleLogout}
+                  >
+                    <SignOut size={18} />
+                    Cerrar Sesion
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </header>
   );
-};
-
-const styles = {
-  header: {
-    backgroundColor: "var(--body-bg-color, #101010)",
-    borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-    padding: "1rem 2rem",
-    backdropFilter: "blur(10px)",
-  },
-  headerContent: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    maxWidth: "100%",
-  },
-  leftSection: {
-    display: "flex",
-    alignItems: "center",
-    gap: "1rem",
-  },
-  menuButton: {
-    background: "rgba(255, 255, 255, 0.1)",
-    border: "1px solid rgba(255, 255, 255, 0.2)",
-    borderRadius: "8px",
-    padding: "8px 12px",
-    cursor: "pointer",
-    color: "var(--heading-color)",
-    transition: "all 0.3s ease",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  menuIcon: {
-    fontSize: "18px",
-  },
-  title: {
-    color: "var(--heading-color)",
-    fontSize: "1.5rem",
-    fontWeight: "600",
-    margin: 0,
-  },
-  rightSection: {
-    display: "flex",
-    alignItems: "center",
-  },
-  userInfo: {
-    position: "relative",
-  },
-  welcomeText: {
-    color: "var(--body-color)",
-    fontSize: "14px",
-    marginRight: "1rem",
-  },
-  userMenuContainer: {
-    position: "relative",
-    display: "inline-block",
-  },
-  userButton: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    background: "rgba(255, 255, 255, 0.05)",
-    border: "1px solid rgba(255, 255, 255, 0.1)",
-    borderRadius: "12px",
-    padding: "8px 12px",
-    cursor: "pointer",
-    color: "var(--heading-color)",
-    transition: "all 0.3s ease",
-  },
-  userAvatar: {
-    width: "32px",
-    height: "32px",
-    borderRadius: "50%",
-    background: "linear-gradient(135deg, #ff3d24, #e02912)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "white",
-    fontWeight: "600",
-    fontSize: "14px",
-  },
-  userName: {
-    fontSize: "14px",
-    fontWeight: "500",
-  },
-  userMenu: {
-    position: "absolute",
-    top: "100%",
-    right: 0,
-    marginTop: "8px",
-    background: "rgba(26, 26, 26, 0.98)",
-    backdropFilter: "blur(20px)",
-    border: "1px solid rgba(255, 255, 255, 0.1)",
-    borderRadius: "12px",
-    padding: "16px",
-    minWidth: "280px",
-    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)",
-    zIndex: 1000,
-  },
-  userMenuHeader: {
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-    paddingBottom: "16px",
-    borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-    marginBottom: "12px",
-  },
-  userMenuAvatar: {
-    width: "48px",
-    height: "48px",
-    borderRadius: "50%",
-    background: "linear-gradient(135deg, #ff3d24, #e02912)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "white",
-    fontWeight: "600",
-    fontSize: "18px",
-  },
-  userMenuInfo: {
-    flex: 1,
-  },
-  userMenuName: {
-    color: "var(--heading-color)",
-    fontWeight: "600",
-    fontSize: "16px",
-    marginBottom: "4px",
-  },
-  userMenuEmail: {
-    color: "var(--body-color)",
-    fontSize: "14px",
-    marginBottom: "4px",
-  },
-  userMenuRole: {
-    color: "#ff3d24",
-    fontSize: "12px",
-    fontWeight: "500",
-    textTransform: "uppercase",
-  },
-  userMenuItems: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "4px",
-  },
-  userMenuItem: {
-    display: "flex",
-    alignItems: "center",
-    gap: "12px",
-    padding: "12px 16px",
-    background: "transparent",
-    border: "none",
-    borderRadius: "8px",
-    color: "var(--body-color)",
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-    fontSize: "14px",
-    textAlign: "left",
-  },
 };
 
 export default PanelCabecera;
