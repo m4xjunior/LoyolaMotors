@@ -78,10 +78,37 @@ Agregar al inicio de `src/globals.css` (despues de los imports existentes de Tai
   --fuente-encabezado: 'Inter', sans-serif;
   --fuente-cuerpo: 'Fira Sans', sans-serif;
   --fuente-datos: 'Fira Code', monospace;
+
+  /* Escala tipografica */
+  --texto-xs: 0.75rem;
+  --texto-sm: 0.875rem;
+  --texto-base: 1rem;
+  --texto-lg: 1.125rem;
+  --texto-xl: 1.25rem;
+  --texto-2xl: 1.5rem;
+  --texto-3xl: 1.875rem;
+  --texto-4xl: 2.25rem;
 }
 ```
 
-- [ ] **Step 4: Verificar build**
+- [ ] **Step 4: Actualizar Tailwind config para extender tema con tokens custom**
+
+Si existe `tailwind.config.js`, extender el `theme` con los tokens. Si el proyecto usa Tailwind v4 con CSS-first config, verificar que `@theme` en globals.css mapea las variables correctamente. Como minimo, asegurar que clases como `bg-[var(--fondo)]`, `text-[var(--acento)]` funcionan (ya funcionan por defecto con Tailwind arbitrary values).
+
+Si existe tailwind.config.js, agregar:
+```js
+theme: {
+  extend: {
+    fontFamily: {
+      encabezado: ['Inter', 'sans-serif'],
+      cuerpo: ['Fira Sans', 'sans-serif'],
+      datos: ['Fira Code', 'monospace'],
+    },
+  },
+},
+```
+
+- [ ] **Step 5: Verificar build**
 
 ```bash
 npx vite build
@@ -466,6 +493,43 @@ git commit -m "refactor: renombrar archivos a castellano + actualizar todos los 
 
 ---
 
+## REFERENCIA: Mapa de Iconos de Accion (usar en Tasks 4-12)
+
+Cada agente que implemente paginas CRUD debe usar estos iconos especificos de Phosphor:
+
+```
+Crear/Nuevo      → import { Plus } from '@phosphor-icons/react'           weight="bold"
+Editar           → import { PencilSimple } from '@phosphor-icons/react'   weight="regular"
+Eliminar         → import { Trash } from '@phosphor-icons/react'          weight="regular"
+Buscar           → import { MagnifyingGlass } from '@phosphor-icons/react' weight="regular"
+Filtrar          → import { Funnel } from '@phosphor-icons/react'         weight="regular"
+Exportar         → import { Export } from '@phosphor-icons/react'         weight="regular"
+Ver detalle      → import { Eye } from '@phosphor-icons/react'            weight="regular"
+Volver           → import { ArrowLeft } from '@phosphor-icons/react'      weight="regular"
+Menu hamburguesa → import { List } from '@phosphor-icons/react'           weight="regular"
+Notificaciones   → import { Bell } from '@phosphor-icons/react'           weight="regular"
+```
+
+## REFERENCIA: Patron de fallback para componentes publicos (usar en Tasks 20-23)
+
+Cuando un componente publico consume servicioContenido y el servicio retorna array vacio (no hay datos en localStorage), debe mostrar datos por defecto. Patron:
+
+```jsx
+const DATOS_POR_DEFECTO = [/* datos que estaban hardcoded originalmente */];
+
+const [datos, setDatos] = useState(DATOS_POR_DEFECTO);
+useEffect(() => {
+  servicioContenido.obtener('coleccion').then(resultado => {
+    if (resultado.length > 0) setDatos(resultado);
+    // Si vacio, mantiene DATOS_POR_DEFECTO
+  });
+}, []);
+```
+
+Esto garantiza que el sitio se ve identico sin necesidad de poblar la BD.
+
+---
+
 ## FASE 2: Layout del Panel (paralelo, 2 agentes)
 
 ### Task 4: Redisenar PanelBarraLateral.jsx
@@ -802,21 +866,66 @@ Crear 6 ADR documents en `docs/adr/`:
 
 Formato: Titulo, Contexto, Decision, Consecuencias.
 
-### Task 27: Suite E2E Playwright
+### Task 27: Suite E2E Playwright (mapeada a 26 criterios de aceptacion del spec)
 
 Instalar Playwright y crear tests:
 ```bash
 npm init playwright@latest
 ```
 
-Tests a crear:
-- `tests/navegacion.spec.js` - Sidebar links, breadcrumbs, rutas
-- `tests/autenticacion.spec.js` - Login, logout, refresh, inactividad
-- `tests/crud-clientes.spec.js` - Crear, leer, actualizar, eliminar cliente
-- `tests/crud-vehiculos.spec.js`
-- `tests/crud-servicios.spec.js`
-- `tests/cms-contenido.spec.js` - Editar contenido, verificar en sitio publico
-- `tests/sitio-publico.spec.js` - Paginas publicas cargan, contenido dinamico
+Tests mapeados a cada criterio de aceptacion:
+
+**tests/calidad-visual.spec.js** - Criterios Calidad Visual:
+- [ ] Grep codebase: cero emojis en archivos del panel (solo componentes publicos pueden tener)
+- [ ] Grep codebase: cero `<svg` inline en paginas del panel
+- [ ] Grep codebase: cero `style={{` en componentes del panel
+- [ ] Grep codebase: cero `styled-components` o `styled.` en imports
+- [ ] Verificar que Phosphor Icons esta importado en sidebar y todas las paginas
+- [ ] Verificar shadcn components (Table, Card, Button, Input, Select, Badge) usados
+- [ ] Verificar que solo Tailwind clases se usan para estilos
+
+**tests/convenciones.spec.js** - Criterios Convenciones:
+- [ ] Verificar archivos del panel estan en castellano (rutas contienen paginas/, disposicion/, contextos/)
+- [ ] Verificar imports no referencian paths viejos (contexts/, layout/, pages/)
+- [ ] Verificar nombres de funciones exportadas en castellano
+
+**tests/arquitectura.spec.js** - Criterios CRUD-Ready:
+- [ ] Verificar 8 servicios CRUD existen en src/servicios/
+- [ ] Verificar CARACTERISTICAS exportado desde src/configuracion/caracteristicas.js
+- [ ] Verificar componentes importan desde servicios, no de datos directos
+- [ ] Verificar estructura permite cambiar implementacion de servicio sin tocar componentes
+
+**tests/navegacion.spec.js** - Criterios Funcionalidad:
+- [ ] Build pasa sin errores
+- [ ] Cada ruta del panel carga correctamente
+- [ ] Sidebar refleja items correctos por rol (admin vs empleado)
+- [ ] Paginas toggle-gated muestran "Proximamente" cuando toggle es false
+
+**tests/autenticacion.spec.js** - Criterios Auth:
+- [ ] Login funciona con credenciales validas
+- [ ] Logout por boton funciona (header y dashboard)
+- [ ] Sesion persiste tras refresh de pagina
+- [ ] Modal de inactividad aparece tras timeout
+- [ ] Solo logout por boton o inactividad (no por navegacion)
+
+**tests/crud-clientes.spec.js** - CRUD Flow:
+- [ ] Crear cliente via formulario
+- [ ] Leer lista de clientes
+- [ ] Actualizar cliente existente
+- [ ] Eliminar cliente con confirmacion
+
+**tests/crud-vehiculos.spec.js** - Mismo patron para vehiculos
+**tests/crud-servicios.spec.js** - Mismo patron para servicios
+**tests/crud-facturas.spec.js** - Mismo patron para facturas
+
+**tests/cms-contenido.spec.js** - CMS:
+- [ ] Editar contenido desde admin (ej: cambiar titulo de diapositiva)
+- [ ] Verificar cambio reflejado en pagina publica
+- [ ] Configuracion del negocio se actualiza en footer/contacto
+
+**tests/sitio-publico.spec.js** - Sitio Publico:
+- [ ] Paginas publicas cargan con datos por defecto si servicio vacio
+- [ ] Datos editados desde CMS se muestran correctamente
 
 ### Task 28: Code review final
 
