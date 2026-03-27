@@ -32,13 +32,35 @@ const MOCK_USERS = [
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState(MOCK_USERS);
+  const [loading, setLoading] = useState(true);
 
   // Check for existing session on mount
   useEffect(() => {
     const savedUser = localStorage.getItem("currentUser");
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("isAuthenticated");
+      }
     }
+    setLoading(false);
+  }, []);
+
+  // Cross-tab logout sync
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === "isAuthenticated" && e.newValue === null) {
+        setUser(null);
+      }
+      if (e.key === "currentUser" && e.newValue === null) {
+        setUser(null);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const login = (email, password) => {
@@ -164,6 +186,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
+    loading,
     users: getAllUsers(),
     login,
     logout,
