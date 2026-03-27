@@ -1,732 +1,485 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { useAutenticacion } from "../contextos/ContextoAutenticacion";
-import { useNavigate, Link } from "react-router-dom";
-import { mockCustomers } from "../data/mockCustomers";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import { Users, Car, Clock, CheckCircle, CurrencyEur, Plus, Wrench, GearSix } from "@phosphor-icons/react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import "../styles/Dashboard.scss";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import SimpleChart from "../components/Dashboard/SimpleChart";
-import CircularProgress from "../components/Dashboard/CircularProgress";
-import db, {
-  getMetricas,
-  getChartData,
-  getRecentActivities,
-} from "../data/database";
+import { es } from "date-fns/locale";
+import { servicioClientes } from "../servicios/servicioClientes";
+import { servicioServicios } from "../servicios/servicioServicios";
+import { servicioVehiculos } from "../servicios/servicioVehiculos";
+import { servicioFacturas } from "../servicios/servicioFacturas";
+import db, { getMetricas, getChartData } from "../data/database";
 
-const DashboardPage = () => {
-  const { user, logout } = useAutenticacion();
-  const navigate = useNavigate();
-  const [stats, setStats] = useState({
+const badgeClase = (estado) => {
+  switch (estado) {
+    case "completado":
+      return "bg-[var(--exito)]/20 text-[var(--exito)] border-[var(--exito)]/30";
+    case "en_proceso":
+      return "bg-[var(--advertencia)]/20 text-[var(--advertencia)] border-[var(--advertencia)]/30";
+    case "pendiente":
+      return "bg-[var(--peligro)]/20 text-[var(--peligro)] border-[var(--peligro)]/30";
+    default:
+      return "";
+  }
+};
+
+const estadoLabel = (estado) => {
+  switch (estado) {
+    case "completado":   return "Completado";
+    case "en_proceso":  return "En Proceso";
+    case "pendiente":   return "Pendiente";
+    default:            return estado;
+  }
+};
+
+const PaginaPanel = () => {
+  const { user } = useAutenticacion();
+
+  const [estadisticas, setEstadisticas] = useState({
     totalClientes: 0,
     totalVehiculos: 0,
     serviciosPendientes: 0,
     serviciosCompletados: 0,
     ingresosMes: 0,
+    satisfaccion: 0,
   });
-  const [recentServices, setRecentServices] = useState([]);
-  const [recentCustomers, setRecentCustomers] = useState([]);
-  const [monthlyData, setMonthlyData] = useState([]);
-  const [satisfactionRate, setSatisfactionRate] = useState(0);
-  const [recentActivities, setRecentActivities] = useState([]);
-  const [systemMetrics, setSystemMetrics] = useState({
-    uptime: 98.5,
-    avgRating: 4.8,
-    avgRevenuePerCustomer: 12400,
-    avgServiceTime: 24,
-  });
+  const [serviciosRecientes, setServiciosRecientes] = useState([]);
+  const [clientesRecientes, setClientesRecientes] = useState([]);
+  const [datosGrafico, setDatosGrafico] = useState([]);
 
-  useEffect(() => {
-    // Carregar dados iniciais
-    loadDashboardData();
+  const cargarDatos = async () => {
+    try {
+      // Datos del DB local (demo)
+      const metricas = getMetricas();
+      const graficoDatos = getChartData();
 
-    // Listener para recarregar todos os dados quando qualquer coisa no DB mudar
-    const handleDbUpdate = () => {
-      loadDashboardData();
-    };
+      setEstadisticas({
+        totalClientes: metricas.totalClientes ?? 0,
+        totalVehiculos: metricas.totalVehiculos ?? 0,
+        serviciosPendientes: metricas.serviciosPendientes ?? 0,
+        serviciosCompletados: metricas.serviciosCompletados ?? 0,
+        ingresosMes: metricas.ingresosMes ?? 0,
+        satisfaccion: metricas.satisfaccion ?? 0,
+      });
 
-    db.on("*", handleDbUpdate);
+      if (graficoDatos?.monthlyServices) {
+        setDatosGrafico(graficoDatos.monthlyServices);
+      }
 
-    // Atualizar métricas do sistema a cada 30 segundos
-    const metricsInterval = setInterval(updateSystemMetrics, 30000);
+      // Servicios recientes del DB
+      const todosServicios = db
+        .getAll("servicios")
+        .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+        .slice(0, 6);
+      setServiciosRecientes(todosServicios);
 
-    // Limpar listeners para evitar memory leaks
-    return () => {
-      db.off("*", handleDbUpdate);
-      clearInterval(metricsInterval);
-    };
-  }, []);
+      // Clientes recientes del DB
+      const todosClientes = db
+        .getAll("clientes")
+        .sort((a, b) => new Date(b.createdAt ?? b.creadoEn) - new Date(a.createdAt ?? a.creadoEn))
+        .slice(0, 5);
+      setClientesRecientes(todosClientes);
+    } catch {
+      // Si el DB falla, enriquecemos con servicio layer
+      try {
+        const clientes = await servicioClientes.obtenerTodos();
+        const servicios = await servicioServicios.obtenerTodos();
+        const vehiculos = await servicioVehiculos.obtenerTodos();
 
-  const loadDashboardData = () => {
-    // Obter métricas reais do banco
-    const metrics = getMetricas();
-    setStats(metrics);
+        const pendientes = servicios.filter((s) => s.estado === "pendiente").length;
+        const completados = servicios.filter((s) => s.estado === "completado").length;
 
-    // Obter dados do gráfico
-    const chartData = getChartData();
-    setMonthlyData(chartData.monthlyServices);
+        setEstadisticas((prev) => ({
+          ...prev,
+          totalClientes: clientes.length,
+          totalVehiculos: vehiculos.length,
+          serviciosPendientes: pendientes,
+          serviciosCompletados: completados,
+        }));
 
-    // Calcular taxa de satisfação
-    setSatisfactionRate(metrics.satisfacao || 0);
+        setServiciosRecientes(
+          servicios
+            .sort((a, b) => new Date(b.fecha ?? b.creadoEn) - new Date(a.fecha ?? a.creadoEn))
+            .slice(0, 6)
+        );
 
-    // Obter atividades recentes
-    const activities = getRecentActivities(10);
-    setRecentActivities(activities);
-
-    // Simular dados de serviços e clientes recentes
-    const allServices = db
-      .getAll("servicios")
-      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
-      .slice(0, 6);
-    setRecentServices(allServices);
-
-    const allCustomers = db
-      .getAll("clientes")
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .slice(0, 4);
-    setRecentCustomers(allCustomers);
-  };
-
-  const updateSystemMetrics = () => {
-    // Simular pequenas variações nas métricas do sistema
-    setSystemMetrics((prev) => ({
-      uptime: Math.min(
-        99.9,
-        Math.max(95.0, prev.uptime + (Math.random() - 0.5) * 0.1),
-      ),
-      avgRating: Math.min(
-        5.0,
-        Math.max(3.0, prev.avgRating + (Math.random() - 0.5) * 0.05),
-      ),
-      avgRevenuePerCustomer: Math.max(
-        8000,
-        prev.avgRevenuePerCustomer + (Math.random() - 0.5) * 200,
-      ),
-      avgServiceTime: Math.max(
-        12,
-        prev.avgServiceTime + (Math.random() - 0.5) * 1,
-      ),
-    }));
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
-  const getCustomerName = (clienteId) => {
-    const customer = mockCustomers.find((c) => c.id === clienteId);
-    return customer
-      ? `${customer.nombre} ${customer.apellidos}`
-      : "Cliente no encontrado";
-  };
-
-  const getStatusColor = (estado) => {
-    switch (estado) {
-      case "completado":
-        return "completed";
-      case "en_proceso":
-        return "in-progress";
-      case "pendiente":
-        return "pending";
-      default:
-        return "default";
+        setClientesRecientes(
+          clientes
+            .sort((a, b) => new Date(b.creadoEn) - new Date(a.creadoEn))
+            .slice(0, 5)
+        );
+      } catch {
+        // empty state is fine
+      }
     }
   };
 
-  // Componente de ícones SVG
-  const Icons = {
-    users: () => (
-      <svg
-        width="24"
-        height="24"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-        />
-      </svg>
-    ),
-    car: () => (
-      <svg
-        width="24"
-        height="24"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.5v-15m0 0a2.25 2.25 0 012.25-2.25h4.5m0 0v18m0 0H6.75a2.25 2.25 0 01-2.25-2.25"
-        />
-      </svg>
-    ),
-    clock: () => (
-      <svg
-        width="24"
-        height="24"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-    check: () => (
-      <svg
-        width="24"
-        height="24"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
-    money: () => (
-      <svg
-        width="24"
-        height="24"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-        />
-      </svg>
-    ),
-    plus: () => (
-      <svg
-        width="20"
-        height="20"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M12 4v16m8-8H4"
-        />
-      </svg>
-    ),
-    wrench: () => (
-      <svg
-        width="20"
-        height="20"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-        />
-      </svg>
-    ),
-    settings: () => (
-      <svg
-        width="20"
-        height="20"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-        />
-      </svg>
-    ),
-  };
+  useEffect(() => {
+    cargarDatos();
 
-  const StatCard = ({ title, value, subtitle, icon, trend }) => (
-    <Card className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)]">
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="stat-icon">{icon}</div>
-        {trend && <Badge variant={trend > 0 ? "default" : "destructive"} className="text-xs">{trend > 0 ? '+' : ''}{trend}%</Badge>}
-      </CardHeader>
-      <CardContent>
-        <div className="stat-title">{title}</div>
-        <div className="stat-value">{value}</div>
-        {subtitle && <div className="stat-subtitle">{subtitle}</div>}
-      </CardContent>
-    </Card>
-  );
+    const handleDbUpdate = () => cargarDatos();
+    db.on("*", handleDbUpdate);
 
-  StatCard.propTypes = {
-    title: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    subtitle: PropTypes.string,
-    icon: PropTypes.element.isRequired,
-    trend: PropTypes.number,
-  };
-
-  const QuickActionCard = ({ title, description, to, icon }) => (
-    <Card className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,61,36,0.3)] transition-all cursor-pointer">
-      <Link to={to} className="block p-6 no-underline">
-        <div className="action-icon">{icon}</div>
-        <h4 className="action-title">{title}</h4>
-        <p className="action-description">{description}</p>
-      </Link>
-    </Card>
-  );
-
-  QuickActionCard.propTypes = {
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    to: PropTypes.string.isRequired,
-    icon: PropTypes.element.isRequired,
-  };
-
-  const getCustomerInitials = (nome, apellidos) => {
-    return `${nome.charAt(0)}${apellidos.charAt(0)}`.toUpperCase();
-  };
-
-  // Funções auxiliares para atividades em tempo real
-  const getTimeAgo = (timestamp) => {
-    const now = new Date();
-    const activityTime = new Date(timestamp);
-    const diffInMinutes = Math.floor((now - activityTime) / (1000 * 60));
-
-    if (diffInMinutes < 1) return "Agora";
-    if (diffInMinutes < 60) return `Há ${diffInMinutes} min`;
-
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return `Há ${diffInHours}h`;
-
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `Há ${diffInDays} dia${diffInDays > 1 ? "s" : ""}`;
-  };
-
-  const getActivityIcon = (type) => {
-    const icons = {
-      clientes_created: "👤",
-      servicios_created: "🔧",
-      vehiculos_created: "🚗",
-      servicios_completed: "✅",
-      payment_received: "💰",
-      appointment_created: "📅",
-      system_updated: "⚙️",
-      default: "📋",
+    return () => {
+      db.off("*", handleDbUpdate);
     };
-    return icons[type] || icons.default;
-  };
+  }, []);
 
-  const getActivityColor = (type) => {
-    const colors = {
-      clientes_created: "#22c55e",
-      servicios_created: "#3b82f6",
-      vehiculos_created: "#f59e0b",
-      servicios_completed: "#10b981",
-      payment_received: "#8b5cf6",
-      appointment_created: "#06b6d4",
-      system_updated: "#6b7280",
-      default: "var(--primary-color)",
-    };
-    return colors[type] || colors.default;
-  };
-
-  const getActivityTitle = (type) => {
-    const titles = {
-      clientes_created: "Novo Cliente",
-      servicios_created: "Serviço Agendado",
-      vehiculos_created: "Veículo Cadastrado",
-      servicios_completed: "Serviço Completado",
-      payment_received: "Pagamento Recebido",
-      appointment_created: "Agendamento Criado",
-      system_updated: "Sistema Atualizado",
-      default: "Atividade",
-    };
-    return titles[type] || titles.default;
+  const iniciales = (nombre, apellidos) => {
+    const n = nombre?.charAt(0) ?? "";
+    const a = apellidos?.charAt(0) ?? "";
+    return `${n}${a}`.toUpperCase() || "?";
   };
 
   return (
-    <>
-      <CommonPageHero title="Dashboard - Gestão de Clientes" />
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-[var(--texto-principal)] font-[family-name:var(--fuente-encabezado)]">
+            Bienvenido, {user?.nombre}
+          </h1>
+          <p className="text-[var(--texto-secundario)] mt-1">
+            Panel de control &mdash;{" "}
+            {format(new Date(), "dd 'de' MMMM yyyy", { locale: es })}
+          </p>
+        </div>
+        <div className="flex gap-3 flex-wrap">
+          <Button
+            asChild
+            variant="default"
+            className="bg-[var(--acento)] hover:bg-[var(--acento-hover)] text-white"
+          >
+            <Link to="/panel/clientes">
+              <Plus size={18} weight="bold" className="mr-2" />
+              Nuevo Cliente
+            </Link>
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            className="border-[var(--borde)] text-[var(--texto-principal)] hover:bg-[var(--fondo-tarjeta)]"
+          >
+            <Link to="/panel/servicios/nuevo">
+              <Wrench size={18} weight="bold" className="mr-2" />
+              Nuevo Servicio
+            </Link>
+          </Button>
+        </div>
+      </div>
 
-      <div
-        className="dashboard-container"
-        style={{ backgroundColor: "#101010", color: "#d3d3d3" }}
-      >
-        <div className="container">
-          {/* Header com saudação e ações */}
-          <div className="dashboard-header">
+      {/* 5 Stat Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardContent className="flex items-center gap-4 p-6">
+            <div className="rounded-[var(--radio-lg)] bg-[var(--acento)]/10 p-3">
+              <Users size={32} weight="duotone" className="text-[var(--acento)]" />
+            </div>
             <div>
-              <h1 className="dashboard-title">Olá, {user?.nombre}! 👋</h1>
-              <p className="dashboard-subtitle">
-                Seja bem-vindo ao painel de controle da LoyolaMotors
+              <p className="text-sm text-[var(--texto-secundario)]">Total Clientes</p>
+              <p className="text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
+                {estadisticas.totalClientes}
               </p>
-              <div className="dashboard-status">
-                <div className="status-indicator"></div>
-                <span
-                  style={{
-                    fontSize: "14px",
-                    color: "var(--body-color)",
-                    opacity: 0.8,
-                  }}
-                >
-                  Sistema operacional •{" "}
-                  {format(new Date(), "dd/MM/yyyy • HH:mm", { locale: ptBR })}
-                </span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardContent className="flex items-center gap-4 p-6">
+            <div className="rounded-[var(--radio-lg)] bg-[var(--info)]/10 p-3">
+              <Car size={32} weight="duotone" className="text-[var(--info)]" />
+            </div>
+            <div>
+              <p className="text-sm text-[var(--texto-secundario)]">Vehículos</p>
+              <p className="text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
+                {estadisticas.totalVehiculos}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardContent className="flex items-center gap-4 p-6">
+            <div className="rounded-[var(--radio-lg)] bg-[var(--advertencia)]/10 p-3">
+              <Clock size={32} weight="duotone" className="text-[var(--advertencia)]" />
+            </div>
+            <div>
+              <p className="text-sm text-[var(--texto-secundario)]">Pendientes</p>
+              <p className="text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
+                {estadisticas.serviciosPendientes}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardContent className="flex items-center gap-4 p-6">
+            <div className="rounded-[var(--radio-lg)] bg-[var(--exito)]/10 p-3">
+              <CheckCircle size={32} weight="duotone" className="text-[var(--exito)]" />
+            </div>
+            <div>
+              <p className="text-sm text-[var(--texto-secundario)]">Completados</p>
+              <p className="text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
+                {estadisticas.serviciosCompletados}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardContent className="flex items-center gap-4 p-6">
+            <div className="rounded-[var(--radio-lg)] bg-[var(--acento)]/10 p-3">
+              <CurrencyEur size={32} weight="duotone" className="text-[var(--acento)]" />
+            </div>
+            <div>
+              <p className="text-sm text-[var(--texto-secundario)]">Ingresos</p>
+              <p className="text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
+                €{estadisticas.ingresosMes.toLocaleString("es-ES", { minimumFractionDigits: 0 })}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Chart + Satisfaction side by side */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2 bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardHeader>
+            <CardTitle className="text-[var(--texto-principal)]">Servicios por Mes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {datosGrafico.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={datosGrafico}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--borde)" />
+                  <XAxis dataKey="mes" stroke="var(--texto-secundario)" fontSize={12} />
+                  <YAxis stroke="var(--texto-secundario)" fontSize={12} />
+                  <Tooltip
+                    contentStyle={{
+                      background: "var(--fondo-tarjeta)",
+                      border: "1px solid var(--borde)",
+                      borderRadius: "var(--radio-md)",
+                      color: "var(--texto-principal)",
+                    }}
+                  />
+                  <Bar dataKey="servicios" fill="var(--acento)" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex items-center justify-center h-[300px] text-[var(--texto-deshabilitado)]">
+                Sin datos de gráfico disponibles
               </div>
-            </div>
+            )}
+          </CardContent>
+        </Card>
 
-            <div className="dashboard-actions">
-              <Button asChild>
-                <Link to="/dashboard/clientes">
-                  <Icons.users />
-                  Gestionar Clientes
-                </Link>
-              </Button>
-              <Button variant="outline" onClick={handleLogout}>
-                Sair do Sistema
-              </Button>
-            </div>
-          </div>
-
-          {/* Cards de Estatísticas */}
-          <div className="stats-grid">
-            <StatCard
-              title="Total de Clientes"
-              value={stats.totalClientes}
-              subtitle="Clientes ativos no sistema"
-              icon={<Icons.users />}
-              trend={8.2}
-            />
-            <StatCard
-              title="Veículos Cadastrados"
-              value={stats.totalVehiculos}
-              subtitle="Veículos registrados"
-              icon={<Icons.car />}
-              trend={5.4}
-            />
-            <StatCard
-              title="Serviços Pendentes"
-              value={stats.serviciosPendientes}
-              subtitle="Aguardando atendimento"
-              icon={<Icons.clock />}
-              trend={-2.1}
-            />
-            <StatCard
-              title="Serviços Completados"
-              value={stats.serviciosCompletados}
-              subtitle="Finalizados com sucesso"
-              icon={<Icons.check />}
-              trend={12.3}
-            />
-            <StatCard
-              title="Receita do Mês"
-              value={`€${stats.ingresosMes.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`}
-              subtitle={format(new Date(), "MMMM yyyy", { locale: ptBR })}
-              icon={<Icons.money />}
-              trend={15.8}
-            />
-          </div>
-
-          {/* Performance Metrics */}
-          <div className="performance-panel">
-            <div className="performance-header">
-              <h3>Métricas de Performance</h3>
-            </div>
-            <div className="performance-grid">
-              <div>
-                <SimpleChart
-                  data={monthlyData}
-                  title="Serviços por Mês"
-                  color="#ff3d24"
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardHeader>
+            <CardTitle className="text-[var(--texto-principal)]">Satisfacción</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col items-center justify-center h-[300px] gap-4">
+            <div className="relative flex items-center justify-center w-36 h-36">
+              <svg className="w-36 h-36 -rotate-90" viewBox="0 0 120 120">
+                <circle
+                  cx="60"
+                  cy="60"
+                  r="50"
+                  fill="none"
+                  stroke="var(--borde)"
+                  strokeWidth="10"
                 />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <CircularProgress
-                  percentage={satisfactionRate}
-                  size={140}
-                  strokeWidth={10}
-                  color="#22c55e"
-                  label="Taxa de Satisfação"
+                <circle
+                  cx="60"
+                  cy="60"
+                  r="50"
+                  fill="none"
+                  stroke="var(--exito)"
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                  strokeDasharray={`${2 * Math.PI * 50}`}
+                  strokeDashoffset={`${2 * Math.PI * 50 * (1 - estadisticas.satisfaccion / 100)}`}
+                  className="transition-all duration-700"
                 />
-              </div>
+              </svg>
+              <span className="absolute text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
+                {estadisticas.satisfaccion}%
+              </span>
             </div>
-          </div>
+            <p className="text-sm text-[var(--texto-secundario)] text-center">
+              Tasa de satisfacción del cliente
+            </p>
+          </CardContent>
+        </Card>
+      </div>
 
-          <div className="dashboard-main-grid">
-            {/* Serviços Recentes */}
-            <div className="dashboard-panel">
-              <div className="panel-header">
-                <h3>Serviços Recentes</h3>
-                <Link to="/dashboard/servicios" className="panel-action">
-                  Ver todos →
-                </Link>
-              </div>
+      {/* Recent services table + Recent customers */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2 bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-[var(--texto-principal)]">Servicios Recientes</CardTitle>
+            <Link
+              to="/panel/servicios"
+              className="text-sm text-[var(--acento)] hover:underline"
+            >
+              Ver todos
+            </Link>
+          </CardHeader>
+          <CardContent>
+            {serviciosRecientes.length > 0 ? (
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-[var(--borde)]">
+                    <TableHead className="text-[var(--texto-deshabilitado)]">Cliente</TableHead>
+                    <TableHead className="text-[var(--texto-deshabilitado)]">Servicio</TableHead>
+                    <TableHead className="text-[var(--texto-deshabilitado)]">Estado</TableHead>
+                    <TableHead className="text-[var(--texto-deshabilitado)]">Valor</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {serviciosRecientes.map((s) => (
+                    <TableRow key={s.id} className="border-[var(--borde)]">
+                      <TableCell className="text-[var(--texto-principal)]">
+                        {s.clienteNombre ?? s.clienteId ?? "—"}
+                      </TableCell>
+                      <TableCell className="text-[var(--texto-secundario)]">
+                        {s.tipoServicio ?? "—"}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="outline"
+                          className={badgeClase(s.estado)}
+                        >
+                          {estadoLabel(s.estado)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
+                        €{(s.costo ?? 0).toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <p className="text-center py-8 text-[var(--texto-deshabilitado)]">
+                No hay servicios registrados aún.
+              </p>
+            )}
+          </CardContent>
+        </Card>
 
-              <div style={{ overflowX: "auto" }}>
-                <table className="dashboard-table">
-                  <thead>
-                    <tr>
-                      <th>Cliente</th>
-                      <th>Serviço</th>
-                      <th>Status</th>
-                      <th>Valor</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recentServices.map((service) => (
-                      <tr key={service.id}>
-                        <td className="customer-name">
-                          {getCustomerName(service.clienteId)}
-                        </td>
-                        <td className="service-type">{service.tipoServicio}</td>
-                        <td>
-                          <Badge variant={service.estado === 'completado' ? 'default' : service.estado === 'en_proceso' ? 'secondary' : 'destructive'}>
-                            {service.estado.charAt(0).toUpperCase() +
-                              service.estado.slice(1).replace("_", " ")}
-                          </Badge>
-                        </td>
-                        <td className="service-cost">
-                          €{service.costo.toFixed(2)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Clientes Recentes */}
-            <div className="dashboard-panel">
-              <div className="panel-header">
-                <h3>Novos Clientes</h3>
-                <Link to="/dashboard/clientes" className="panel-action">
-                  Ver todos →
-                </Link>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "16px",
-                }}
-              >
-                {recentCustomers.map((customer) => (
-                  <div key={customer.id} className="customer-card">
-                    <div className="customer-info">
-                      <div className="customer-avatar">
-                        {getCustomerInitials(
-                          customer.nombre,
-                          customer.apellidos,
-                        )}
-                      </div>
-                      <div className="customer-details">
-                        <p className="customer-name">
-                          {customer.nombre} {customer.apellidos}
-                        </p>
-                        <p className="customer-email">{customer.email}</p>
-                      </div>
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-[var(--texto-principal)]">Nuevos Clientes</CardTitle>
+            <Link
+              to="/panel/clientes"
+              className="text-sm text-[var(--acento)] hover:underline"
+            >
+              Ver todos
+            </Link>
+          </CardHeader>
+          <CardContent>
+            {clientesRecientes.length > 0 ? (
+              <div className="flex flex-col gap-3">
+                {clientesRecientes.map((c) => (
+                  <div
+                    key={c.id}
+                    className="flex items-center gap-3 p-3 rounded-[var(--radio-md)] hover:bg-[var(--acento)]/5 transition-colors"
+                  >
+                    <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[var(--acento)]/20 flex items-center justify-center text-xs font-bold text-[var(--acento)]">
+                      {iniciales(c.nombre, c.apellidos)}
                     </div>
-                    <div className="customer-date">
-                      {format(customer.fechaRegistro, "dd/MM/yyyy")}
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-[var(--texto-principal)] truncate">
+                        {c.nombre} {c.apellidos}
+                      </p>
+                      <p className="text-xs text-[var(--texto-secundario)] truncate">
+                        {c.email}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-
-          {/* Activity Timeline - Real Time */}
-          <div className="activity-timeline">
-            <div className="timeline-header">
-              <h3>Atividades em Tempo Real</h3>
-              <p className="timeline-subtitle">
-                Últimas ações no sistema •
-                <span style={{ color: "#22c55e", marginLeft: "4px" }}>
-                  ● AO VIVO
-                </span>
+            ) : (
+              <p className="text-center py-8 text-[var(--texto-deshabilitado)]">
+                No hay clientes registrados aún.
               </p>
-            </div>
-            <div className="timeline-list">
-              {recentActivities.length === 0 ? (
-                <div
-                  style={{
-                    textAlign: "center",
-                    padding: "40px 20px",
-                    color: "var(--body-color)",
-                    opacity: 0.6,
-                  }}
-                >
-                  <div style={{ fontSize: "24px", marginBottom: "8px" }}>
-                    ⏳
-                  </div>
-                  <p>Aguardando atividades...</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Quick actions */}
+      <div>
+        <h2 className="text-lg font-semibold text-[var(--texto-principal)] mb-4">
+          Acciones Rápidas
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] hover:border-[var(--acento)]/30 transition-colors cursor-pointer">
+            <Link to="/panel/clientes/nuevo" className="block p-6 no-underline">
+              <div className="rounded-[var(--radio-lg)] bg-[var(--acento)]/10 p-3 w-fit mb-3">
+                <Plus size={24} weight="duotone" className="text-[var(--acento)]" />
+              </div>
+              <h4 className="text-sm font-semibold text-[var(--texto-principal)] mb-1">
+                Nuevo Cliente
+              </h4>
+              <p className="text-xs text-[var(--texto-secundario)]">
+                Registrar un nuevo cliente en el sistema
+              </p>
+            </Link>
+          </Card>
+
+          <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] hover:border-[var(--acento)]/30 transition-colors cursor-pointer">
+            <Link to="/panel/servicios/nuevo" className="block p-6 no-underline">
+              <div className="rounded-[var(--radio-lg)] bg-[var(--info)]/10 p-3 w-fit mb-3">
+                <Wrench size={24} weight="duotone" className="text-[var(--info)]" />
+              </div>
+              <h4 className="text-sm font-semibold text-[var(--texto-principal)] mb-1">
+                Nuevo Servicio
+              </h4>
+              <p className="text-xs text-[var(--texto-secundario)]">
+                Registrar un nuevo servicio para un cliente
+              </p>
+            </Link>
+          </Card>
+
+          <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] hover:border-[var(--acento)]/30 transition-colors cursor-pointer">
+            <Link to="/panel/vehiculos" className="block p-6 no-underline">
+              <div className="rounded-[var(--radio-lg)] bg-[var(--advertencia)]/10 p-3 w-fit mb-3">
+                <Car size={24} weight="duotone" className="text-[var(--advertencia)]" />
+              </div>
+              <h4 className="text-sm font-semibold text-[var(--texto-principal)] mb-1">
+                Gestionar Vehículos
+              </h4>
+              <p className="text-xs text-[var(--texto-secundario)]">
+                Ver y administrar vehículos registrados
+              </p>
+            </Link>
+          </Card>
+
+          {user?.rol === "admin" && (
+            <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] hover:border-[var(--acento)]/30 transition-colors cursor-pointer">
+              <Link to="/panel/usuarios" className="block p-6 no-underline">
+                <div className="rounded-[var(--radio-lg)] bg-[var(--exito)]/10 p-3 w-fit mb-3">
+                  <GearSix size={24} weight="duotone" className="text-[var(--exito)]" />
                 </div>
-              ) : (
-                recentActivities.map((activity, index) => {
-                  const timeAgo = getTimeAgo(activity.timestamp);
-                  const activityIcon = getActivityIcon(activity.type);
-
-                  return (
-                    <div key={activity.id || index} className="timeline-item">
-                      <div
-                        className="timeline-marker"
-                        style={{
-                          backgroundColor: getActivityColor(activity.type),
-                        }}
-                      ></div>
-                      <div className="timeline-content">
-                        <h4 className="timeline-title">
-                          {activityIcon} {getActivityTitle(activity.type)}
-                        </h4>
-                        <p className="timeline-description">
-                          {activity.description}
-                        </p>
-                        <span className="timeline-time">
-                          {timeAgo} • por {activity.usuario}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </div>
-
-          {/* Mini Stats Cards - Real Time */}
-          <div className="mini-stat-cards">
-            <div className="mini-stat-card">
-              <div className="mini-stat-value">
-                {systemMetrics.uptime.toFixed(1)}%
-              </div>
-              <div className="mini-stat-label">Uptime do Sistema</div>
-              <div className="mini-stat-change positive">
-                {systemMetrics.uptime > 98.5 ? "+" : ""}
-                {(systemMetrics.uptime - 98.5).toFixed(1)}%
-              </div>
-            </div>
-            <div className="mini-stat-card">
-              <div className="mini-stat-value">
-                {systemMetrics.avgRating.toFixed(1)}/5
-              </div>
-              <div className="mini-stat-label">Avaliação Média</div>
-              <div className="mini-stat-change positive">
-                {systemMetrics.avgRating > 4.8 ? "+" : ""}
-                {(systemMetrics.avgRating - 4.8).toFixed(1)}
-              </div>
-            </div>
-            <div className="mini-stat-card">
-              <div className="mini-stat-value">
-                €{(systemMetrics.avgRevenuePerCustomer / 1000).toFixed(1)}k
-              </div>
-              <div className="mini-stat-label">Receita Média/Cliente</div>
-              <div className="mini-stat-change positive">
-                {systemMetrics.avgRevenuePerCustomer > 12400 ? "+" : ""}
-                {(
-                  ((systemMetrics.avgRevenuePerCustomer - 12400) / 12400) *
-                  100
-                ).toFixed(1)}
-                %
-              </div>
-            </div>
-            <div className="mini-stat-card">
-              <div className="mini-stat-value">
-                {Math.round(systemMetrics.avgServiceTime)}h
-              </div>
-              <div className="mini-stat-label">Tempo Médio de Serviço</div>
-              <div
-                className={`mini-stat-change ${systemMetrics.avgServiceTime < 24 ? "positive" : "negative"}`}
-              >
-                {systemMetrics.avgServiceTime < 24 ? "-" : "+"}
-                {Math.abs(Math.round(systemMetrics.avgServiceTime - 24))}h
-              </div>
-            </div>
-          </div>
-
-          {/* Ações Rápidas */}
-          <div>
-            <h3 className="section-title">Ações Rápidas</h3>
-            <div className="quick-actions-grid">
-              <QuickActionCard
-                title="Novo Cliente"
-                description="Registrar um novo cliente no sistema"
-                to="/dashboard/clientes/nuevo"
-                icon={<Icons.plus />}
-              />
-
-              <QuickActionCard
-                title="Novo Serviço"
-                description="Cadastrar um novo serviço para cliente"
-                to="/dashboard/servicios/nuevo"
-                icon={<Icons.wrench />}
-              />
-
-              <QuickActionCard
-                title="Gestionar Veículos"
-                description="Ver e administrar veículos cadastrados"
-                to="/dashboard/vehiculos"
-                icon={<Icons.car />}
-              />
-
-              {user?.rol === "admin" && (
-                <QuickActionCard
-                  title="Gestionar Usuários"
-                  description="Administrar usuários do sistema"
-                  to="/dashboard/usuarios"
-                  icon={<Icons.settings />}
-                />
-              )}
-            </div>
-          </div>
+                <h4 className="text-sm font-semibold text-[var(--texto-principal)] mb-1">
+                  Gestionar Usuarios
+                </h4>
+                <p className="text-xs text-[var(--texto-secundario)]">
+                  Administrar usuarios del sistema
+                </p>
+              </Link>
+            </Card>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-export default DashboardPage;
+export default PaginaPanel;
