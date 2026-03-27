@@ -28,9 +28,21 @@ const useInactivityMonitor = ({
   onWarning,
   enabled = true,
 } = {}) => {
+  // FIX (IMPORTANT): Validate that warningTime < timeout to prevent warning firing immediately on mount.
+  const safeWarningTime = (() => {
+    if (warningTime >= timeout) {
+      console.warn(
+        `useInactivityMonitor: warningTime (${warningTime}ms) must be less than timeout (${timeout}ms). ` +
+        `Clamping warningTime to ${Math.floor(timeout / 2)}ms.`
+      );
+      return Math.floor(timeout / 2);
+    }
+    return warningTime;
+  })();
+
   const [isWarning, setIsWarning] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(
-    Math.floor(warningTime / 1000)
+    Math.floor(safeWarningTime / 1000)
   );
 
   // ── Refs ──────────────────────────────────────────────────────────────────
@@ -46,6 +58,11 @@ const useInactivityMonitor = ({
   // can read the latest value without becoming stale.
   const isWarningRef = useRef(false);
 
+  // FIX (IMPORTANT): Keep `enabled` in a ref so resetTimer always reads the
+  // latest value without going stale via closure.
+  const enabledRef = useRef(enabled);
+  useEffect(() => { enabledRef.current = enabled; }, [enabled]);
+
   // Keep latest callback refs so callers can pass new inline functions on
   // each render without forcing the entire effect to re-run.
   const onTimeoutRef = useRef(onTimeout);
@@ -56,9 +73,9 @@ const useInactivityMonitor = ({
   // Keep latest timeout / warningTime in refs so the activity handler always
   // uses the current values even if they change between renders.
   const timeoutRef = useRef(timeout);
-  const warningTimeRef = useRef(warningTime);
+  const warningTimeRef = useRef(safeWarningTime);
   useEffect(() => { timeoutRef.current = timeout; }, [timeout]);
-  useEffect(() => { warningTimeRef.current = warningTime; }, [warningTime]);
+  useEffect(() => { warningTimeRef.current = safeWarningTime; }, [safeWarningTime]);
 
   // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -134,6 +151,8 @@ const useInactivityMonitor = ({
    * Reset everything to the idle state and reschedule the warning timer.
    * Exposed to consumers as the "Stay logged in" action.
    */
+  // FIX (IMPORTANT): Read `enabled` from enabledRef instead of closure to avoid staleness.
+  // `enabledRef` is not listed as a dependency because refs are stable across renders.
   const resetTimer = useCallback(() => {
     clearAllTimers();
     isWarningRef.current = false;
@@ -141,10 +160,10 @@ const useInactivityMonitor = ({
     setRemainingSeconds(Math.floor(warningTimeRef.current / 1000));
     lastActivityRef.current = Date.now();
 
-    if (enabled) {
+    if (enabledRef.current) {
       scheduleWarning();
     }
-  }, [clearAllTimers, enabled, scheduleWarning]);
+  }, [clearAllTimers, scheduleWarning]);
 
   // ── Main effect ───────────────────────────────────────────────────────────
   // Re-runs whenever enabled, timeout, or warningTime change so that a change
@@ -158,25 +177,34 @@ const useInactivityMonitor = ({
       return;
     }
 
-    // Throttled activity handler — only resets the timer once per THROTTLE_INTERVAL
-    const handleActivity = () => {
-      const now = Date.now();
-      if (now - lastActivityRef.current < THROTTLE_INTERVAL) {
-        return;
-      }
-      lastActivityRef.current = now;
+    // Activity handler:
+    // FIX (CRITICAL): Throttle is only applied in the normal (non-warning) branch.
+    // During warning state, activity is always respected immediately so that a
+    // user dismissing the warning is never silently dropped by the throttle.
+    // FIX (IMPORTANT): Extracted shared reset logic into restartTimers() to
+    // eliminate the duplicated clearAllTimers() + scheduleWarning() calls.
+    const restartTimers = () => {
+      clearAllTimers();
+      isWarningRef.current = false;
+      setIsWarning(false);
+      setRemainingSeconds(Math.floor(warningTimeRef.current / 1000));
+      scheduleWarning();
+    };
 
+    const handleActivity = () => {
       if (isWarningRef.current) {
-        // User acted during the warning — cancel everything and start fresh
-        clearAllTimers();
-        isWarningRef.current = false;
-        setIsWarning(false);
-        setRemainingSeconds(Math.floor(warningTimeRef.current / 1000));
-        scheduleWarning();
+        // User acted during the warning — cancel everything and start fresh,
+        // bypassing the throttle so the action is never dropped.
+        lastActivityRef.current = Date.now();
+        restartTimers();
       } else {
-        // Normal activity — just push the warning deadline back
-        clearAllTimers();
-        scheduleWarning();
+        // Normal activity — apply throttle, then push the warning deadline back.
+        const now = Date.now();
+        if (now - lastActivityRef.current < THROTTLE_INTERVAL) {
+          return;
+        }
+        lastActivityRef.current = now;
+        restartTimers();
       }
     };
 
