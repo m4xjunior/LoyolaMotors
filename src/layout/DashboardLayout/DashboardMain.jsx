@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardHeader from "./DashboardHeader";
 import { useAuth } from "../../contexts/AuthContext";
-import { useInactivityMonitor } from "../../hooks/useInactivityMonitor";
+import useInactivityMonitor from "../../hooks/useInactivityMonitor";
 import InactivityWarningModal from "../../components/InactivityWarning/InactivityWarningModal";
 
 // 1. Create the context for the dashboard layout

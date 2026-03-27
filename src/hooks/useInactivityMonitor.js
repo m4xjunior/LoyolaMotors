@@ -193,19 +193,20 @@ const useInactivityMonitor = ({
 
     const handleActivity = () => {
       if (isWarningRef.current) {
-        // User acted during the warning — cancel everything and start fresh,
-        // bypassing the throttle so the action is never dropped.
-        lastActivityRef.current = Date.now();
-        restartTimers();
-      } else {
-        // Normal activity — apply throttle, then push the warning deadline back.
-        const now = Date.now();
-        if (now - lastActivityRef.current < THROTTLE_INTERVAL) {
-          return;
-        }
-        lastActivityRef.current = now;
-        restartTimers();
+        // During warning state, ignore passive activity events.
+        // Only the explicit resetTimer() call (from the "Stay logged in" button)
+        // should dismiss the warning. This prevents accidental mouse movements
+        // from silently clearing the warning before the user notices it.
+        return;
       }
+
+      // Normal activity — apply throttle, then push the warning deadline back.
+      const now = Date.now();
+      if (now - lastActivityRef.current < THROTTLE_INTERVAL) {
+        return;
+      }
+      lastActivityRef.current = now;
+      restartTimers();
     };
 
     ACTIVITY_EVENTS.forEach((event) =>
