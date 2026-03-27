@@ -332,43 +332,149 @@ Mismo patron con vista de facturas, totales, y estados de pago.
 ### Tailwind Config:
 Extender el tema con los tokens custom en `globals.css` usando el sistema de CSS variables + Tailwind.
 
-## 6. Plan de Ejecucion con Agentes Paralelos
+## 6. CMS - Sitio Publico Dinamico desde el Panel
 
-Metodologia: **TDD** - escribir tests E2E antes de implementar cada componente. Cada agente valida funciones con Playwright antes de commitear.
+### Principio
+Todo contenido del sitio publico (imagenes, textos, videos, blogs, equipo, servicios, precios, testimonios, FAQ, galeria) debe ser editable desde el panel de administracion. Cero contenido hardcoded en componentes publicos.
 
-Los specs se dividen en tareas independientes para `/dispatching-parallel-agents`:
+### Capa de Servicios de Contenido
 
-**Grupo 1 (Infraestructura - secuencial):**
-- T1: Instalar dependencias (`@phosphor-icons/react`, `recharts`) + actualizar tokens en globals.css + tipografia
-- T2: Crear capa de servicios CRUD (`src/servicios/`) + feature toggles (`src/configuracion/`)
-- T3: `git mv` renombrar archivos a castellano + actualizar TODOS los imports en App.jsx y entre archivos
+```
+src/servicios/
+  servicioContenido.js       (CRUD generico para todo contenido del sitio)
+  servicioConfiguracion.js   (datos del negocio: telefono, email, direccion, horario, redes sociales)
+```
 
-**Grupo 2 (Componentes de Layout - paralelo):**
-- T4: Redisenar PanelBarraLateral.jsx (sidebar con Phosphor duotone, items por rol, nuevas entidades)
-- T5: Redisenar PanelCabecera.jsx (header con DropdownMenu, Breadcrumb, titulo dinamico)
+`servicioContenido` maneja todas las entidades de contenido via un patron generico:
 
-**Grupo 3 (Paginas existentes - paralelo, lotes de 3-4):**
-- T6: PaginaPanel.jsx (dashboard principal - eliminar inline SVGs, usar Phosphor + shadcn Cards + Recharts)
-- T7: PaginaClientes.jsx + PaginaNuevoCliente.jsx + PaginaDetalleCliente.jsx (CRUD completo via servicioClientes)
-- T8: PaginaVehiculos.jsx + PaginaNuevoVehiculo.jsx (CRUD via servicioVehiculos)
-- T9: PaginaServicios.jsx + PaginaNuevoServicio.jsx + PaginaServiciosVehiculo.jsx (CRUD via servicioServicios)
-- T10: PaginaFacturas.jsx (CRUD via servicioFacturas)
-- T11: PaginaUsuarios.jsx (eliminar styled-components, CRUD via servicioUsuarios)
-- T12: PaginaInicioSesion.jsx (form con shadcn/ui, dark theme)
+```js
+export const servicioContenido = {
+  // Cada seccion del sitio es una "coleccion"
+  obtener:     async (coleccion, filtros) => { /* retorna items */ },
+  obtenerUno:  async (coleccion, id) => { /* retorna item */ },
+  guardar:     async (coleccion, id, datos) => { /* upsert */ },
+  eliminar:    async (coleccion, id) => { /* borrar */ },
+  reordenar:   async (coleccion, ids) => { /* cambiar orden */ },
+};
 
-**Grupo 4 (Paginas nuevas del taller - paralelo):**
-- T13: PaginaRepuestos.jsx (inventario/stock - toggle-gated, CRUD via servicioRepuestos)
-- T14: PaginaCitas.jsx (agenda/calendario - toggle-gated, CRUD via servicioCitas)
-- T15: PaginaReportes.jsx (reportes/exportacion - toggle-gated, CRUD via servicioReportes)
+// Colecciones: 'diapositivas', 'servicios', 'blog', 'equipo', 'galeria',
+//              'testimonios', 'preguntas', 'precios', 'estadisticas',
+//              'pestanasEmpresa', 'logosClientes', 'ofertasCta'
+```
 
-**Grupo 5 (Integracion):**
-- T16: Actualizar App.jsx con rutas en castellano + nuevas rutas
-- T17: Actualizar AvisoInactividad.jsx + ContextoAutenticacion.jsx (renombrar + mantener logica)
+`servicioConfiguracion` centraliza datos del negocio (hoy dispersos en 4+ componentes):
 
-**Grupo 6 (Documentacion + Testing Final):**
-- T18: Generar ADRs (Architecture Decision Records)
-- T19: Suite E2E completa con Playwright - todas las paginas, navegaciones, CRUD flows, login/logout, inactividad
-- T20: Code review final con `/requesting-code-review`
+```js
+export const servicioConfiguracion = {
+  obtener: async () => ({
+    telefono: '+34 640 16 29 47',
+    email: 'info@loyolamotors.es',
+    direccion: 'C/ Sant Ignasi de Loiola, 21-BJ IZ, 46008 Valencia',
+    horario: 'Lun - Vie: 9:00 - 18:00',
+    redesSociales: { twitter: '', facebook: '', linkedin: '', instagram: '' },
+    videoYoutube: 'VcaAVWtP48A',
+  }),
+  actualizar: async (datos) => { /* guardar config */ },
+};
+```
+
+### Paginas de Administracion de Contenido (nuevas en el panel)
+
+| Pagina Admin | Gestiona | Componentes Publicos Afectados |
+|---|---|---|
+| PaginaAdminDiapositivas.jsx | Hero slides (3) | HeroSlider.jsx |
+| PaginaAdminServicios.jsx | Servicios (15) | Services*.jsx, SingleService.jsx |
+| PaginaAdminBlog.jsx | Blog posts (4+) | Blog.jsx, SingleBlog.jsx, Blogs.jsx |
+| PaginaAdminEquipo.jsx | Equipo (3+) | Team.jsx, TeamMemberDetails.jsx |
+| PaginaAdminGaleria.jsx | Galeria (7+) | Gallery.jsx |
+| PaginaAdminTestimonios.jsx | Testimonios (2+) | Testimonial.jsx |
+| PaginaAdminPreguntas.jsx | FAQ (5+) | Accordion.jsx |
+| PaginaAdminPrecios.jsx | Planes precios (3) | PricingTable.jsx |
+| PaginaAdminConfiguracion.jsx | Config negocio | Cabecera, PiePagina, Contacto, CTA |
+
+Cada pagina admin usa shadcn/ui Table + formularios con shadcn/ui Input/Select/Button.
+Los JSON existentes (`blogsData.json`, `teamMembersData.json`, etc.) se migran a la capa de servicios.
+
+### Migracion de Componentes Publicos
+
+Los componentes publicos actuales leen datos de JSON imports o hardcoded. Deben migrar a consumir `servicioContenido`:
+
+```jsx
+// ANTES (hardcoded):
+const slides = [{ title: "Taller de Chapa...", ... }];
+
+// DESPUES (dinamico):
+const [diapositivas, setDiapositivas] = useState([]);
+useEffect(() => {
+  servicioContenido.obtener('diapositivas').then(setDiapositivas);
+}, []);
+```
+
+### Inventario de Contenido Hardcoded a Migrar
+
+| Tipo | Cantidad | Fuente Actual | Prioridad |
+|---|---|---|---|
+| Servicios | 15 | JSON + componentes | ALTA |
+| Blog posts | 4 | JSON | ALTA |
+| Hero slides | 3 | HeroSlider.jsx hardcoded | ALTA |
+| Precios | 3 | PricingTable.jsx hardcoded | ALTA |
+| Config negocio | 1 | Disperso en 4+ componentes | ALTA |
+| Equipo | 3 | JSON + Teams.jsx duplicado | MEDIA |
+| Galeria | 7 | JSON | MEDIA |
+| Testimonios | 2 | Testimonial.jsx hardcoded | MEDIA |
+| FAQ | 5 | Accordion.jsx hardcoded | MEDIA |
+| Estadisticas | 3 | AutoCounter.jsx hardcoded | BAJA |
+| Tabs empresa | 3 | CompanyTab.jsx hardcoded | BAJA |
+| Logos clientes | 7 | TrustedClient.jsx hardcoded | BAJA |
+| Ofertas CTA | 1 | Cta.jsx hardcoded | BAJA |
+
+## 7. Plan de Ejecucion con Agentes Paralelos
+
+Metodologia: **TDD** - tests E2E con Playwright antes y despues de cada grupo. Validar que no se rompe nada existente antes de avanzar.
+
+**FASE 1: Infraestructura (secuencial, bloqueante)**
+- T1: Instalar deps (`@phosphor-icons/react`, `recharts`) + tokens globals.css + tipografia Inter/Fira
+- T2: Crear capa de servicios CRUD (`src/servicios/` - 11 servicios) + feature toggles + servicioContenido + servicioConfiguracion
+- T3: `git mv` renombrar archivos a castellano + actualizar TODOS los imports
+
+**FASE 2: Layout del Panel (paralelo, 2 agentes)**
+- T4: PanelBarraLateral.jsx - Phosphor duotone, items por rol, nuevas secciones (Repuestos, Citas, Reportes, CMS)
+- T5: PanelCabecera.jsx - DropdownMenu, Breadcrumb, titulo dinamico por ruta
+
+**FASE 3: Paginas CRUD del Taller (paralelo, lotes)**
+- T6: PaginaPanel.jsx - dashboard con Phosphor + shadcn Cards + Recharts
+- T7: PaginaClientes.jsx + NuevoCliente + DetalleCliente (CRUD servicioClientes)
+- T8: PaginaVehiculos.jsx + NuevoVehiculo (CRUD servicioVehiculos)
+- T9: PaginaServicios.jsx + NuevoServicio + ServiciosVehiculo (CRUD servicioServicios)
+- T10: PaginaFacturas.jsx (CRUD servicioFacturas)
+- T11: PaginaUsuarios.jsx (eliminar styled-components, CRUD servicioUsuarios)
+- T12: PaginaInicioSesion.jsx (shadcn form, dark theme)
+
+**FASE 4: Paginas nuevas del taller (paralelo)**
+- T13: PaginaRepuestos.jsx (inventario/stock, toggle-gated)
+- T14: PaginaCitas.jsx (agenda/calendario, toggle-gated)
+- T15: PaginaReportes.jsx (reportes/exportacion, toggle-gated)
+
+**FASE 5: CMS - Paginas admin de contenido (paralelo, lotes)**
+- T16: PaginaAdminDiapositivas + PaginaAdminPrecios + PaginaAdminConfiguracion (CRUD servicioContenido)
+- T17: PaginaAdminServicios + PaginaAdminBlog (CRUD servicioContenido)
+- T18: PaginaAdminEquipo + PaginaAdminGaleria + PaginaAdminTestimonios (CRUD servicioContenido)
+- T19: PaginaAdminPreguntas + migracion de datos hardcoded a servicioContenido
+
+**FASE 6: Migracion componentes publicos (paralelo)**
+- T20: HeroSlider + ServiceProgres + ChooseUs + AutoCounter → consumir servicioContenido
+- T21: Testimonial + CompanyTab + PricingTable + TrustedClient → consumir servicioContenido
+- T22: Blog/Blogs + Team/Teams + Gallery + FAQ → consumir servicioContenido
+- T23: ContactInfo + Cta + FrequentlyQuestions + Footer → consumir servicioConfiguracion
+
+**FASE 7: Integracion y Rutas**
+- T24: App.jsx - rutas castellano + rutas CMS admin + rutas nuevas entidades
+- T25: AvisoInactividad + ContextoAutenticacion (renombrar, mantener logica)
+
+**FASE 8: Documentacion + Testing**
+- T26: ADRs (6 documentos)
+- T27: Suite E2E Playwright - navegacion, CRUD, auth, CMS, contenido dinamico
+- T28: Code review final `/requesting-code-review`
 
 ## 7. ADRs a Generar
 
