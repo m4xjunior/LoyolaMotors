@@ -21,7 +21,7 @@ import Contact from "./pages/Contact";
 import SingleService from "./pages/SingleService";
 import LoginPage from "./pages/LoginPage";
 import SingleInvoicePage from "./pages/SingleInvoicePage";
-import InvoiceFormPage from "./pages/InvoiceFormPage";
+import InvoiceForm from "./components/InvoiceForm/InvoiceForm";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import InvoicesPage from "./pages/InvoicesPage";
 import DashboardPage from "./pages/DashboardPage";
@@ -186,7 +186,7 @@ export default function App() {
           path="/create-invoice"
           element={
             <ProtectedRoute>
-              <InvoiceFormPage />
+              <InvoiceForm />
             </ProtectedRoute>
           }
         />

@@ -16,7 +16,7 @@ const SingleInvoicePage = () => {
       setInvoice(foundInvoice);
       setItems(mockInvoiceItems.filter(item => item.invoiceId === id));
     } else {
-      navigate('/invoices'); // Redirect if invoice not found
+      navigate('/dashboard'); // Redirect if invoice not found
     }
   }, [id, navigate]);
 
