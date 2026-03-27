@@ -12,6 +12,65 @@ Estetica: **Automotive Industrial Dark** - panel de control tecnico para taller 
 - **Styling:** Solo Tailwind CSS + shadcn/ui. Cero inline styles. Cero styled-components.
 - **Iconos:** Solo Phosphor Icons (`@phosphor-icons/react`). Cero emojis. Cero inline SVGs.
 - **Componentes:** shadcn/ui como base. Componentes custom extienden shadcn.
+- **Archivos:** NO crear archivos nuevos. Renombrar y editar los existentes en su lugar. Git rename.
+- **CRUD-ready:** Cada componente de datos debe tener logica CRUD completa con interfaces reales, no stubs.
+- **Backend-ready:** Funciones y toggles preparados para ser consumidos por backend Rust/Tauri/Prisma/Postgres.
+- **Minimo acoplamiento:** Cuando el backend llegue, no debe requerir tocar muchos archivos.
+
+## Principios de Arquitectura (Tauri-Ready)
+
+### Capa de Servicios
+
+Cada entidad del taller (clientes, vehiculos, servicios, facturas, usuarios) tendra un archivo de servicio en `src/servicios/` con la interfaz CRUD completa:
+
+```js
+// src/servicios/servicioClientes.js
+export const servicioClientes = {
+  obtenerTodos:      async (filtros) => { /* retorna [] por ahora */ },
+  obtenerPorId:      async (id) => { /* retorna null por ahora */ },
+  crear:             async (datos) => { /* retorna el objeto creado */ },
+  actualizar:        async (id, datos) => { /* retorna el objeto actualizado */ },
+  eliminar:          async (id) => { /* retorna boolean */ },
+  buscar:            async (termino) => { /* retorna [] */ },
+};
+```
+
+Los componentes llaman SOLO a estos servicios, nunca acceden a datos directamente. Cuando el backend Tauri/Prisma este listo, solo se cambia la implementacion del servicio - los componentes no se tocan.
+
+### Feature Toggles
+
+```js
+// src/configuracion/caracteristicas.js
+export const CARACTERISTICAS = {
+  BASE_DATOS_ACTIVA:       false,  // true cuando Prisma este conectado
+  NOTIFICACIONES_ACTIVAS:  false,  // true cuando el sistema de notificaciones este listo
+  REPORTES_ACTIVOS:        false,  // true cuando el modulo de reportes este implementado
+  FACTURACION_ELECTRONICA: false,  // true cuando se integre con sistema fiscal
+  CITAS_ONLINE:            false,  // true cuando el modulo de citas este listo
+};
+```
+
+Los componentes verifican estos toggles para mostrar/ocultar funcionalidad:
+```jsx
+{CARACTERISTICAS.REPORTES_ACTIVOS && <BotonExportarReporte />}
+```
+
+### Funciones de un Taller Mecanico (CRUD completo en cada servicio)
+
+Entidades del negocio que deben estar preparadas:
+
+| Entidad | Operaciones | Estado Actual |
+|---------|------------|---------------|
+| Clientes | CRUD + busqueda + historial | Parcial (mock) |
+| Vehiculos | CRUD + vincular a cliente + historial servicios | Parcial (mock) |
+| Servicios/Ordenes de Trabajo | CRUD + estados + asignar tecnico + costos | Parcial (mock) |
+| Facturas | CRUD + generar PDF + estados de pago | Parcial (mock) |
+| Usuarios/Tecnicos | CRUD + roles + permisos | Parcial (mock) |
+| Repuestos/Inventario | CRUD + stock + vincular a servicio | No existe - crear interfaz |
+| Citas/Agenda | CRUD + calendario + disponibilidad | No existe - crear interfaz |
+| Reportes | Generacion + filtros + exportacion | No existe - crear interfaz |
+
+Cada servicio retorna datos vacios/default pero con la estructura completa que el backend llenara.
 
 ## 1. Sistema de Diseno
 
@@ -110,34 +169,50 @@ Padding de pagina: 32px (p-8)
 
 ## 2. Estructura de Archivos (Castellano)
 
+Regla: NO crear archivos nuevos para reemplazar existentes. Renombrar via `git mv` y editar.
+
 ```
 src/
+  configuracion/
+    caracteristicas.js             (NUEVO - feature toggles)
+  servicios/                       (NUEVO - capa de servicios CRUD)
+    servicioClientes.js
+    servicioVehiculos.js
+    servicioServicios.js
+    servicioFacturas.js
+    servicioUsuarios.js
+    servicioRepuestos.js           (inventario/stock)
+    servicioCitas.js               (agenda/citas)
+    servicioReportes.js            (reportes/exportacion)
   contextos/
-    ContextoAutenticacion.jsx      (renombrar de contexts/AuthContext.jsx)
+    ContextoAutenticacion.jsx      (git mv de contexts/AuthContext.jsx)
   hooks/
-    useMonitorInactividad.js       (renombrar de useInactivityMonitor.js)
-  disposicion/                     (renombrar de layout/)
+    useMonitorInactividad.js       (git mv de hooks/useInactivityMonitor.js)
+  disposicion/                     (git mv de layout/)
     Principal.jsx
     Cabecera/Cabecera.jsx
     PiePagina/PiePagina.jsx
     PanelDisposicion/
-      PanelPrincipal.jsx           (renombrar de DashboardMain.jsx)
-      PanelCabecera.jsx            (renombrar de DashboardHeader.jsx)
-      PanelBarraLateral.jsx        (renombrar de DashboardSidebar.jsx)
+      PanelPrincipal.jsx           (git mv de DashboardMain.jsx)
+      PanelCabecera.jsx            (git mv de DashboardHeader.jsx)
+      PanelBarraLateral.jsx        (git mv de DashboardSidebar.jsx)
   paginas/
     PaginaInicio.jsx
-    PaginaPanel.jsx                (renombrar de DashboardPage.jsx)
-    PaginaClientes.jsx             (renombrar de ClientesManagementPage.jsx)
-    PaginaNuevoCliente.jsx
-    PaginaDetalleCliente.jsx
-    PaginaVehiculos.jsx
-    PaginaNuevoVehiculo.jsx
-    PaginaServiciosVehiculo.jsx
-    PaginaServicios.jsx
-    PaginaNuevoServicio.jsx
-    PaginaFacturas.jsx             (renombrar de InvoicesPage.jsx)
-    PaginaUsuarios.jsx
-    PaginaInicioSesion.jsx         (renombrar de LoginPage.jsx)
+    PaginaPanel.jsx                (git mv de DashboardPage.jsx)
+    PaginaClientes.jsx             (git mv de ClientesManagementPage.jsx)
+    PaginaNuevoCliente.jsx         (git mv de NovoClientePage.jsx)
+    PaginaDetalleCliente.jsx       (git mv de ClienteDetailPage.jsx)
+    PaginaVehiculos.jsx            (git mv de VehiclesPage.jsx / VehiclesManagementPage.jsx)
+    PaginaNuevoVehiculo.jsx        (git mv de NovoVehiculoPage.jsx)
+    PaginaServiciosVehiculo.jsx    (git mv de VehicleServicesPage.jsx)
+    PaginaServicios.jsx            (git mv de ServicesPage.jsx)
+    PaginaNuevoServicio.jsx        (git mv de NovoServicoPage.jsx)
+    PaginaFacturas.jsx             (git mv de InvoicesPage.jsx)
+    PaginaUsuarios.jsx             (git mv de UsersManagementPage.jsx)
+    PaginaInicioSesion.jsx         (git mv de LoginPage.jsx)
+    PaginaRepuestos.jsx            (NUEVO - inventario, toggle-gated)
+    PaginaCitas.jsx                (NUEVO - agenda, toggle-gated)
+    PaginaReportes.jsx             (NUEVO - reportes, toggle-gated)
   componentes/
     ui/                            (shadcn/ui - mantener en ingles per convention)
     RutaProtegida/RutaProtegida.jsx
@@ -145,6 +220,8 @@ src/
     NavAdmin/NavAdmin.jsx
     Navegacion/MenuNavegacion.jsx
 ```
+
+NOTA: Las 3 paginas nuevas (Repuestos, Citas, Reportes) son las unicas excepciones a la regla "no crear archivos nuevos" porque son funcionalidad nueva del taller que no existia.
 
 ## 3. Componentes del Panel - Rediseno
 
@@ -257,32 +334,41 @@ Extender el tema con los tokens custom en `globals.css` usando el sistema de CSS
 
 ## 6. Plan de Ejecucion con Agentes Paralelos
 
+Metodologia: **TDD** - escribir tests E2E antes de implementar cada componente. Cada agente valida funciones con Playwright antes de commitear.
+
 Los specs se dividen en tareas independientes para `/dispatching-parallel-agents`:
 
 **Grupo 1 (Infraestructura - secuencial):**
-- T1: Instalar dependencias + actualizar tokens en globals.css
-- T2: Renombrar archivos a castellano + actualizar imports
+- T1: Instalar dependencias (`@phosphor-icons/react`, `recharts`) + actualizar tokens en globals.css + tipografia
+- T2: Crear capa de servicios CRUD (`src/servicios/`) + feature toggles (`src/configuracion/`)
+- T3: `git mv` renombrar archivos a castellano + actualizar TODOS los imports en App.jsx y entre archivos
 
 **Grupo 2 (Componentes de Layout - paralelo):**
-- T3: Redisenar PanelBarraLateral.jsx (sidebar)
-- T4: Redisenar PanelCabecera.jsx (header)
+- T4: Redisenar PanelBarraLateral.jsx (sidebar con Phosphor duotone, items por rol, nuevas entidades)
+- T5: Redisenar PanelCabecera.jsx (header con DropdownMenu, Breadcrumb, titulo dinamico)
 
-**Grupo 3 (Paginas - paralelo):**
-- T5: Redisenar PaginaPanel.jsx (dashboard principal)
-- T6: Redisenar PaginaClientes.jsx + PaginaNuevoCliente.jsx + PaginaDetalleCliente.jsx
-- T7: Redisenar PaginaVehiculos.jsx + PaginaNuevoVehiculo.jsx
-- T8: Redisenar PaginaServicios.jsx + PaginaNuevoServicio.jsx + PaginaServiciosVehiculo.jsx
-- T9: Redisenar PaginaFacturas.jsx
-- T10: Redisenar PaginaUsuarios.jsx (eliminar styled-components)
-- T11: Redisenar PaginaInicioSesion.jsx
+**Grupo 3 (Paginas existentes - paralelo, lotes de 3-4):**
+- T6: PaginaPanel.jsx (dashboard principal - eliminar inline SVGs, usar Phosphor + shadcn Cards + Recharts)
+- T7: PaginaClientes.jsx + PaginaNuevoCliente.jsx + PaginaDetalleCliente.jsx (CRUD completo via servicioClientes)
+- T8: PaginaVehiculos.jsx + PaginaNuevoVehiculo.jsx (CRUD via servicioVehiculos)
+- T9: PaginaServicios.jsx + PaginaNuevoServicio.jsx + PaginaServiciosVehiculo.jsx (CRUD via servicioServicios)
+- T10: PaginaFacturas.jsx (CRUD via servicioFacturas)
+- T11: PaginaUsuarios.jsx (eliminar styled-components, CRUD via servicioUsuarios)
+- T12: PaginaInicioSesion.jsx (form con shadcn/ui, dark theme)
 
-**Grupo 4 (Integracion):**
-- T12: Actualizar App.jsx con rutas en castellano
-- T13: Actualizar AvisoInactividad.jsx (modal de inactividad)
+**Grupo 4 (Paginas nuevas del taller - paralelo):**
+- T13: PaginaRepuestos.jsx (inventario/stock - toggle-gated, CRUD via servicioRepuestos)
+- T14: PaginaCitas.jsx (agenda/calendario - toggle-gated, CRUD via servicioCitas)
+- T15: PaginaReportes.jsx (reportes/exportacion - toggle-gated, CRUD via servicioReportes)
 
-**Grupo 5 (Documentacion + Testing):**
-- T14: Generar ADRs (Architecture Decision Records)
-- T15: E2E tests con Playwright para todas las paginas y navegaciones
+**Grupo 5 (Integracion):**
+- T16: Actualizar App.jsx con rutas en castellano + nuevas rutas
+- T17: Actualizar AvisoInactividad.jsx + ContextoAutenticacion.jsx (renombrar + mantener logica)
+
+**Grupo 6 (Documentacion + Testing Final):**
+- T18: Generar ADRs (Architecture Decision Records)
+- T19: Suite E2E completa con Playwright - todas las paginas, navegaciones, CRUD flows, login/logout, inactividad
+- T20: Code review final con `/requesting-code-review`
 
 ## 7. ADRs a Generar
 
@@ -295,18 +381,37 @@ Los specs se dividen en tareas independientes para `/dispatching-parallel-agents
 
 ## 8. Criterios de Aceptacion
 
+### Calidad Visual
 - [ ] Cero emojis en codigo del panel
 - [ ] Cero inline SVGs
 - [ ] Cero inline styles en componentes del panel
 - [ ] Cero styled-components
-- [ ] Todos los archivos del panel nombrados en castellano
 - [ ] Phosphor Icons en toda la navegacion y acciones
-- [ ] shadcn/ui `Table` en todas las vistas de datos
-- [ ] shadcn/ui `Card` en todas las tarjetas
-- [ ] shadcn/ui `Button`, `Input`, `Select`, `Badge` en formularios
+- [ ] shadcn/ui `Table`, `Card`, `Button`, `Input`, `Select`, `Badge` usados consistentemente
 - [ ] Tailwind como unico sistema de estilos del panel
+
+### Convenciones
+- [ ] Todos los archivos del panel nombrados en castellano
+- [ ] Todos los imports actualizados tras renombramientos
+- [ ] Variables y funciones en castellano
+
+### Arquitectura CRUD-Ready
+- [ ] Capa de servicios CRUD completa para las 8 entidades
+- [ ] Feature toggles configurados para funcionalidad futura
+- [ ] Componentes consumen solo servicios, nunca datos directamente
+- [ ] Estructura preparada para backend Tauri/Prisma sin tocar componentes
+
+### Funcionalidad
 - [ ] Build pasa sin errores
 - [ ] Todas las rutas del dashboard funcionan
 - [ ] Sesion persiste en refresh
 - [ ] Logout solo por boton o inactividad
-- [ ] E2E tests pasan para todas las paginas
+- [ ] Navegacion sidebar refleja todas las entidades del taller
+- [ ] Paginas toggle-gated (Repuestos, Citas, Reportes) ocultas pero funcionales
+
+### Testing
+- [ ] E2E tests Playwright para cada pagina del panel
+- [ ] Tests de navegacion (sidebar, breadcrumbs, rutas)
+- [ ] Tests de CRUD flow (crear, leer, actualizar, eliminar) por entidad
+- [ ] Tests de autenticacion (login, logout, inactividad, refresh)
+- [ ] Code review final aprobado
