@@ -5,8 +5,8 @@ import { useAuth } from '../contexts/AuthContext';
 import Orb from '../components/Orb/Orb';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('admin@loyolamotors.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('admin@lexusfx.com');
+  const [password, setPassword] = useState('Admin2025');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);

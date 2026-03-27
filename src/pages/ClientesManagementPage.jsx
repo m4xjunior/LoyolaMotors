@@ -8,6 +8,44 @@ import {
   SORT_OPTIONS_CLIENTS,
 } from "../constants/vehicleConstants";
 import "../styles/Dashboard.scss";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationLink,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
 
 const ClientesManagementPage = () => {
   const { user } = useAuth();
@@ -254,29 +292,16 @@ const ClientesManagementPage = () => {
               </p>
             </div>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-              <Link
-                to="/dashboard/clientes/novo"
-                className="primary-action-btn"
-              >
-                + Novo Cliente
-              </Link>
-              <Link to="/dashboard" className="logout-btn">
-                ← Dashboard
-              </Link>
+              <Button asChild>
+                <Link to="/dashboard/clientes/novo">+ Novo Cliente</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link to="/dashboard">← Dashboard</Link>
+              </Button>
               {selectedClientes.length > 0 && (
-                <button
-                  onClick={handleBulkDelete}
-                  style={{
-                    background: "#ef4444",
-                    color: "white",
-                    padding: "8px 16px",
-                    borderRadius: "6px",
-                    border: "none",
-                    cursor: "pointer",
-                  }}
-                >
+                <Button variant="destructive" onClick={handleBulkDelete}>
                   Excluir ({selectedClientes.length})
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -429,29 +454,14 @@ const ClientesManagementPage = () => {
               }}
             >
               <div>
-                <label
-                  style={{
-                    display: "block",
-                    marginBottom: "4px",
-                    fontSize: "14px",
-                    color: "var(--body-color)",
-                  }}
-                >
+                <label className="block mb-1 text-sm text-muted-foreground">
                   Buscar:
                 </label>
-                <input
+                <Input
                   type="text"
                   placeholder="Nome, email ou telefone..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
-                    background: "rgba(255, 255, 255, 0.05)",
-                    color: "var(--heading-color)",
-                  }}
                 />
               </div>
 
@@ -1642,114 +1652,30 @@ const ClientesManagementPage = () => {
           )}
 
           {/* Modal de Confirmação de Exclusão */}
-          {showDeleteModal && clienteToDelete && (
-            <div
-              style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: "rgba(0, 0, 0, 0.8)",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                zIndex: 1000,
-                padding: "20px",
-              }}
-            >
-              <div
-                style={{
-                  background: "rgba(26, 26, 26, 0.95)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  borderRadius: "12px",
-                  padding: "32px",
-                  maxWidth: "400px",
-                  width: "100%",
-                }}
-              >
-                <h3
-                  style={{
-                    color: "var(--heading-color)",
-                    marginBottom: "16px",
-                    fontSize: "20px",
-                  }}
-                >
-                  Confirmar Exclusão
-                </h3>
-                <p
-                  style={{
-                    color: "var(--body-color)",
-                    marginBottom: "12px",
-                    lineHeight: "1.6",
-                  }}
-                >
+          <AlertDialog open={showDeleteModal} onOpenChange={(open) => { if (!open) { setShowDeleteModal(false); setClienteToDelete(null); } }}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
+                <AlertDialogDescription>
                   Tem certeza que deseja excluir o cliente{" "}
-                  <strong style={{ color: "var(--heading-color)" }}>
-                    {clienteToDelete.nombre} {clienteToDelete.apellidos}
-                  </strong>
-                  ?
-                </p>
-                <p
-                  style={{
-                    color: "#ef4444",
-                    fontSize: "14px",
-                    marginBottom: "24px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
+                  <strong>{clienteToDelete?.nombre} {clienteToDelete?.apellidos}</strong>?
+                  <br /><br />
+                  <span className="text-destructive">⚠️ Esta ação não pode ser desfeita e também excluirá todos os dados relacionados a este cliente.</span>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => { setShowDeleteModal(false); setClienteToDelete(null); }}>
+                  Cancelar
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  className="bg-destructive text-white hover:bg-destructive/90"
+                  onClick={() => { handleDeleteCliente(clienteToDelete.id); setShowDeleteModal(false); setClienteToDelete(null); }}
                 >
-                  ⚠️ Esta ação não pode ser desfeita e também excluirá todos os
-                  dados relacionados a este cliente.
-                </p>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "12px",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <button
-                    onClick={() => {
-                      setShowDeleteModal(false);
-                      setClienteToDelete(null);
-                    }}
-                    style={{
-                      padding: "12px 20px",
-                      background: "transparent",
-                      border: "1px solid rgba(255, 255, 255, 0.2)",
-                      borderRadius: "6px",
-                      color: "var(--body-color)",
-                      cursor: "pointer",
-                      fontSize: "14px",
-                    }}
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleDeleteCliente(clienteToDelete.id);
-                      setShowDeleteModal(false);
-                      setClienteToDelete(null);
-                    }}
-                    style={{
-                      padding: "12px 20px",
-                      background: "linear-gradient(135deg, #ef4444, #dc2626)",
-                      border: "none",
-                      borderRadius: "6px",
-                      color: "white",
-                      cursor: "pointer",
-                      fontSize: "14px",
-                      fontWeight: "600",
-                    }}
-                  >
-                    Sim, Excluir
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
+                  Sim, Excluir
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
     </>

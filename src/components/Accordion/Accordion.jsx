@@ -1,5 +1,9 @@
-import { useState } from 'react';
-import AccordionItem from "./AccordionItem";
+import {
+  Accordion as ShadcnAccordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 
 const faqItems = [
   {
@@ -30,23 +34,17 @@ const faqItems = [
 ];
 
 const Accordion = () => {
-  const [openIndex, setOpenIndex] = useState(0);
-
-  const handleToggle = (index) => {
-    setOpenIndex(index);
-  };
-
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": faqItems.map(item => ({
+    mainEntity: faqItems.map((item) => ({
       "@type": "Question",
-      "name": item.title,
-      "acceptedAnswer": {
+      name: item.title,
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": item.content
-      }
-    }))
+        text: item.content,
+      },
+    })),
   };
 
   return (
@@ -55,16 +53,14 @@ const Accordion = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      {faqItems.map((item, index) => (
-        <AccordionItem
-          key={index}
-          index={index}
-          title={item.title}
-          content={item.content}
-          isOpen={openIndex === index}
-          onToggle={handleToggle}
-        />
-      ))}
+      <ShadcnAccordion type="single" collapsible defaultValue="item-0">
+        {faqItems.map((item, index) => (
+          <AccordionItem key={index} value={`item-${index}`}>
+            <AccordionTrigger>{item.title}</AccordionTrigger>
+            <AccordionContent>{item.content}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </ShadcnAccordion>
     </div>
   );
 };

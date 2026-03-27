@@ -7,6 +7,9 @@ import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import "../styles/Dashboard.scss";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import SimpleChart from "../components/Dashboard/SimpleChart";
 import CircularProgress from "../components/Dashboard/CircularProgress";
 import db, {
@@ -280,19 +283,17 @@ const DashboardPage = () => {
   };
 
   const StatCard = ({ title, value, subtitle, icon, trend }) => (
-    <div className="dashboard-stat-card">
-      <div className="stat-icon">{icon}</div>
-      {trend && (
-        <div className={`stat-trend ${trend > 0 ? "positive" : "negative"}`}>
-          {trend > 0 ? "+" : ""}
-          {trend}%
-        </div>
-      )}
-
-      <div className="stat-title">{title}</div>
-      <div className="stat-value">{value}</div>
-      {subtitle && <div className="stat-subtitle">{subtitle}</div>}
-    </div>
+    <Card className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)]">
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <div className="stat-icon">{icon}</div>
+        {trend && <Badge variant={trend > 0 ? "default" : "destructive"} className="text-xs">{trend > 0 ? '+' : ''}{trend}%</Badge>}
+      </CardHeader>
+      <CardContent>
+        <div className="stat-title">{title}</div>
+        <div className="stat-value">{value}</div>
+        {subtitle && <div className="stat-subtitle">{subtitle}</div>}
+      </CardContent>
+    </Card>
   );
 
   StatCard.propTypes = {
@@ -304,11 +305,13 @@ const DashboardPage = () => {
   };
 
   const QuickActionCard = ({ title, description, to, icon }) => (
-    <Link to={to} className="dashboard-quick-action">
-      <div className="action-icon">{icon}</div>
-      <h4 className="action-title">{title}</h4>
-      <p className="action-description">{description}</p>
-    </Link>
+    <Card className="bg-[rgba(255,255,255,0.03)] border-[rgba(255,255,255,0.06)] hover:border-[rgba(255,61,36,0.3)] transition-all cursor-pointer">
+      <Link to={to} className="block p-6 no-underline">
+        <div className="action-icon">{icon}</div>
+        <h4 className="action-title">{title}</h4>
+        <p className="action-description">{description}</p>
+      </Link>
+    </Card>
   );
 
   QuickActionCard.propTypes = {
@@ -412,13 +415,15 @@ const DashboardPage = () => {
             </div>
 
             <div className="dashboard-actions">
-              <Link to="/dashboard/clientes" className="primary-action-btn">
-                <Icons.users />
-                Gestionar Clientes
-              </Link>
-              <button onClick={handleLogout} className="logout-btn">
+              <Button asChild>
+                <Link to="/dashboard/clientes">
+                  <Icons.users />
+                  Gestionar Clientes
+                </Link>
+              </Button>
+              <Button variant="outline" onClick={handleLogout}>
                 Sair do Sistema
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -520,12 +525,10 @@ const DashboardPage = () => {
                         </td>
                         <td className="service-type">{service.tipoServicio}</td>
                         <td>
-                          <span
-                            className={`status-badge ${getStatusColor(service.estado)}`}
-                          >
+                          <Badge variant={service.estado === 'completado' ? 'default' : service.estado === 'en_proceso' ? 'secondary' : 'destructive'}>
                             {service.estado.charAt(0).toUpperCase() +
                               service.estado.slice(1).replace("_", " ")}
-                          </span>
+                          </Badge>
                         </td>
                         <td className="service-cost">
                           €{service.costo.toFixed(2)}

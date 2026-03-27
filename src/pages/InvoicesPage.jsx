@@ -6,252 +6,31 @@ import CommonPageHero from '../components/CommonPageHero/CommonPageHero';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-// ── Estilos inspirados en shadcn/ui ────────────────────────────
-const styles = {
-  page: {
-    paddingTop: '40px',
-    paddingBottom: '100px',
-  },
+// shadcn/ui components
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
 
-  /* ── Cards de resumo ── */
-  statsGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '16px',
-    marginBottom: '32px',
-  },
-  statCard: {
-    background: '#fff',
-    border: '1px solid #e5e7eb',
-    borderRadius: '12px',
-    padding: '20px 24px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '4px',
-  },
-  statLabel: {
-    fontSize: '13px',
-    fontWeight: '500',
-    color: '#6b7280',
-    letterSpacing: '-0.01em',
-  },
-  statValue: {
-    fontSize: '28px',
-    fontWeight: '700',
-    color: '#111827',
-    letterSpacing: '-0.02em',
-    lineHeight: 1.2,
-  },
-  statSub: {
-    fontSize: '12px',
-    color: '#9ca3af',
-    marginTop: '2px',
-  },
+// lucide-react icons
+import {
+  Search, Plus, MoreHorizontal, Eye, Pencil, Download, Trash2,
+  TrendingUp, Clock, AlertTriangle, FileText, ChevronLeft, ChevronRight,
+} from 'lucide-react';
 
-  /* ── Toolbar (busca + filtros + acoes) ── */
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: '12px',
-    marginBottom: '20px',
-    flexWrap: 'wrap',
-  },
-  toolbarLeft: {
-    display: 'flex',
-    gap: '10px',
-    alignItems: 'center',
-    flex: 1,
-    minWidth: '280px',
-  },
-  searchInput: {
-    height: '40px',
-    padding: '0 14px 0 38px',
-    border: '1px solid #e5e7eb',
-    borderRadius: '8px',
-    fontSize: '14px',
-    color: '#111827',
-    background: '#fff',
-    outline: 'none',
-    width: '100%',
-    maxWidth: '320px',
-    transition: 'border-color 0.15s, box-shadow 0.15s',
-    boxSizing: 'border-box',
-  },
-  searchWrapper: {
-    position: 'relative',
-    flex: 1,
-    maxWidth: '320px',
-  },
-  searchIcon: {
-    position: 'absolute',
-    left: '12px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    color: '#9ca3af',
-    fontSize: '14px',
-    pointerEvents: 'none',
-  },
-  filterBtn: (active) => ({
-    height: '40px',
-    padding: '0 16px',
-    border: active ? '1px solid var(--primary-color, #ff3d24)' : '1px solid #e5e7eb',
-    borderRadius: '8px',
-    fontSize: '13px',
-    fontWeight: '500',
-    color: active ? 'var(--primary-color, #ff3d24)' : '#6b7280',
-    background: active ? 'rgba(255,61,36,0.06)' : '#fff',
-    cursor: 'pointer',
-    transition: 'all 0.15s',
-    whiteSpace: 'nowrap',
-  }),
-  newBtn: {
-    height: '40px',
-    padding: '0 20px',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '14px',
-    fontWeight: '600',
-    color: '#fff',
-    background: 'var(--primary-color, #ff3d24)',
-    cursor: 'pointer',
-    textDecoration: 'none',
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '6px',
-    transition: 'opacity 0.15s',
-    whiteSpace: 'nowrap',
-  },
-
-  /* ── Tabela ── */
-  tableWrapper: {
-    background: '#fff',
-    border: '1px solid #e5e7eb',
-    borderRadius: '12px',
-    overflow: 'hidden',
-  },
-  table: {
-    width: '100%',
-    borderCollapse: 'collapse',
-  },
-  th: {
-    padding: '12px 20px',
-    textAlign: 'left',
-    fontSize: '12px',
-    fontWeight: '600',
-    color: '#6b7280',
-    textTransform: 'uppercase',
-    letterSpacing: '0.04em',
-    borderBottom: '1px solid #f3f4f6',
-    background: '#fafafa',
-  },
-  thRight: {
-    padding: '12px 20px',
-    textAlign: 'right',
-    fontSize: '12px',
-    fontWeight: '600',
-    color: '#6b7280',
-    textTransform: 'uppercase',
-    letterSpacing: '0.04em',
-    borderBottom: '1px solid #f3f4f6',
-    background: '#fafafa',
-  },
-  td: {
-    padding: '16px 20px',
-    fontSize: '14px',
-    color: '#374151',
-    borderBottom: '1px solid #f3f4f6',
-  },
-  tdBold: {
-    padding: '16px 20px',
-    fontSize: '14px',
-    fontWeight: '600',
-    color: '#111827',
-    borderBottom: '1px solid #f3f4f6',
-  },
-  tdRight: {
-    padding: '16px 20px',
-    fontSize: '14px',
-    color: '#374151',
-    borderBottom: '1px solid #f3f4f6',
-    textAlign: 'right',
-  },
-  trHover: {
-    transition: 'background 0.1s',
-    cursor: 'pointer',
-  },
-
-  /* ── Badge de status ── */
-  badge: (status) => {
-    const map = {
-      pagada:    { bg: '#ecfdf5', color: '#059669', border: '#a7f3d0', label: 'Pagada' },
-      pendiente: { bg: '#fffbeb', color: '#d97706', border: '#fde68a', label: 'Pendiente' },
-      vencida:   { bg: '#fef2f2', color: '#dc2626', border: '#fecaca', label: 'Vencida' },
-    };
-    const s = map[status] || map.pendiente;
-    return {
-      style: {
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '5px',
-        padding: '3px 10px',
-        borderRadius: '9999px',
-        fontSize: '12px',
-        fontWeight: '600',
-        color: s.color,
-        background: s.bg,
-        border: `1px solid ${s.border}`,
-        letterSpacing: '-0.01em',
-      },
-      label: s.label,
-      dot: s.color,
-    };
-  },
-
-  /* ── Paginacao ── */
-  pagination: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '14px 20px',
-    borderTop: '1px solid #f3f4f6',
-    background: '#fafafa',
-    fontSize: '13px',
-    color: '#6b7280',
-  },
-  pageBtn: (disabled) => ({
-    height: '32px',
-    padding: '0 12px',
-    border: '1px solid #e5e7eb',
-    borderRadius: '6px',
-    fontSize: '13px',
-    fontWeight: '500',
-    color: disabled ? '#d1d5db' : '#374151',
-    background: '#fff',
-    cursor: disabled ? 'default' : 'pointer',
-    opacity: disabled ? 0.5 : 1,
-  }),
-
-  /* ── Link de acao ── */
-  actionLink: {
-    color: 'var(--primary-color, #ff3d24)',
-    textDecoration: 'none',
-    fontSize: '13px',
-    fontWeight: '600',
-    padding: '6px 12px',
-    borderRadius: '6px',
-    transition: 'background 0.1s',
-    display: 'inline-block',
-  },
-
-  /* ── Empty state ── */
-  empty: {
-    padding: '60px 20px',
-    textAlign: 'center',
-    color: '#9ca3af',
-    fontSize: '14px',
-  },
+// ── Helpers ────────────────────────────────────────────────────
+const statusConfig = {
+  pagada:    { label: 'Pagada',    variant: 'default' },
+  pendiente: { label: 'Pendiente', variant: 'secondary' },
+  vencida:   { label: 'Vencida',   variant: 'destructive' },
 };
+
+const formatCurrency = (value) =>
+  value.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €';
 
 // ── Componente principal ───────────────────────────────────────
 const InvoicesPage = () => {
@@ -266,196 +45,240 @@ const InvoicesPage = () => {
     setInvoices(mockInvoices);
   }, []);
 
-  // ── Filtros ──
   const filtered = useMemo(() => {
     return invoices.filter(inv => {
+      const q = search.toLowerCase();
       const matchSearch =
-        inv.number.toLowerCase().includes(search.toLowerCase()) ||
-        inv.clientName.toLowerCase().includes(search.toLowerCase()) ||
-        inv.clientCIF.toLowerCase().includes(search.toLowerCase());
+        inv.number.toLowerCase().includes(q) ||
+        inv.clientName.toLowerCase().includes(q) ||
+        inv.clientCIF.toLowerCase().includes(q);
       const matchStatus = statusFilter === 'todas' || inv.status === statusFilter;
       return matchSearch && matchStatus;
     });
   }, [invoices, search, statusFilter]);
 
-  // ── Paginacao ──
   const totalPages = Math.ceil(filtered.length / perPage);
   const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
 
   useEffect(() => { setCurrentPage(1); }, [search, statusFilter]);
 
-  // ── Stats ──
   const stats = useMemo(() => {
-    const total = invoices.reduce((s, i) => s + i.total, 0);
     const pagadas = invoices.filter(i => i.status === 'pagada');
     const pendientes = invoices.filter(i => i.status === 'pendiente');
     const vencidas = invoices.filter(i => i.status === 'vencida');
-    const cobrado = pagadas.reduce((s, i) => s + i.total, 0);
-    const porCobrar = pendientes.reduce((s, i) => s + i.total, 0);
-    return { total: invoices.length, facturado: total, cobrado, porCobrar, vencidas: vencidas.length };
+    return {
+      total: invoices.reduce((s, i) => s + i.total, 0),
+      cobrado: pagadas.reduce((s, i) => s + i.total, 0),
+      porCobrar: pendientes.reduce((s, i) => s + i.total, 0),
+      vencidas: vencidas.length,
+      count: invoices.length,
+    };
   }, [invoices]);
 
   return (
     <>
       <CommonPageHero title="Facturas" />
-      <div className="container" style={styles.page}>
+      <div className="container" style={{ paddingTop: '40px', paddingBottom: '100px' }}>
 
         {/* ── Cards de resumo ── */}
-        <div style={styles.statsGrid}>
-          <div style={styles.statCard}>
-            <span style={styles.statLabel}>Total Facturado</span>
-            <span style={styles.statValue}>{stats.facturado.toLocaleString('es-ES', { minimumFractionDigits: 2 })} €</span>
-            <span style={styles.statSub}>{stats.total} facturas emitidas</span>
-          </div>
-          <div style={styles.statCard}>
-            <span style={styles.statLabel}>Cobrado</span>
-            <span style={{ ...styles.statValue, color: '#059669' }}>{stats.cobrado.toLocaleString('es-ES', { minimumFractionDigits: 2 })} €</span>
-            <span style={styles.statSub}>Facturas pagadas</span>
-          </div>
-          <div style={styles.statCard}>
-            <span style={styles.statLabel}>Por Cobrar</span>
-            <span style={{ ...styles.statValue, color: '#d97706' }}>{stats.porCobrar.toLocaleString('es-ES', { minimumFractionDigits: 2 })} €</span>
-            <span style={styles.statSub}>Pendientes de pago</span>
-          </div>
-          <div style={styles.statCard}>
-            <span style={styles.statLabel}>Vencidas</span>
-            <span style={{ ...styles.statValue, color: '#dc2626' }}>{stats.vencidas}</span>
-            <span style={styles.statSub}>Requieren atención</span>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Facturado</CardTitle>
+              <FileText className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{formatCurrency(stats.total)}</div>
+              <p className="text-xs text-muted-foreground mt-1">{stats.count} facturas emitidas</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Cobrado</CardTitle>
+              <TrendingUp className="h-4 w-4 text-emerald-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-emerald-500">{formatCurrency(stats.cobrado)}</div>
+              <p className="text-xs text-muted-foreground mt-1">Facturas pagadas</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Por Cobrar</CardTitle>
+              <Clock className="h-4 w-4 text-amber-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-amber-500">{formatCurrency(stats.porCobrar)}</div>
+              <p className="text-xs text-muted-foreground mt-1">Pendientes de pago</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Vencidas</CardTitle>
+              <AlertTriangle className="h-4 w-4 text-destructive" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-destructive">{stats.vencidas}</div>
+              <p className="text-xs text-muted-foreground mt-1">Requieren atención</p>
+            </CardContent>
+          </Card>
         </div>
 
         {/* ── Toolbar ── */}
-        <div style={styles.toolbar}>
-          <div style={styles.toolbarLeft}>
-            <div style={styles.searchWrapper}>
-              <span style={styles.searchIcon}>🔍</span>
-              <input
-                type="text"
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 flex-1">
+            <div className="relative w-full sm:w-72">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
                 placeholder="Buscar por número, cliente o CIF..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                style={styles.searchInput}
-                onFocus={(e) => { e.target.style.borderColor = 'var(--primary-color, #ff3d24)'; e.target.style.boxShadow = '0 0 0 3px rgba(255,61,36,0.08)'; }}
-                onBlur={(e) => { e.target.style.borderColor = '#e5e7eb'; e.target.style.boxShadow = 'none'; }}
+                className="pl-9"
               />
             </div>
-            {['todas', 'pagada', 'pendiente', 'vencida'].map(s => (
-              <button
-                key={s}
-                style={styles.filterBtn(statusFilter === s)}
-                onClick={() => setStatusFilter(s)}
-              >
-                {s === 'todas' ? 'Todas' : s.charAt(0).toUpperCase() + s.slice(1)}
-                {s !== 'todas' && (
-                  <span style={{ marginLeft: '4px', opacity: 0.6 }}>
-                    ({invoices.filter(i => i.status === s).length})
-                  </span>
-                )}
-              </button>
-            ))}
+
+            <Tabs value={statusFilter} onValueChange={setStatusFilter}>
+              <TabsList>
+                <TabsTrigger value="todas">Todas</TabsTrigger>
+                <TabsTrigger value="pagada">
+                  Pagada ({invoices.filter(i => i.status === 'pagada').length})
+                </TabsTrigger>
+                <TabsTrigger value="pendiente">
+                  Pendiente ({invoices.filter(i => i.status === 'pendiente').length})
+                </TabsTrigger>
+                <TabsTrigger value="vencida">
+                  Vencida ({invoices.filter(i => i.status === 'vencida').length})
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
-          <Link to="/create-invoice" style={styles.newBtn}>
-            + Nueva Factura
-          </Link>
+
+          <Button asChild>
+            <Link to="/create-invoice">
+              <Plus className="h-4 w-4 mr-1" />
+              Nueva Factura
+            </Link>
+          </Button>
         </div>
 
         {/* ── Tabela ── */}
-        <div style={styles.tableWrapper}>
-          <div style={{ overflowX: 'auto' }}>
-            <table style={styles.table}>
-              <thead>
-                <tr>
-                  <th style={styles.th}>Factura</th>
-                  <th style={styles.th}>Cliente</th>
-                  <th style={styles.th}>Fecha</th>
-                  <th style={styles.th}>Estado</th>
-                  <th style={styles.thRight}>Total</th>
-                  <th style={styles.thRight}>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginated.length === 0 ? (
-                  <tr>
-                    <td colSpan={6} style={styles.empty}>
-                      {search || statusFilter !== 'todas'
-                        ? 'No se encontraron facturas con esos filtros.'
-                        : 'No hay facturas registradas.'}
-                    </td>
-                  </tr>
-                ) : (
-                  paginated.map((invoice) => {
-                    const badge = styles.badge(invoice.status);
-                    return (
-                      <tr
-                        key={invoice.id}
-                        style={styles.trHover}
-                        onMouseEnter={(e) => e.currentTarget.style.background = '#f9fafb'}
-                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                        onClick={() => navigate(`/invoice/${invoice.id}`)}
-                      >
-                        <td style={styles.tdBold}>
-                          <span style={{ color: '#6b7280', fontWeight: 400, marginRight: '4px' }}>#</span>
-                          {invoice.number}
-                        </td>
-                        <td style={styles.td}>
-                          <div style={{ fontWeight: '500', color: '#111827' }}>{invoice.clientName}</div>
-                          <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '2px' }}>{invoice.clientCIF}</div>
-                        </td>
-                        <td style={styles.td}>
-                          {format(invoice.date, "dd MMM yyyy", { locale: es })}
-                        </td>
-                        <td style={styles.td}>
-                          <span style={badge.style}>
-                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: badge.dot }} />
-                            {badge.label}
-                          </span>
-                        </td>
-                        <td style={{ ...styles.tdRight, fontWeight: '600', color: '#111827' }}>
-                          {invoice.total.toLocaleString('es-ES', { minimumFractionDigits: 2 })} €
-                        </td>
-                        <td style={styles.tdRight} onClick={(e) => e.stopPropagation()}>
-                          <Link
-                            to={`/invoice/${invoice.id}`}
-                            style={styles.actionLink}
-                            onMouseEnter={(e) => e.target.style.background = 'rgba(255,61,36,0.06)'}
-                            onMouseLeave={(e) => e.target.style.background = 'transparent'}
-                          >
-                            Ver →
-                          </Link>
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
+        <Card>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Factura</TableHead>
+                <TableHead>Cliente</TableHead>
+                <TableHead>Fecha</TableHead>
+                <TableHead>Estado</TableHead>
+                <TableHead className="text-right">Total</TableHead>
+                <TableHead className="text-right">Acciones</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {paginated.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                    {search || statusFilter !== 'todas'
+                      ? 'No se encontraron facturas con esos filtros.'
+                      : 'No hay facturas registradas.'}
+                  </TableCell>
+                </TableRow>
+              ) : (
+                paginated.map((invoice) => {
+                  const config = statusConfig[invoice.status] || statusConfig.pendiente;
+                  return (
+                    <TableRow
+                      key={invoice.id}
+                      className="cursor-pointer"
+                      onClick={() => navigate(`/invoice/${invoice.id}`)}
+                    >
+                      <TableCell className="font-semibold">
+                        <span className="text-muted-foreground font-normal">#</span>
+                        {invoice.number}
+                      </TableCell>
+                      <TableCell>
+                        <div className="font-medium">{invoice.clientName}</div>
+                        <div className="text-xs text-muted-foreground">{invoice.clientCIF}</div>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {format(invoice.date, "dd MMM yyyy", { locale: es })}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={config.variant}>{config.label}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right font-semibold">
+                        {formatCurrency(invoice.total)}
+                      </TableCell>
+                      <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon-xs">
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => navigate(`/invoice/${invoice.id}`)}>
+                              <Eye className="mr-2 h-4 w-4" />
+                              Ver Detalles
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => navigate(`/invoice/${invoice.id}`)}>
+                              <Pencil className="mr-2 h-4 w-4" />
+                              Editar
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Download className="mr-2 h-4 w-4" />
+                              Descargar PDF
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="text-destructive">
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Eliminar
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              )}
+            </TableBody>
+          </Table>
 
           {/* ── Paginacao ── */}
           {filtered.length > perPage && (
-            <div style={styles.pagination}>
-              <span>
-                Mostrando {((currentPage - 1) * perPage) + 1}–{Math.min(currentPage * perPage, filtered.length)} de {filtered.length}
-              </span>
-              <div style={{ display: 'flex', gap: '6px' }}>
-                <button
-                  style={styles.pageBtn(currentPage === 1)}
-                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                >
-                  ← Anterior
-                </button>
-                <button
-                  style={styles.pageBtn(currentPage === totalPages)}
-                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages}
-                >
-                  Siguiente →
-                </button>
+            <>
+              <Separator />
+              <div className="flex items-center justify-between px-4 py-3">
+                <p className="text-sm text-muted-foreground">
+                  Mostrando {((currentPage - 1) * perPage) + 1}–{Math.min(currentPage * perPage, filtered.length)} de {filtered.length}
+                </p>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4 mr-1" />
+                    Anterior
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                  >
+                    Siguiente
+                    <ChevronRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </div>
               </div>
-            </div>
+            </>
           )}
-        </div>
+        </Card>
 
       </div>
     </>
