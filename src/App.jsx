@@ -48,6 +48,7 @@ import PaginaAdminBlog from "./paginas/PaginaAdminBlog";
 import PaginaAdminEquipo from "./paginas/PaginaAdminEquipo";
 import PaginaAdminGaleria from "./paginas/PaginaAdminGaleria";
 import PaginaAdminTestimonios from "./paginas/PaginaAdminTestimonios";
+import PaginaAdminPreguntas from "./paginas/PaginaAdminPreguntas";
 
 export default function App() {
   const location = useLocation();
@@ -190,6 +191,14 @@ export default function App() {
           element={
             <ProtectedRoute requiredRole="admin">
               <PaginaAdminTestimonios />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/preguntas"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <PaginaAdminPreguntas />
             </ProtectedRoute>
           }
         />
