@@ -48,23 +48,6 @@ const repuestoVacio = {
 };
 
 const PaginaRepuestos = () => {
-  if (!CARACTERISTICAS.INVENTARIO_ACTIVO) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] max-w-md text-center">
-          <CardContent className="p-8 space-y-4">
-            <Package size={64} weight="duotone" className="text-[var(--texto-deshabilitado)] mx-auto" />
-            <h2 className="text-xl font-semibold text-[var(--texto-principal)]">Inventario de Repuestos</h2>
-            <p className="text-[var(--texto-secundario)]">
-              Esta funcionalidad estara disponible proximamente cuando se conecte la base de datos.
-            </p>
-            <Badge className="bg-[var(--advertencia)]/20 text-[var(--advertencia)]">Proximamente</Badge>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   const [repuestos, setRepuestos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
@@ -95,8 +78,26 @@ const PaginaRepuestos = () => {
   };
 
   useEffect(() => {
+    if (!CARACTERISTICAS.INVENTARIO_ACTIVO) return;
     cargarRepuestos();
   }, []);
+
+  if (!CARACTERISTICAS.INVENTARIO_ACTIVO) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] max-w-md text-center">
+          <CardContent className="p-8 space-y-4">
+            <Package size={64} weight="duotone" className="text-[var(--texto-deshabilitado)] mx-auto" />
+            <h2 className="text-xl font-semibold text-[var(--texto-principal)]">Inventario de Repuestos</h2>
+            <p className="text-[var(--texto-secundario)]">
+              Esta funcionalidad estara disponible proximamente cuando se conecte la base de datos.
+            </p>
+            <Badge className="bg-[var(--advertencia)]/20 text-[var(--advertencia)]">Proximamente</Badge>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   const handleBusqueda = (e) => {
     const valor = e.target.value;
@@ -285,7 +286,7 @@ const PaginaRepuestos = () => {
                       </TableCell>
                       <TableCell className="text-[var(--texto-principal)]">
                         {repuesto.precioUnitario != null
-                          ? `$${Number(repuesto.precioUnitario).toFixed(2)}`
+                          ? `€${Number(repuesto.precioUnitario).toFixed(2)}`
                           : "-"}
                       </TableCell>
                       <TableCell className="text-[var(--texto-principal)]">
@@ -420,7 +421,7 @@ const PaginaRepuestos = () => {
                 />
               </div>
               <div className="space-y-1">
-                <Label className="text-[var(--texto-secundario)]">Precio Unitario ($)</Label>
+                <Label className="text-[var(--texto-secundario)]">Precio Unitario (€)</Label>
                 <Input
                   type="number"
                   min="0"

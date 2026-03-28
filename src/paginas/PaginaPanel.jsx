@@ -12,8 +12,6 @@ import { es } from "date-fns/locale";
 import { servicioClientes } from "../servicios/servicioClientes";
 import { servicioServicios } from "../servicios/servicioServicios";
 import { servicioVehiculos } from "../servicios/servicioVehiculos";
-import { servicioFacturas } from "../servicios/servicioFacturas";
-import db, { getMetricas, getChartData } from "../data/database";
 
 const badgeClase = (estado) => {
   switch (estado) {
@@ -67,80 +65,39 @@ const PaginaPanel = () => {
 
   const cargarDatos = async () => {
     try {
-      // Datos del DB local (demo)
-      const metricas = getMetricas();
-      const graficoDatos = getChartData();
+      const clientes = await servicioClientes.obtenerTodos();
+      const servicios = await servicioServicios.obtenerTodos();
+      const vehiculos = await servicioVehiculos.obtenerTodos();
 
-      setEstadisticas({
-        totalClientes: metricas.totalClientes ?? 0,
-        totalVehiculos: metricas.totalVehiculos ?? 0,
-        serviciosPendientes: metricas.serviciosPendientes ?? 0,
-        serviciosCompletados: metricas.serviciosCompletados ?? 0,
-        ingresosMes: metricas.ingresosMes ?? 0,
-        satisfaccion: metricas.satisfaccion ?? 0,
-      });
+      const pendientes = servicios.filter((s) => s.estado === "pendiente").length;
+      const completados = servicios.filter((s) => s.estado === "completado").length;
 
-      if (graficoDatos?.monthlyServices) {
-        setDatosGrafico(graficoDatos.monthlyServices);
-      }
+      setEstadisticas((prev) => ({
+        ...prev,
+        totalClientes: clientes.length,
+        totalVehiculos: vehiculos.length,
+        serviciosPendientes: pendientes,
+        serviciosCompletados: completados,
+      }));
 
-      // Servicios recientes del DB
-      const todosServicios = db
-        .getAll("servicios")
-        .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
-        .slice(0, 6);
-      setServiciosRecientes(todosServicios);
+      setServiciosRecientes(
+        servicios
+          .sort((a, b) => new Date(b.fecha ?? b.creadoEn) - new Date(a.fecha ?? a.creadoEn))
+          .slice(0, 6)
+      );
 
-      // Clientes recientes del DB
-      const todosClientes = db
-        .getAll("clientes")
-        .sort((a, b) => new Date(b.createdAt ?? b.creadoEn) - new Date(a.createdAt ?? a.creadoEn))
-        .slice(0, 5);
-      setClientesRecientes(todosClientes);
+      setClientesRecientes(
+        clientes
+          .sort((a, b) => new Date(b.creadoEn) - new Date(a.creadoEn))
+          .slice(0, 5)
+      );
     } catch {
-      // Si el DB falla, enriquecemos con servicio layer
-      try {
-        const clientes = await servicioClientes.obtenerTodos();
-        const servicios = await servicioServicios.obtenerTodos();
-        const vehiculos = await servicioVehiculos.obtenerTodos();
-
-        const pendientes = servicios.filter((s) => s.estado === "pendiente").length;
-        const completados = servicios.filter((s) => s.estado === "completado").length;
-
-        setEstadisticas((prev) => ({
-          ...prev,
-          totalClientes: clientes.length,
-          totalVehiculos: vehiculos.length,
-          serviciosPendientes: pendientes,
-          serviciosCompletados: completados,
-        }));
-
-        setServiciosRecientes(
-          servicios
-            .sort((a, b) => new Date(b.fecha ?? b.creadoEn) - new Date(a.fecha ?? a.creadoEn))
-            .slice(0, 6)
-        );
-
-        setClientesRecientes(
-          clientes
-            .sort((a, b) => new Date(b.creadoEn) - new Date(a.creadoEn))
-            .slice(0, 5)
-        );
-      } catch {
-        // empty state is fine
-      }
+      // empty state is fine
     }
   };
 
   useEffect(() => {
     cargarDatos();
-
-    const handleDbUpdate = () => cargarDatos();
-    db.on("*", handleDbUpdate);
-
-    return () => {
-      db.off("*", handleDbUpdate);
-    };
   }, []);
 
   const iniciales = (nombre, apellidos) => {

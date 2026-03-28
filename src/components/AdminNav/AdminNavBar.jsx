@@ -48,7 +48,9 @@ const BarraNavegacaoAdmin = () => {
     );
   };
 
-  if (!usuario) return null;
+  // Solo mostrar en rutas de administración (/panel/*)
+  const esRutaAdmin = localizacao.pathname.startsWith("/panel");
+  if (!usuario || !esRutaAdmin) return null;
 
   return (
     <div className="admin-navbar">

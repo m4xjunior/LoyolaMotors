@@ -73,23 +73,6 @@ const reporteVacio = {
 };
 
 const PaginaReportes = () => {
-  if (!CARACTERISTICAS.REPORTES_ACTIVOS) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] max-w-md text-center">
-          <CardContent className="p-8 space-y-4">
-            <ChartLine size={64} weight="duotone" className="text-[var(--texto-deshabilitado)] mx-auto" />
-            <h2 className="text-xl font-semibold text-[var(--texto-principal)]">Reportes y Exportaciones</h2>
-            <p className="text-[var(--texto-secundario)]">
-              Esta funcionalidad estara disponible proximamente cuando se conecte la base de datos.
-            </p>
-            <Badge className="bg-[var(--advertencia)]/20 text-[var(--advertencia)]">Proximamente</Badge>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   const [reportes, setReportes] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState("");
@@ -121,8 +104,26 @@ const PaginaReportes = () => {
   };
 
   useEffect(() => {
+    if (!CARACTERISTICAS.REPORTES_ACTIVOS) return;
     cargarReportes();
   }, []);
+
+  if (!CARACTERISTICAS.REPORTES_ACTIVOS) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] max-w-md text-center">
+          <CardContent className="p-8 space-y-4">
+            <ChartLine size={64} weight="duotone" className="text-[var(--texto-deshabilitado)] mx-auto" />
+            <h2 className="text-xl font-semibold text-[var(--texto-principal)]">Reportes y Exportaciones</h2>
+            <p className="text-[var(--texto-secundario)]">
+              Esta funcionalidad estara disponible proximamente cuando se conecte la base de datos.
+            </p>
+            <Badge className="bg-[var(--advertencia)]/20 text-[var(--advertencia)]">Proximamente</Badge>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   const handleBusqueda = (e) => {
     const valor = e.target.value;

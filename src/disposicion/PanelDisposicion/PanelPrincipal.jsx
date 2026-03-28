@@ -51,18 +51,10 @@ const PanelPrincipal = () => {
   // A simple loading state while auth is being checked
   if (loading || !user) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          backgroundColor: "#101010",
-          color: "var(--heading-color)",
-          fontFamily: "var(--heading-font-family)",
-        }}
-      >
-        <h1>Carregando Painel...</h1>
+      <div className="flex items-center justify-center h-screen bg-[var(--fondo)]">
+        <h1 className="text-[var(--texto-principal)] font-[family-name:var(--fuente-encabezado)]">
+          Cargando Panel...
+        </h1>
       </div>
     );
   }
@@ -71,19 +63,15 @@ const PanelPrincipal = () => {
   return (
     <>
       <ContextoPanel.Provider value={{ isSidebarOpen, toggleSidebar }}>
-        <div style={styles.layoutContainer}>
+        <div className="flex min-h-screen bg-[var(--fondo)]">
           <PanelBarraLateral />
           <main
-            style={{
-              ...styles.mainContent,
-              marginLeft: isSidebarOpen
-                ? styles.sidebar.openWidth
-                : styles.sidebar.closedWidth,
-            }}
+            className="flex-1 flex flex-col transition-all duration-300"
+            style={{ marginLeft: isSidebarOpen ? "260px" : "80px" }}
           >
             <PanelCabecera />
-            <div style={styles.pageContent}>
-              {/* Renders the specific dashboard page (e.g., Clientes, Veiculos) */}
+            <div className="p-8 flex-1 overflow-y-auto bg-[var(--fondo-elevado)]">
+              {/* Renders the specific dashboard page (e.g., Clientes, Vehiculos) */}
               <Outlet />
             </div>
           </main>
@@ -96,31 +84,6 @@ const PanelPrincipal = () => {
       />
     </>
   );
-};
-
-// Styles object for better organization
-const styles = {
-  layoutContainer: {
-    display: "flex",
-    minHeight: "100vh",
-    backgroundColor: "var(--body-bg-color, #101010)",
-  },
-  sidebar: {
-    openWidth: "260px",
-    closedWidth: "80px",
-  },
-  mainContent: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    transition: "margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-  },
-  pageContent: {
-    padding: "2rem",
-    flex: 1,
-    overflowY: "auto",
-    backgroundColor: "#181818", // A slightly lighter bg for content area
-  },
 };
 
 export default PanelPrincipal;

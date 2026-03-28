@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Principal from "./disposicion/Principal";
 import PanelPrincipal from "./disposicion/PanelDisposicion/PanelPrincipal";
 import AOS from "aos";
@@ -51,16 +51,11 @@ import PaginaAdminTestimonios from "./paginas/PaginaAdminTestimonios";
 import PaginaAdminPreguntas from "./paginas/PaginaAdminPreguntas";
 
 export default function App() {
-  const location = useLocation();
-
   useEffect(() => {
     AOS.init();
     AOS.refresh();
   }, []);
 
-  useEffect(() => {
-    console.log("Current route:", location.pathname);
-  }, [location.pathname]);
 
   return (
     <Routes>
@@ -101,11 +96,11 @@ export default function App() {
       >
         <Route index element={<PaginaPanel />} />
         <Route path="clientes" element={<PaginaClientes />} />
-        <Route path="clientes/novo" element={<PaginaNuevoCliente />} />
+        <Route path="clientes/nuevo" element={<PaginaNuevoCliente />} />
         <Route path="clientes/:clienteId" element={<PaginaDetalleCliente />} />
         <Route path="clientes/editar/:clienteId" element={<PaginaNuevoCliente />} />
         <Route path="vehiculos" element={<PaginaVehiculos />} />
-        <Route path="vehiculos/novo" element={<PaginaNuevoVehiculo />} />
+        <Route path="vehiculos/nuevo" element={<PaginaNuevoVehiculo />} />
         <Route path="vehiculos/editar/:vehiculoId" element={<PaginaNuevoVehiculo />} />
         <Route path="vehiculos/:vehicleId/servicios" element={<PaginaServiciosVehiculo />} />
         <Route path="servicios" element={<PaginaServicios />} />
