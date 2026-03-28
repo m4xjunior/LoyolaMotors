@@ -1,0 +1,184 @@
+/* ============================================================
+   ÁREA DE MIEMBROS - Sección Homepage
+   Fondo oscuro premium con cards SpotlightCard
+   ============================================================ */
+
+.area-miembros-seccion {
+  background: #0a0a0a;
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Sutil gradiente rojo en el fondo */
+.area-miembros-seccion::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 61, 36, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* --- Cabecera --- */
+.area-miembros-cabecera {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.area-miembros-etiqueta {
+  display: inline-block;
+  padding: 6px 20px;
+  background: rgba(255, 61, 36, 0.12);
+  color: #ff3d24;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 61, 36, 0.2);
+  margin-bottom: 20px;
+}
+
+.area-miembros-titulo {
+  font-size: 42px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.area-miembros-subtitulo {
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* --- Grid de beneficios --- */
+.area-miembros-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Override SpotlightCard para esta seção */
+.area-miembros-tarjeta.card-spotlight {
+  background: #141414;
+  border-color: rgba(255, 255, 255, 0.06);
+  padding: 0;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.area-miembros-tarjeta.card-spotlight:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 61, 36, 0.2);
+}
+
+.area-miembros-tarjeta-contenido {
+  padding: 32px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.area-miembros-icono {
+  font-size: 36px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.area-miembros-tarjeta-titulo {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.01em;
+}
+
+.area-miembros-tarjeta-descripcion {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* --- CTA --- */
+.area-miembros-cta {
+  text-align: center;
+  margin-top: 50px;
+  position: relative;
+  z-index: 1;
+}
+
+.area-miembros-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  background: linear-gradient(135deg, #ff3d24, #e02912);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 30px rgba(255, 61, 36, 0.25);
+  letter-spacing: -0.01em;
+}
+
+.area-miembros-boton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(255, 61, 36, 0.35);
+  color: #ffffff;
+}
+
+.area-miembros-boton-flecha {
+  transition: transform 0.3s ease;
+  font-size: 18px;
+}
+
+.area-miembros-boton:hover .area-miembros-boton-flecha {
+  transform: translateX(4px);
+}
+
+.area-miembros-nota {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 16px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 992px) {
+  .area-miembros-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .area-miembros-titulo {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 576px) {
+  .area-miembros-seccion {
+    padding: 60px 0;
+  }
+  .area-miembros-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .area-miembros-titulo {
+    font-size: 28px;
+  }
+  .area-miembros-boton {
+    width: 100%;
+    justify-content: center;
+  }
+}

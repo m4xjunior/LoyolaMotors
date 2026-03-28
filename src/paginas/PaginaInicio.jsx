@@ -11,6 +11,7 @@ import Blogs from "../components/Blog/Blogs";
 import Teams from "../components/Team/Teams";
 import AutoCounter from "../components/AutoCounter/AutoCounter";
 import Cta from "../components/Cta/Cta";
+import AreaMiembros from "../components/AreaMiembros/AreaMiembros";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
       <AutoCounter />
       <TrustedClient />
       <Testimonial />
+      <AreaMiembros />
       <Cta />
       <Teams />
       <PricingTable />
