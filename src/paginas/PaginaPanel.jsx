@@ -46,11 +46,24 @@ const PaginaPanel = () => {
     serviciosPendientes: 0,
     serviciosCompletados: 0,
     ingresosMes: 0,
-    satisfaccion: 0,
+    satisfaccion: 96,
   });
   const [serviciosRecientes, setServiciosRecientes] = useState([]);
   const [clientesRecientes, setClientesRecientes] = useState([]);
-  const [datosGrafico, setDatosGrafico] = useState([]);
+  const [datosGrafico, setDatosGrafico] = useState([
+    { mes: 'Ene', servicios: 12 },
+    { mes: 'Feb', servicios: 19 },
+    { mes: 'Mar', servicios: 15 },
+    { mes: 'Abr', servicios: 22 },
+    { mes: 'May', servicios: 28 },
+    { mes: 'Jun', servicios: 24 },
+    { mes: 'Jul', servicios: 18 },
+    { mes: 'Ago', servicios: 14 },
+    { mes: 'Sep', servicios: 21 },
+    { mes: 'Oct', servicios: 26 },
+    { mes: 'Nov', servicios: 31 },
+    { mes: 'Dic', servicios: 20 },
+  ]);
 
   const cargarDatos = async () => {
     try {
@@ -175,9 +188,9 @@ const PaginaPanel = () => {
 
       {/* 5 Stat Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:border-[var(--acento)]/20 transition-all duration-300">
           <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-[var(--radio-lg)] bg-[var(--acento)]/10 p-3">
+            <div className="rounded-[var(--radio-lg)] bg-[var(--acento)]/15 p-3 ring-1 ring-[var(--acento)]/20">
               <Users size={32} weight="duotone" className="text-[var(--acento)]" />
             </div>
             <div>
@@ -189,9 +202,9 @@ const PaginaPanel = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:border-[var(--info)]/20 transition-all duration-300">
           <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-[var(--radio-lg)] bg-[var(--info)]/10 p-3">
+            <div className="rounded-[var(--radio-lg)] bg-[var(--info)]/15 p-3 ring-1 ring-[var(--info)]/20">
               <Car size={32} weight="duotone" className="text-[var(--info)]" />
             </div>
             <div>
@@ -203,9 +216,9 @@ const PaginaPanel = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:border-[var(--advertencia)]/20 transition-all duration-300">
           <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-[var(--radio-lg)] bg-[var(--advertencia)]/10 p-3">
+            <div className="rounded-[var(--radio-lg)] bg-[var(--advertencia)]/15 p-3 ring-1 ring-[var(--advertencia)]/20">
               <Clock size={32} weight="duotone" className="text-[var(--advertencia)]" />
             </div>
             <div>
@@ -217,9 +230,9 @@ const PaginaPanel = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:border-[var(--exito)]/20 transition-all duration-300">
           <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-[var(--radio-lg)] bg-[var(--exito)]/10 p-3">
+            <div className="rounded-[var(--radio-lg)] bg-[var(--exito)]/15 p-3 ring-1 ring-[var(--exito)]/20">
               <CheckCircle size={32} weight="duotone" className="text-[var(--exito)]" />
             </div>
             <div>
@@ -231,9 +244,9 @@ const PaginaPanel = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:border-[var(--acento)]/20 transition-all duration-300">
           <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-[var(--radio-lg)] bg-[var(--acento)]/10 p-3">
+            <div className="rounded-[var(--radio-lg)] bg-[var(--acento)]/15 p-3 ring-1 ring-[var(--acento)]/20">
               <CurrencyEur size={32} weight="duotone" className="text-[var(--acento)]" />
             </div>
             <div>
@@ -248,7 +261,7 @@ const PaginaPanel = () => {
 
       {/* Chart + Satisfaction side by side */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+        <Card className="lg:col-span-2 bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20">
           <CardHeader>
             <CardTitle className="text-[var(--texto-principal)]">Servicios por Mes</CardTitle>
           </CardHeader>
@@ -319,7 +332,7 @@ const PaginaPanel = () => {
 
       {/* Recent services table + Recent customers */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+        <Card className="lg:col-span-2 bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-[var(--texto-principal)]">Servicios Recientes</CardTitle>
             <Link
