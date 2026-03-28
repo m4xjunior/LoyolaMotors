@@ -37,6 +37,9 @@ import PaginaUsuarios from "./paginas/PaginaUsuarios";
 import PaginaDetalleCliente from "./paginas/PaginaDetalleCliente";
 import PaginaTerminos from "./paginas/PaginaTerminos";
 import PaginaPrivacidad from "./paginas/PaginaPrivacidad";
+import PaginaRepuestos from "./paginas/PaginaRepuestos";
+import PaginaCitas from "./paginas/PaginaCitas";
+import PaginaReportes from "./paginas/PaginaReportes";
 
 export default function App() {
   const location = useLocation();
@@ -113,6 +116,10 @@ export default function App() {
         {/* Rutas legacy para compatibilidad */}
         <Route path="invoices" element={<PaginaFacturas />} />
         <Route path="invoice/:id" element={<PaginaDetalleFactura />} />
+        {/* Nuevas rutas de funcionalidades */}
+        <Route path="repuestos" element={<PaginaRepuestos />} />
+        <Route path="citas" element={<PaginaCitas />} />
+        <Route path="reportes" element={<PaginaReportes />} />
       </Route>
 
       <Route path="/*" element={<PaginaError />} />
