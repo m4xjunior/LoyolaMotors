@@ -9,6 +9,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter }
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, RadialBarChart, RadialBar, PolarGrid, Label } from "recharts";
 import { format } from "date-fns";
@@ -41,21 +42,9 @@ const estadoLabel = (estado) => {
   }
 };
 
-/* ── Datos de grafico interactivo (ultimos 3 meses, por dia) ── */
-const generarDatosGrafico = () => {
-  const hoy = new Date();
-  const datos = [];
-  for (let i = 89; i >= 0; i--) {
-    const fecha = new Date(hoy);
-    fecha.setDate(hoy.getDate() - i);
-    datos.push({
-      fecha: format(fecha, "yyyy-MM-dd"),
-      servicios: Math.floor(Math.random() * 4) + 1,
-      facturado: Math.floor(Math.random() * 800) + 100,
-    });
-  }
-  return datos;
-};
+/* ── Estilos reutilizables ── */
+const estiloTarjeta = "bg-gradient-to-br from-card to-background border-border shadow-lg shadow-black/20";
+const estiloTarjetaPlana = "bg-card border-border";
 
 const configGrafico = {
   servicios: {
@@ -86,12 +75,12 @@ const PaginaPanel = () => {
     serviciosPendientes: 0,
     serviciosCompletados: 0,
     ingresosMes: 0,
-    satisfaccion: 96,
+    satisfaccion: 0,
   });
   const [serviciosRecientes, setServiciosRecientes] = useState([]);
   const [clientesRecientes, setClientesRecientes] = useState([]);
-  const [datosGrafico] = useState(generarDatosGrafico);
   const [serieActiva, setSerieActiva] = useState("servicios");
+  const [cargando, setCargando] = useState(true);
 
   const cargarDatos = async () => {
     try {
@@ -123,6 +112,8 @@ const PaginaPanel = () => {
       );
     } catch {
       // empty state is fine
+    } finally {
+      setCargando(false);
     }
   };
 
@@ -132,9 +123,9 @@ const PaginaPanel = () => {
 
   /* ── Totales para las pestanas del grafico ── */
   const totales = useMemo(() => ({
-    servicios: datosGrafico.reduce((acc, d) => acc + d.servicios, 0),
-    facturado: datosGrafico.reduce((acc, d) => acc + d.facturado, 0),
-  }), [datosGrafico]);
+    servicios: estadisticas.serviciosCompletados + estadisticas.serviciosPendientes,
+    facturado: estadisticas.ingresosMes,
+  }), [estadisticas]);
 
   /* ── Datos del grafico radial ── */
   const datosRadial = useMemo(
@@ -211,15 +202,50 @@ const PaginaPanel = () => {
     return `${n}${a}`.toUpperCase() || "?";
   };
 
+  /* ── Skeleton de carga ── */
+  if (cargando) {
+    return (
+      <div className="space-y-8">
+        {/* Header skeleton */}
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="space-y-2">
+            <Skeleton className="h-9 w-64" />
+            <Skeleton className="h-5 w-48" />
+          </div>
+          <div className="flex gap-3">
+            <Skeleton className="h-10 w-36" />
+            <Skeleton className="h-10 w-40" />
+          </div>
+        </div>
+        {/* Carrusel skeleton */}
+        <div className="flex gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-28 w-72 rounded-xl" />
+          ))}
+        </div>
+        {/* Graficos skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Skeleton className="lg:col-span-2 h-[380px] rounded-xl" />
+          <Skeleton className="h-[380px] rounded-xl" />
+        </div>
+        {/* Tabla skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Skeleton className="lg:col-span-2 h-[300px] rounded-xl" />
+          <Skeleton className="h-[300px] rounded-xl" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-[var(--texto-principal)] font-[family-name:var(--fuente-encabezado)]">
+          <h1 className="text-3xl font-bold text-foreground font-[family-name:var(--fuente-encabezado)]">
             Bienvenido, {user?.nombre}
           </h1>
-          <p className="text-[var(--texto-secundario)] mt-1">
+          <p className="text-muted-foreground mt-1">
             Panel de control &mdash;{" "}
             {format(new Date(), "dd 'de' MMMM yyyy", { locale: es })}
           </p>
@@ -228,7 +254,7 @@ const PaginaPanel = () => {
           <Button
             asChild
             variant="default"
-            className="bg-[var(--acento)] hover:bg-[var(--acento-hover)] text-white"
+            className="bg-primary hover:bg-primary/80 text-white"
           >
             <Link to="/panel/clientes">
               <Plus size={18} weight="bold" className="mr-2" />
@@ -238,7 +264,7 @@ const PaginaPanel = () => {
           <Button
             asChild
             variant="outline"
-            className="border-[var(--borde)] text-[var(--texto-principal)] hover:bg-[var(--fondo-tarjeta)]"
+            className="border-border text-foreground hover:bg-card"
           >
             <Link to="/panel/servicios/nuevo">
               <Wrench size={18} weight="bold" className="mr-2" />
@@ -261,13 +287,13 @@ const PaginaPanel = () => {
       {/* ── Grafico interactivo + Radial ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Grafico de barras interactivo */}
-        <Card className="lg:col-span-2 bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20">
-          <CardHeader className="flex flex-col items-stretch space-y-0 border-b border-[var(--borde)] p-0 sm:flex-row">
+        <Card className={`lg:col-span-2 ${estiloTarjeta}`}>
+          <CardHeader className="flex flex-col items-stretch space-y-0 border-b border-border p-0 sm:flex-row">
             <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-              <CardTitle className="text-[var(--texto-principal)]">
+              <CardTitle className="text-foreground">
                 Actividad del Taller
               </CardTitle>
-              <CardDescription className="text-[var(--texto-secundario)]">
+              <CardDescription className="text-muted-foreground">
                 Ultimos 3 meses de actividad diaria
               </CardDescription>
             </div>
@@ -275,14 +301,14 @@ const PaginaPanel = () => {
               {["servicios", "facturado"].map((clave) => (
                 <button
                   key={clave}
-                  className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t border-[var(--borde)] px-6 py-4 text-left even:border-l sm:border-l sm:border-t-0 sm:px-8 sm:py-6 transition-colors data-[active=true]:bg-[var(--acento)]/5"
+                  className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t border-border px-6 py-4 text-left even:border-l sm:border-l sm:border-t-0 sm:px-8 sm:py-6 transition-colors data-[active=true]:bg-primary/5"
                   data-active={serieActiva === clave}
                   onClick={() => setSerieActiva(clave)}
                 >
-                  <span className="text-xs text-[var(--texto-secundario)]">
+                  <span className="text-xs text-muted-foreground">
                     {configGrafico[clave].label}
                   </span>
-                  <span className="text-lg font-bold leading-none sm:text-3xl font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
+                  <span className="text-lg font-bold leading-none sm:text-3xl font-[family-name:var(--fuente-datos)] text-foreground">
                     {clave === "facturado"
                       ? `\u20AC${totales.facturado.toLocaleString("es-ES")}`
                       : totales.servicios.toLocaleString("es-ES")}
@@ -292,115 +318,80 @@ const PaginaPanel = () => {
             </div>
           </CardHeader>
           <CardContent className="px-2 sm:p-6">
-            <ChartContainer
-              config={configGrafico}
-              className="aspect-auto h-[250px] w-full"
-            >
-              <BarChart
-                data={datosGrafico}
-                margin={{ left: 12, right: 12 }}
-              >
-                <CartesianGrid vertical={false} stroke="var(--borde)" />
-                <XAxis
-                  dataKey="fecha"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                  minTickGap={32}
-                  tickFormatter={(valor) => {
-                    const fecha = new Date(valor);
-                    return fecha.toLocaleDateString("es-ES", {
-                      month: "short",
-                      day: "numeric",
-                    });
-                  }}
-                />
-                <ChartTooltip
-                  content={
-                    <ChartTooltipContent
-                      className="w-[160px] bg-[var(--fondo-tarjeta)] border-[var(--borde)] text-[var(--texto-principal)]"
-                      nameKey={serieActiva}
-                      labelFormatter={(valor) => {
-                        return new Date(valor).toLocaleDateString("es-ES", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        });
-                      }}
-                    />
-                  }
-                />
-                <Bar
-                  dataKey={serieActiva}
-                  fill={`var(--color-${serieActiva})`}
-                  radius={[4, 4, 0, 0]}
-                />
-              </BarChart>
-            </ChartContainer>
+            <div className="flex items-center justify-center h-[250px] text-muted-foreground">
+              Sin datos de actividad aun
+            </div>
           </CardContent>
         </Card>
 
         {/* Grafico radial de satisfaccion */}
-        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 flex flex-col">
+        <Card className={`${estiloTarjeta} flex flex-col`}>
           <CardHeader className="items-center pb-0">
-            <CardTitle className="text-[var(--texto-principal)]">Satisfaccion</CardTitle>
-            <CardDescription className="text-[var(--texto-secundario)]">
+            <CardTitle className="text-foreground">Satisfaccion</CardTitle>
+            <CardDescription className="text-muted-foreground">
               Tasa de satisfaccion del cliente
             </CardDescription>
           </CardHeader>
           <CardContent className="flex-1 flex items-center justify-center pb-0">
-            <ChartContainer
-              config={configRadial}
-              className="mx-auto aspect-square max-h-[250px] w-full"
-            >
-              <RadialBarChart
-                data={datosRadial}
-                startAngle={90}
-                endAngle={90 + (360 * estadisticas.satisfaccion) / 100}
-                innerRadius={80}
-                outerRadius={110}
+            {estadisticas.satisfaccion > 0 ? (
+              <ChartContainer
+                config={configRadial}
+                className="mx-auto aspect-square max-h-[250px] w-full"
               >
-                <PolarGrid
-                  gridType="circle"
-                  radialLines={false}
-                  stroke="none"
-                  className="first:fill-[var(--borde)] last:fill-[var(--fondo-tarjeta)]"
-                  polarRadius={[86, 74]}
-                />
-                <RadialBar
-                  dataKey="valor"
-                  background
-                  cornerRadius={10}
-                  fill="var(--exito, #22c55e)"
-                />
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
-                        <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                        >
-                          <tspan
+                <RadialBarChart
+                  data={datosRadial}
+                  startAngle={90}
+                  endAngle={90 + (360 * estadisticas.satisfaccion) / 100}
+                  innerRadius={80}
+                  outerRadius={110}
+                >
+                  <PolarGrid
+                    gridType="circle"
+                    radialLines={false}
+                    stroke="none"
+                    className="first:fill-border last:fill-card"
+                    polarRadius={[86, 74]}
+                  />
+                  <RadialBar
+                    dataKey="valor"
+                    background
+                    cornerRadius={10}
+                    fill="var(--exito, #22c55e)"
+                  />
+                  <Label
+                    content={({ viewBox }) => {
+                      if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                        return (
+                          <text
                             x={viewBox.cx}
                             y={viewBox.cy}
-                            className="text-4xl font-bold"
-                            style={{ fill: "var(--texto-principal)" }}
+                            textAnchor="middle"
+                            dominantBaseline="middle"
                           >
-                            {estadisticas.satisfaccion}%
-                          </tspan>
-                        </text>
-                      );
-                    }
-                  }}
-                />
-              </RadialBarChart>
-            </ChartContainer>
+                            <tspan
+                              x={viewBox.cx}
+                              y={viewBox.cy}
+                              className="text-4xl font-bold"
+                              style={{ fill: "var(--texto-principal)" }}
+                            >
+                              {estadisticas.satisfaccion}%
+                            </tspan>
+                          </text>
+                        );
+                      }
+                    }}
+                  />
+                </RadialBarChart>
+              </ChartContainer>
+            ) : (
+              <div className="flex flex-col items-center gap-3 py-8">
+                <Skeleton className="h-[160px] w-[160px] rounded-full" />
+                <p className="text-sm text-muted-foreground">Sin datos de satisfaccion</p>
+              </div>
+            )}
           </CardContent>
           <CardFooter className="flex-col gap-2 text-sm border-t-0 bg-transparent">
-            <div className="flex items-center gap-2 font-medium leading-none text-[var(--texto-principal)]">
+            <div className="flex items-center gap-2 font-medium leading-none text-foreground">
               Tendencia positiva este mes <TrendUp size={16} className="text-[var(--exito)]" />
             </div>
             <div className="leading-none text-[var(--texto-deshabilitado)]">
@@ -412,12 +403,12 @@ const PaginaPanel = () => {
 
       {/* Recent services table + Recent customers */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20">
+        <Card className={`lg:col-span-2 ${estiloTarjeta}`}>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-[var(--texto-principal)]">Servicios Recientes</CardTitle>
+            <CardTitle className="text-foreground">Servicios Recientes</CardTitle>
             <Link
               to="/panel/servicios"
-              className="text-sm text-[var(--acento)] hover:underline"
+              className="text-sm text-primary hover:underline"
             >
               Ver todos
             </Link>
@@ -426,7 +417,7 @@ const PaginaPanel = () => {
             {serviciosRecientes.length > 0 ? (
               <Table>
                 <TableHeader>
-                  <TableRow className="border-[var(--borde)]">
+                  <TableRow className="border-border">
                     <TableHead className="text-[var(--texto-deshabilitado)]">Cliente</TableHead>
                     <TableHead className="text-[var(--texto-deshabilitado)]">Servicio</TableHead>
                     <TableHead className="text-[var(--texto-deshabilitado)]">Estado</TableHead>
@@ -435,11 +426,11 @@ const PaginaPanel = () => {
                 </TableHeader>
                 <TableBody>
                   {serviciosRecientes.map((s) => (
-                    <TableRow key={s.id} className="border-[var(--borde)]">
-                      <TableCell className="text-[var(--texto-principal)]">
+                    <TableRow key={s.id} className="border-border">
+                      <TableCell className="text-foreground">
                         {s.clienteNombre ?? s.clienteId ?? "\u2014"}
                       </TableCell>
-                      <TableCell className="text-[var(--texto-secundario)]">
+                      <TableCell className="text-muted-foreground">
                         {s.tipoServicio ?? "\u2014"}
                       </TableCell>
                       <TableCell>
@@ -450,7 +441,7 @@ const PaginaPanel = () => {
                           {estadoLabel(s.estado)}
                         </Badge>
                       </TableCell>
-                      <TableCell className="font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
+                      <TableCell className="font-[family-name:var(--fuente-datos)] text-foreground">
                         \u20AC{(s.costo ?? 0).toFixed(2)}
                       </TableCell>
                     </TableRow>
@@ -465,12 +456,12 @@ const PaginaPanel = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+        <Card className={estiloTarjetaPlana}>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-[var(--texto-principal)]">Nuevos Clientes</CardTitle>
+            <CardTitle className="text-foreground">Nuevos Clientes</CardTitle>
             <Link
               to="/panel/clientes"
-              className="text-sm text-[var(--acento)] hover:underline"
+              className="text-sm text-primary hover:underline"
             >
               Ver todos
             </Link>
@@ -481,16 +472,16 @@ const PaginaPanel = () => {
                 {clientesRecientes.map((c) => (
                   <div
                     key={c.id}
-                    className="flex items-center gap-3 p-3 rounded-[var(--radio-md)] hover:bg-[var(--acento)]/5 transition-colors"
+                    className="flex items-center gap-3 p-3 rounded-[var(--radio-md)] hover:bg-primary/5 transition-colors"
                   >
-                    <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[var(--acento)]/20 flex items-center justify-center text-xs font-bold text-[var(--acento)]">
+                    <div className="flex-shrink-0 w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">
                       {iniciales(c.nombre, c.apellidos)}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-[var(--texto-principal)] truncate">
+                      <p className="text-sm font-medium text-foreground truncate">
                         {c.nombre} {c.apellidos}
                       </p>
-                      <p className="text-xs text-[var(--texto-secundario)] truncate">
+                      <p className="text-xs text-muted-foreground truncate">
                         {c.email}
                       </p>
                     </div>
@@ -508,62 +499,62 @@ const PaginaPanel = () => {
 
       {/* Quick actions */}
       <div>
-        <h2 className="text-lg font-semibold text-[var(--texto-principal)] mb-4">
+        <h2 className="text-lg font-semibold text-foreground mb-4">
           Acciones Rapidas
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] hover:border-[var(--acento)]/30 transition-colors cursor-pointer">
+          <Card className={`${estiloTarjetaPlana} hover:border-primary/30 transition-colors cursor-pointer`}>
             <Link to="/panel/clientes/nuevo" className="block p-6 no-underline">
-              <div className="rounded-[var(--radio-lg)] bg-[var(--acento)]/10 p-3 w-fit mb-3">
-                <Plus size={24} weight="duotone" className="text-[var(--acento)]" />
+              <div className="rounded-[var(--radio-lg)] bg-primary/10 p-3 w-fit mb-3">
+                <Plus size={24} weight="duotone" className="text-primary" />
               </div>
-              <h4 className="text-sm font-semibold text-[var(--texto-principal)] mb-1">
+              <h4 className="text-sm font-semibold text-foreground mb-1">
                 Nuevo Cliente
               </h4>
-              <p className="text-xs text-[var(--texto-secundario)]">
+              <p className="text-xs text-muted-foreground">
                 Registrar un nuevo cliente en el sistema
               </p>
             </Link>
           </Card>
 
-          <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] hover:border-[var(--acento)]/30 transition-colors cursor-pointer">
+          <Card className={`${estiloTarjetaPlana} hover:border-primary/30 transition-colors cursor-pointer`}>
             <Link to="/panel/servicios/nuevo" className="block p-6 no-underline">
               <div className="rounded-[var(--radio-lg)] bg-[var(--info)]/10 p-3 w-fit mb-3">
                 <Wrench size={24} weight="duotone" className="text-[var(--info)]" />
               </div>
-              <h4 className="text-sm font-semibold text-[var(--texto-principal)] mb-1">
+              <h4 className="text-sm font-semibold text-foreground mb-1">
                 Nuevo Servicio
               </h4>
-              <p className="text-xs text-[var(--texto-secundario)]">
+              <p className="text-xs text-muted-foreground">
                 Registrar un nuevo servicio para un cliente
               </p>
             </Link>
           </Card>
 
-          <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] hover:border-[var(--acento)]/30 transition-colors cursor-pointer">
+          <Card className={`${estiloTarjetaPlana} hover:border-primary/30 transition-colors cursor-pointer`}>
             <Link to="/panel/vehiculos" className="block p-6 no-underline">
               <div className="rounded-[var(--radio-lg)] bg-[var(--advertencia)]/10 p-3 w-fit mb-3">
                 <Car size={24} weight="duotone" className="text-[var(--advertencia)]" />
               </div>
-              <h4 className="text-sm font-semibold text-[var(--texto-principal)] mb-1">
+              <h4 className="text-sm font-semibold text-foreground mb-1">
                 Gestionar Vehiculos
               </h4>
-              <p className="text-xs text-[var(--texto-secundario)]">
+              <p className="text-xs text-muted-foreground">
                 Ver y administrar vehiculos registrados
               </p>
             </Link>
           </Card>
 
           {user?.rol === "admin" && (
-            <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] hover:border-[var(--acento)]/30 transition-colors cursor-pointer">
+            <Card className={`${estiloTarjetaPlana} hover:border-primary/30 transition-colors cursor-pointer`}>
               <Link to="/panel/usuarios" className="block p-6 no-underline">
                 <div className="rounded-[var(--radio-lg)] bg-[var(--exito)]/10 p-3 w-fit mb-3">
                   <GearSix size={24} weight="duotone" className="text-[var(--exito)]" />
                 </div>
-                <h4 className="text-sm font-semibold text-[var(--texto-principal)] mb-1">
+                <h4 className="text-sm font-semibold text-foreground mb-1">
                   Gestionar Usuarios
                 </h4>
-                <p className="text-xs text-[var(--texto-secundario)]">
+                <p className="text-xs text-muted-foreground">
                   Administrar usuarios del sistema
                 </p>
               </Link>
