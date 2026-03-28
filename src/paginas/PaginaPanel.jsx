@@ -1,18 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAutenticacion } from "../contextos/ContextoAutenticacion";
-import { Users, Car, Clock, CheckCircle, CurrencyEur, Plus, Wrench, GearSix } from "@phosphor-icons/react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Users, Car, Clock, CheckCircle, CurrencyEur, Plus, Wrench, GearSix,
+  TrendUp,
+} from "@phosphor-icons/react";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Bar, BarChart, CartesianGrid, XAxis, RadialBarChart, RadialBar, PolarGrid, Label } from "recharts";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { servicioClientes } from "../servicios/servicioClientes";
 import { servicioServicios } from "../servicios/servicioServicios";
 import { servicioVehiculos } from "../servicios/servicioVehiculos";
+import Carrusel from "../componentes/Carrusel/Carrusel";
 
+/* ── Helpers ── */
 const badgeClase = (estado) => {
   switch (estado) {
     case "completado":
@@ -28,13 +34,49 @@ const badgeClase = (estado) => {
 
 const estadoLabel = (estado) => {
   switch (estado) {
-    case "completado":   return "Completado";
+    case "completado":  return "Completado";
     case "en_proceso":  return "En Proceso";
     case "pendiente":   return "Pendiente";
     default:            return estado;
   }
 };
 
+/* ── Datos de grafico interactivo (ultimos 3 meses, por dia) ── */
+const generarDatosGrafico = () => {
+  const hoy = new Date();
+  const datos = [];
+  for (let i = 89; i >= 0; i--) {
+    const fecha = new Date(hoy);
+    fecha.setDate(hoy.getDate() - i);
+    datos.push({
+      fecha: format(fecha, "yyyy-MM-dd"),
+      servicios: Math.floor(Math.random() * 4) + 1,
+      facturado: Math.floor(Math.random() * 800) + 100,
+    });
+  }
+  return datos;
+};
+
+const configGrafico = {
+  servicios: {
+    label: "Servicios",
+    color: "var(--acento, #e04e28)",
+  },
+  facturado: {
+    label: "Facturado",
+    color: "var(--info, #3b82f6)",
+  },
+};
+
+/* ── Datos de grafico radial ── */
+const configRadial = {
+  satisfaccion: {
+    label: "Satisfaccion",
+    color: "var(--exito, #22c55e)",
+  },
+};
+
+/* ── Componente principal ── */
 const PaginaPanel = () => {
   const { user } = useAutenticacion();
 
@@ -48,20 +90,8 @@ const PaginaPanel = () => {
   });
   const [serviciosRecientes, setServiciosRecientes] = useState([]);
   const [clientesRecientes, setClientesRecientes] = useState([]);
-  const [datosGrafico, setDatosGrafico] = useState([
-    { mes: 'Ene', servicios: 12 },
-    { mes: 'Feb', servicios: 19 },
-    { mes: 'Mar', servicios: 15 },
-    { mes: 'Abr', servicios: 22 },
-    { mes: 'May', servicios: 28 },
-    { mes: 'Jun', servicios: 24 },
-    { mes: 'Jul', servicios: 18 },
-    { mes: 'Ago', servicios: 14 },
-    { mes: 'Sep', servicios: 21 },
-    { mes: 'Oct', servicios: 26 },
-    { mes: 'Nov', servicios: 31 },
-    { mes: 'Dic', servicios: 20 },
-  ]);
+  const [datosGrafico] = useState(generarDatosGrafico);
+  const [serieActiva, setSerieActiva] = useState("servicios");
 
   const cargarDatos = async () => {
     try {
@@ -99,6 +129,81 @@ const PaginaPanel = () => {
   useEffect(() => {
     cargarDatos();
   }, []);
+
+  /* ── Totales para las pestanas del grafico ── */
+  const totales = useMemo(() => ({
+    servicios: datosGrafico.reduce((acc, d) => acc + d.servicios, 0),
+    facturado: datosGrafico.reduce((acc, d) => acc + d.facturado, 0),
+  }), [datosGrafico]);
+
+  /* ── Datos del grafico radial ── */
+  const datosRadial = useMemo(
+    () => [
+      {
+        nombre: "satisfaccion",
+        valor: estadisticas.satisfaccion,
+        fill: "var(--exito, #22c55e)",
+      },
+    ],
+    [estadisticas.satisfaccion]
+  );
+
+  /* ── Elementos del carrusel ── */
+  const elementosCarrusel = useMemo(
+    () => [
+      {
+        id: 1,
+        title: "Total Clientes",
+        description: "Clientes registrados en el sistema",
+        icon: (
+          <Users size={28} weight="duotone" style={{ color: "var(--acento)" }} />
+        ),
+        valor: estadisticas.totalClientes,
+        color: "var(--acento)",
+      },
+      {
+        id: 2,
+        title: "Vehiculos",
+        description: "Vehiculos registrados",
+        icon: (
+          <Car size={28} weight="duotone" style={{ color: "var(--info)" }} />
+        ),
+        valor: estadisticas.totalVehiculos,
+        color: "var(--info)",
+      },
+      {
+        id: 3,
+        title: "Pendientes",
+        description: "Servicios en espera",
+        icon: (
+          <Clock size={28} weight="duotone" style={{ color: "var(--advertencia)" }} />
+        ),
+        valor: estadisticas.serviciosPendientes,
+        color: "var(--advertencia)",
+      },
+      {
+        id: 4,
+        title: "Completados",
+        description: "Servicios finalizados",
+        icon: (
+          <CheckCircle size={28} weight="duotone" style={{ color: "var(--exito)" }} />
+        ),
+        valor: estadisticas.serviciosCompletados,
+        color: "var(--exito)",
+      },
+      {
+        id: 5,
+        title: "Ingresos",
+        description: "Ingresos del mes actual",
+        icon: (
+          <CurrencyEur size={28} weight="duotone" style={{ color: "var(--acento)" }} />
+        ),
+        valor: `\u20AC${estadisticas.ingresosMes.toLocaleString("es-ES", { minimumFractionDigits: 0 })}`,
+        color: "var(--acento)",
+      },
+    ],
+    [estadisticas]
+  );
 
   const iniciales = (nombre, apellidos) => {
     const n = nombre?.charAt(0) ?? "";
@@ -143,147 +248,165 @@ const PaginaPanel = () => {
         </div>
       </div>
 
-      {/* 5 Stat Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:border-[var(--acento)]/20 transition-all duration-300">
-          <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-[var(--radio-lg)] bg-[var(--acento)]/15 p-3 ring-1 ring-[var(--acento)]/20">
-              <Users size={32} weight="duotone" className="text-[var(--acento)]" />
-            </div>
-            <div>
-              <p className="text-sm text-[var(--texto-secundario)]">Total Clientes</p>
-              <p className="text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
-                {estadisticas.totalClientes}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+      {/* ── Carrusel de estadisticas ── */}
+      <Carrusel
+        items={elementosCarrusel}
+        baseWidth={280}
+        autoplay
+        autoplayDelay={4000}
+        pauseOnHover
+        loop
+      />
 
-        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:border-[var(--info)]/20 transition-all duration-300">
-          <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-[var(--radio-lg)] bg-[var(--info)]/15 p-3 ring-1 ring-[var(--info)]/20">
-              <Car size={32} weight="duotone" className="text-[var(--info)]" />
-            </div>
-            <div>
-              <p className="text-sm text-[var(--texto-secundario)]">Vehículos</p>
-              <p className="text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
-                {estadisticas.totalVehiculos}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:border-[var(--advertencia)]/20 transition-all duration-300">
-          <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-[var(--radio-lg)] bg-[var(--advertencia)]/15 p-3 ring-1 ring-[var(--advertencia)]/20">
-              <Clock size={32} weight="duotone" className="text-[var(--advertencia)]" />
-            </div>
-            <div>
-              <p className="text-sm text-[var(--texto-secundario)]">Pendientes</p>
-              <p className="text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
-                {estadisticas.serviciosPendientes}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:border-[var(--exito)]/20 transition-all duration-300">
-          <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-[var(--radio-lg)] bg-[var(--exito)]/15 p-3 ring-1 ring-[var(--exito)]/20">
-              <CheckCircle size={32} weight="duotone" className="text-[var(--exito)]" />
-            </div>
-            <div>
-              <p className="text-sm text-[var(--texto-secundario)]">Completados</p>
-              <p className="text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
-                {estadisticas.serviciosCompletados}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 hover:border-[var(--acento)]/20 transition-all duration-300">
-          <CardContent className="flex items-center gap-4 p-6">
-            <div className="rounded-[var(--radio-lg)] bg-[var(--acento)]/15 p-3 ring-1 ring-[var(--acento)]/20">
-              <CurrencyEur size={32} weight="duotone" className="text-[var(--acento)]" />
-            </div>
-            <div>
-              <p className="text-sm text-[var(--texto-secundario)]">Ingresos</p>
-              <p className="text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
-                €{estadisticas.ingresosMes.toLocaleString("es-ES", { minimumFractionDigits: 0 })}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Chart + Satisfaction side by side */}
+      {/* ── Grafico interactivo + Radial ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Grafico de barras interactivo */}
         <Card className="lg:col-span-2 bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20">
-          <CardHeader>
-            <CardTitle className="text-[var(--texto-principal)]">Servicios por Mes</CardTitle>
+          <CardHeader className="flex flex-col items-stretch space-y-0 border-b border-[var(--borde)] p-0 sm:flex-row">
+            <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+              <CardTitle className="text-[var(--texto-principal)]">
+                Actividad del Taller
+              </CardTitle>
+              <CardDescription className="text-[var(--texto-secundario)]">
+                Ultimos 3 meses de actividad diaria
+              </CardDescription>
+            </div>
+            <div className="flex">
+              {["servicios", "facturado"].map((clave) => (
+                <button
+                  key={clave}
+                  className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t border-[var(--borde)] px-6 py-4 text-left even:border-l sm:border-l sm:border-t-0 sm:px-8 sm:py-6 transition-colors data-[active=true]:bg-[var(--acento)]/5"
+                  data-active={serieActiva === clave}
+                  onClick={() => setSerieActiva(clave)}
+                >
+                  <span className="text-xs text-[var(--texto-secundario)]">
+                    {configGrafico[clave].label}
+                  </span>
+                  <span className="text-lg font-bold leading-none sm:text-3xl font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
+                    {clave === "facturado"
+                      ? `\u20AC${totales.facturado.toLocaleString("es-ES")}`
+                      : totales.servicios.toLocaleString("es-ES")}
+                  </span>
+                </button>
+              ))}
+            </div>
           </CardHeader>
-          <CardContent>
-            {datosGrafico.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={datosGrafico}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--borde)" />
-                  <XAxis dataKey="mes" stroke="var(--texto-secundario)" fontSize={12} />
-                  <YAxis stroke="var(--texto-secundario)" fontSize={12} />
-                  <Tooltip
-                    contentStyle={{
-                      background: "var(--fondo-tarjeta)",
-                      border: "1px solid var(--borde)",
-                      borderRadius: "var(--radio-md)",
-                      color: "var(--texto-principal)",
-                    }}
-                  />
-                  <Bar dataKey="servicios" fill="var(--acento)" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-[300px] text-[var(--texto-deshabilitado)]">
-                Sin datos de gráfico disponibles
-              </div>
-            )}
+          <CardContent className="px-2 sm:p-6">
+            <ChartContainer
+              config={configGrafico}
+              className="aspect-auto h-[250px] w-full"
+            >
+              <BarChart
+                data={datosGrafico}
+                margin={{ left: 12, right: 12 }}
+              >
+                <CartesianGrid vertical={false} stroke="var(--borde)" />
+                <XAxis
+                  dataKey="fecha"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  minTickGap={32}
+                  tickFormatter={(valor) => {
+                    const fecha = new Date(valor);
+                    return fecha.toLocaleDateString("es-ES", {
+                      month: "short",
+                      day: "numeric",
+                    });
+                  }}
+                />
+                <ChartTooltip
+                  content={
+                    <ChartTooltipContent
+                      className="w-[160px] bg-[var(--fondo-tarjeta)] border-[var(--borde)] text-[var(--texto-principal)]"
+                      nameKey={serieActiva}
+                      labelFormatter={(valor) => {
+                        return new Date(valor).toLocaleDateString("es-ES", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        });
+                      }}
+                    />
+                  }
+                />
+                <Bar
+                  dataKey={serieActiva}
+                  fill={`var(--color-${serieActiva})`}
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ChartContainer>
           </CardContent>
         </Card>
 
-        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
-          <CardHeader>
-            <CardTitle className="text-[var(--texto-principal)]">Satisfacción</CardTitle>
+        {/* Grafico radial de satisfaccion */}
+        <Card className="bg-gradient-to-br from-[var(--fondo-tarjeta)] to-[#0F172A] border-[var(--borde)] shadow-lg shadow-black/20 flex flex-col">
+          <CardHeader className="items-center pb-0">
+            <CardTitle className="text-[var(--texto-principal)]">Satisfaccion</CardTitle>
+            <CardDescription className="text-[var(--texto-secundario)]">
+              Tasa de satisfaccion del cliente
+            </CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center h-[300px] gap-4">
-            <div className="relative flex items-center justify-center w-36 h-36">
-              <svg className="w-36 h-36 -rotate-90" viewBox="0 0 120 120">
-                <circle
-                  cx="60"
-                  cy="60"
-                  r="50"
-                  fill="none"
-                  stroke="var(--borde)"
-                  strokeWidth="10"
+          <CardContent className="flex-1 flex items-center justify-center pb-0">
+            <ChartContainer
+              config={configRadial}
+              className="mx-auto aspect-square max-h-[250px] w-full"
+            >
+              <RadialBarChart
+                data={datosRadial}
+                startAngle={90}
+                endAngle={90 + (360 * estadisticas.satisfaccion) / 100}
+                innerRadius={80}
+                outerRadius={110}
+              >
+                <PolarGrid
+                  gridType="circle"
+                  radialLines={false}
+                  stroke="none"
+                  className="first:fill-[var(--borde)] last:fill-[var(--fondo-tarjeta)]"
+                  polarRadius={[86, 74]}
                 />
-                <circle
-                  cx="60"
-                  cy="60"
-                  r="50"
-                  fill="none"
-                  stroke="var(--exito)"
-                  strokeWidth="10"
-                  strokeLinecap="round"
-                  strokeDasharray={`${2 * Math.PI * 50}`}
-                  strokeDashoffset={`${2 * Math.PI * 50 * (1 - estadisticas.satisfaccion / 100)}`}
-                  className="transition-all duration-700"
+                <RadialBar
+                  dataKey="valor"
+                  background
+                  cornerRadius={10}
+                  fill="var(--exito, #22c55e)"
                 />
-              </svg>
-              <span className="absolute text-2xl font-bold font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
-                {estadisticas.satisfaccion}%
-              </span>
-            </div>
-            <p className="text-sm text-[var(--texto-secundario)] text-center">
-              Tasa de satisfacción del cliente
-            </p>
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          <tspan
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            className="text-4xl font-bold"
+                            style={{ fill: "var(--texto-principal)" }}
+                          >
+                            {estadisticas.satisfaccion}%
+                          </tspan>
+                        </text>
+                      );
+                    }
+                  }}
+                />
+              </RadialBarChart>
+            </ChartContainer>
           </CardContent>
+          <CardFooter className="flex-col gap-2 text-sm border-t-0 bg-transparent">
+            <div className="flex items-center gap-2 font-medium leading-none text-[var(--texto-principal)]">
+              Tendencia positiva este mes <TrendUp size={16} className="text-[var(--exito)]" />
+            </div>
+            <div className="leading-none text-[var(--texto-deshabilitado)]">
+              Basado en encuestas de los ultimos 90 dias
+            </div>
+          </CardFooter>
         </Card>
       </div>
 
@@ -314,10 +437,10 @@ const PaginaPanel = () => {
                   {serviciosRecientes.map((s) => (
                     <TableRow key={s.id} className="border-[var(--borde)]">
                       <TableCell className="text-[var(--texto-principal)]">
-                        {s.clienteNombre ?? s.clienteId ?? "—"}
+                        {s.clienteNombre ?? s.clienteId ?? "\u2014"}
                       </TableCell>
                       <TableCell className="text-[var(--texto-secundario)]">
-                        {s.tipoServicio ?? "—"}
+                        {s.tipoServicio ?? "\u2014"}
                       </TableCell>
                       <TableCell>
                         <Badge
@@ -328,7 +451,7 @@ const PaginaPanel = () => {
                         </Badge>
                       </TableCell>
                       <TableCell className="font-[family-name:var(--fuente-datos)] text-[var(--texto-principal)]">
-                        €{(s.costo ?? 0).toFixed(2)}
+                        \u20AC{(s.costo ?? 0).toFixed(2)}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -336,7 +459,7 @@ const PaginaPanel = () => {
               </Table>
             ) : (
               <p className="text-center py-8 text-[var(--texto-deshabilitado)]">
-                No hay servicios registrados aún.
+                No hay servicios registrados aun.
               </p>
             )}
           </CardContent>
@@ -376,7 +499,7 @@ const PaginaPanel = () => {
               </div>
             ) : (
               <p className="text-center py-8 text-[var(--texto-deshabilitado)]">
-                No hay clientes registrados aún.
+                No hay clientes registrados aun.
               </p>
             )}
           </CardContent>
@@ -386,7 +509,7 @@ const PaginaPanel = () => {
       {/* Quick actions */}
       <div>
         <h2 className="text-lg font-semibold text-[var(--texto-principal)] mb-4">
-          Acciones Rápidas
+          Acciones Rapidas
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)] hover:border-[var(--acento)]/30 transition-colors cursor-pointer">
@@ -423,10 +546,10 @@ const PaginaPanel = () => {
                 <Car size={24} weight="duotone" className="text-[var(--advertencia)]" />
               </div>
               <h4 className="text-sm font-semibold text-[var(--texto-principal)] mb-1">
-                Gestionar Vehículos
+                Gestionar Vehiculos
               </h4>
               <p className="text-xs text-[var(--texto-secundario)]">
-                Ver y administrar vehículos registrados
+                Ver y administrar vehiculos registrados
               </p>
             </Link>
           </Card>
