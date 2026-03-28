@@ -1,17 +1,29 @@
+import { useState, useEffect } from "react";
 import Accordion from "../Accordion/Accordion";
 
 import accordionImg from "/assets/img/accordion-side-img.jpg";
+import { servicioConfiguracion } from "../../servicios/servicioConfiguracion";
 
-const contactDetails = {
+const CONFIG_POR_DEFECTO = {
   title: " Preguntas frecuentes",
-  phone: "+34 640 16 29 47",
+  telefono: "+34 640 16 29 47",
   email: "info@loyolamotors.es",
-  address: "Calle Sant Ignasi de Loiola, 21 - BJ IZ, 46008 Valencia",
-  workingHours: "Lun - Vie: 9:00 - 18:00",
+  direccion: "Calle Sant Ignasi de Loiola, 21 - BJ IZ, 46008 Valencia",
+  horario: "Lun - Vie: 9:00 - 18:00",
 };
 
 const FrequentlyQuestions = () => {
-  const { title, phone, email, address, workingHours } = contactDetails;
+  const [config, setConfig] = useState(CONFIG_POR_DEFECTO);
+
+  useEffect(() => {
+    servicioConfiguracion.obtener().then(setConfig);
+  }, []);
+
+  const title = " Preguntas frecuentes";
+  const phone = config.telefono || CONFIG_POR_DEFECTO.telefono;
+  const email = config.email || CONFIG_POR_DEFECTO.email;
+  const address = config.direccion || CONFIG_POR_DEFECTO.direccion;
+  const workingHours = config.horario || CONFIG_POR_DEFECTO.horario;
 
   return (
     <div className="container">

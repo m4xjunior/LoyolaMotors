@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import BlogCard from "../components/Blog/BlogCard";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 import BlogFeature from "../components/Blog/BlogFeature";
 import Pagination from "../components/Pagination/Pagination";
 
-import blogsData from "../dataJson/blogsData.json";
+import blogsDataFallback from "../dataJson/blogsData.json";
+import { servicioContenido } from "../servicios/servicioContenido";
 
 const Blog = () => {
+  const [blogsData, setBlogsData] = useState(blogsDataFallback);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
+
+  useEffect(() => {
+    servicioContenido.obtener('blog').then(r => {
+      if (r.length > 0) setBlogsData(r);
+    });
+  }, []);
 
   const totalPages = Math.ceil(blogsData.length / postsPerPage);
 

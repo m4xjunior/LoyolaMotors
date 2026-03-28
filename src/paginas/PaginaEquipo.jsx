@@ -1,11 +1,20 @@
-
+import { useState, useEffect } from "react";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 import PersonDetails from "../components/Team/PersonDetails";
 import MemberCard from "../components/Team/MemberCard";
 
-import membersData from "../dataJson/teamMembersData.json";
+import membersDataFallback from "../dataJson/teamMembersData.json";
+import { servicioContenido } from "../servicios/servicioContenido";
 
 const Team = () => {
+  const [membersData, setMembersData] = useState(membersDataFallback);
+
+  useEffect(() => {
+    servicioContenido.obtener('equipo').then(r => {
+      if (r.length > 0) setMembersData(r);
+    });
+  }, []);
+
   return (
     <>
       <CommonPageHero title={"Equipo"} />

@@ -1,8 +1,10 @@
+import { useState, useEffect } from "react";
 import SectionHeading from "../SectionHeading/SectionHeading";
 import { MoreBtn } from "../Button/Button";
 import TeamCard from "./TeamCard";
+import { servicioContenido } from "../../servicios/servicioContenido";
 
-const membersData = [
+const MEMBERS_POR_DEFECTO = [
   {
     id: 1,
     name: "Darrell T. Beedle",
@@ -60,6 +62,14 @@ const membersData = [
 ];
 
 const Teams = () => {
+  const [membersData, setMembersData] = useState(MEMBERS_POR_DEFECTO);
+
+  useEffect(() => {
+    servicioContenido.obtener('equipo').then(r => {
+      if (r.length > 0) setMembersData(r);
+    });
+  }, []);
+
   return (
     <div className="container">
       <div className="ak-height-190 ak-height-lg-80"></div>

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import BlogCard from "../components/Blog/BlogCard";
@@ -5,10 +6,19 @@ import BlogPost from "../components/Blog/BlogPost";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 import SectionHeading from "../components/SectionHeading/SectionHeading";
 
-import blogsData from "../dataJson/blogsData.json";
+import blogsDataFallback from "../dataJson/blogsData.json";
+import { servicioContenido } from "../servicios/servicioContenido";
 
 const SingleBlog = () => {
   const { blogId } = useParams();
+  const [blogsData, setBlogsData] = useState(blogsDataFallback);
+
+  useEffect(() => {
+    servicioContenido.obtener('blog').then(r => {
+      if (r.length > 0) setBlogsData(r);
+    });
+  }, []);
+
   const blog = blogsData.find((post) => post.id === parseInt(blogId));
 
   const similarBlogs = blogsData

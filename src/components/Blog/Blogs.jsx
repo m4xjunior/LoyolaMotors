@@ -1,9 +1,18 @@
+import { useState, useEffect } from "react";
 import BlogCard from "./BlogCard";
 import SectionHeading from "../SectionHeading/SectionHeading";
-import blogsData from "../../dataJson/blogsData.json";
-
+import blogsDataFallback from "../../dataJson/blogsData.json";
+import { servicioContenido } from "../../servicios/servicioContenido";
 
 const Blogs = () => {
+  const [blogsData, setBlogsData] = useState(blogsDataFallback);
+
+  useEffect(() => {
+    servicioContenido.obtener('blog').then(r => {
+      if (r.length > 0) setBlogsData(r);
+    });
+  }, []);
+
   const blogPosts = blogsData.slice(0, 3); // Show first 3 posts
   return (
     <div className="container">

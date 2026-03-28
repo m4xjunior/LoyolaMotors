@@ -1,49 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import TextAnimation from "../../components/TextAnimation/TextAnimation";
+import { servicioConfiguracion } from "../../servicios/servicioConfiguracion";
 
 import footerLogo from "/assets/img/icon/loyola-logo-v2.png";
 
-const footerDataArray = [
-  {
-    className: "footer-info",
-    dataAosDelay: "0",
-    phone: "+34 640 16 29 47",
-    desp: "Loyola Motors Valencia — Taller especializado en chapa, pintura y mecánica general con más de 20 años de experiencia en el centro de Valencia.",
+const CONFIG_POR_DEFECTO = {
+  telefono: '+34 640 16 29 47',
+  email: 'info@loyolamotors.es',
+  direccion: 'Calle Sant Ignasi de Loiola, 21 - BJ IZ, 46008 Valencia',
+  horario: 'Lun - Vie: 9:00 - 18:00',
+  redesSociales: {
+    facebook: 'https://www.facebook.com/',
+    linkedin: 'https://www.linkedin.com/',
+    twitter: 'https://www.x.com/',
   },
-  {
-    className: "footer-menu-one",
-    dataAosDelay: "50",
-    links: [
-      { title: "Sobre nosotros", link: "/about" },
-      { title: "Servicios", link: "/service" },
-      { title: "Precios", link: "/pricing" },
-      { title: "Equipo", link: "/team" },
-      { title: "Contacto", link: "/contact" },
-    ],
-  },
-  {
-    className: "footer-menu-two",
-    dataAosDelay: "100",
-    links: [
-      { title: "Cita previa", link: "/appointment" },
-      { title: "Blog", link: "/blog" },
-      { title: "Preguntas frecuentes", link: "/faq" },
-      { title: "Términos y Condiciones", link: "/terms-conditions" },
-      { title: "Política de Privacidad", link: "/privacy-policy" },
-    ],
-  },
-  {
-    className: "footer-address",
-    dataAosDelay: "150",
-    address: "Calle Sant Ignasi de Loiola, 21 - BJ IZ, 46008 Valencia",
-    email: "info@loyolamotors.es",
-  },
-];
+};
 
 const PiePagina = () => {
+  const [config, setConfig] = useState(CONFIG_POR_DEFECTO);
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    servicioConfiguracion.obtener().then(setConfig);
+  }, []);
+
+  const telefono = config.telefono || CONFIG_POR_DEFECTO.telefono;
+  const emailEmpresa = config.email || CONFIG_POR_DEFECTO.email;
+  const direccion = config.direccion || CONFIG_POR_DEFECTO.direccion;
+  const horario = config.horario || CONFIG_POR_DEFECTO.horario;
+  const telefonoHref = `tel:${telefono.replace(/\s/g, '')}`;
+  const redesSociales = config.redesSociales || CONFIG_POR_DEFECTO.redesSociales;
+
+  const menuPrincipal = [
+    { title: "Sobre nosotros", link: "/about" },
+    { title: "Servicios", link: "/service" },
+    { title: "Precios", link: "/pricing" },
+    { title: "Equipo", link: "/team" },
+    { title: "Contacto", link: "/contact" },
+  ];
+
+  const menuSecundario = [
+    { title: "Cita previa", link: "/appointment" },
+    { title: "Blog", link: "/blog" },
+    { title: "Preguntas frecuentes", link: "/faq" },
+    { title: "Términos y Condiciones", link: "/terms-conditions" },
+    { title: "Política de Privacidad", link: "/privacy-policy" },
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -130,78 +134,108 @@ const PiePagina = () => {
             <div className="ak-height-15 ak-height-lg-10"></div>
           </div>
           <div className="footer-content">
-            {footerDataArray.map((item, index) => (
-              <div
-                key={index}
-                className={item.className}
-                data-aos="fade-up"
-                data-aos-delay={item.dataAosDelay}
-                data-aos-duration="500"
-              >
-                {item.phone && (
-                  <>
-                    <p className="desp">{item.desp}</p>
-                    <div className="ak-height-35 ak-height-lg-30"></div>
-                    <div className="d-flex align-items-center gap-3">
-                      <div className="heartbeat-icon">
-                        <Link to="tel:+34640162947">
-                          <span className="ak-heartbeat-btn">
-                            <img src="/assets/img/icon/phone.svg" alt="..." />
-                          </span>
-                        </Link>
-                      </div>
-                      <TextAnimation
-                        link={"tel:+34640162947"}
-                        title={item.phone}
-                        classNamePass="phone white"
-                      />
-                    </div>
-                  </>
-                )}
-                {item.links && (
-                  <div className="footer-menu">
-                    <p className="menu-title">ENLACES RÁPIDOS</p>
-                    {item.links.map((item, idx) => (
-                      <TextAnimation
-                        key={idx}
-                        link={item.link}
-                        title={item.title}
-                        classNamePass="menu-item white"
-                      />
-                    ))}
-                  </div>
-                )}
-                {item.address && (
-                  <div className="footer-address">
-                    <p className="adress-title">UBICACIÓN Y CONTACTO</p>
-                    <Link to="#" className="location">
-                      <span className="me-1">
-                        <img
-                          src="/assets/img/icon/location.svg"
-                          alt="Location"
-                        />
-                      </span>
-                      {item.address}
-                    </Link>
-                    <Link to={`mailto:${item.email}`} className="email">
-                      <span className="me-1">
-                        <img src="/assets/img/icon/email.svg" alt="Email" />
-                      </span>
-                      {item.email}
-                    </Link>
-                    <p className="date">
-                      <span className="me-1">
-                        <img
-                          src="/assets/img/icon/calender.svg"
-                          alt="Calendar"
-                        />
-                      </span>
-                      Horario: Lun - Vie 9:00 - 18:00
-                    </p>
-                  </div>
-                )}
+            {/* Footer info column */}
+            <div
+              className="footer-info"
+              data-aos="fade-up"
+              data-aos-delay="0"
+              data-aos-duration="500"
+            >
+              <p className="desp">
+                Loyola Motors Valencia — Taller especializado en chapa, pintura y mecánica general con más de 20 años de experiencia en el centro de Valencia.
+              </p>
+              <div className="ak-height-35 ak-height-lg-30"></div>
+              <div className="d-flex align-items-center gap-3">
+                <div className="heartbeat-icon">
+                  <Link to={telefonoHref}>
+                    <span className="ak-heartbeat-btn">
+                      <img src="/assets/img/icon/phone.svg" alt="..." />
+                    </span>
+                  </Link>
+                </div>
+                <TextAnimation
+                  link={telefonoHref}
+                  title={telefono}
+                  classNamePass="phone white"
+                />
               </div>
-            ))}
+            </div>
+
+            {/* Menu principal */}
+            <div
+              className="footer-menu-one"
+              data-aos="fade-up"
+              data-aos-delay="50"
+              data-aos-duration="500"
+            >
+              <div className="footer-menu">
+                <p className="menu-title">ENLACES RÁPIDOS</p>
+                {menuPrincipal.map((item, idx) => (
+                  <TextAnimation
+                    key={idx}
+                    link={item.link}
+                    title={item.title}
+                    classNamePass="menu-item white"
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Menu secundario */}
+            <div
+              className="footer-menu-two"
+              data-aos="fade-up"
+              data-aos-delay="100"
+              data-aos-duration="500"
+            >
+              <div className="footer-menu">
+                <p className="menu-title">ENLACES RÁPIDOS</p>
+                {menuSecundario.map((item, idx) => (
+                  <TextAnimation
+                    key={idx}
+                    link={item.link}
+                    title={item.title}
+                    classNamePass="menu-item white"
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Dirección y contacto */}
+            <div
+              className="footer-address"
+              data-aos="fade-up"
+              data-aos-delay="150"
+              data-aos-duration="500"
+            >
+              <div className="footer-address">
+                <p className="adress-title">UBICACIÓN Y CONTACTO</p>
+                <Link to="#" className="location">
+                  <span className="me-1">
+                    <img
+                      src="/assets/img/icon/location.svg"
+                      alt="Location"
+                    />
+                  </span>
+                  {direccion}
+                </Link>
+                <Link to={`mailto:${emailEmpresa}`} className="email">
+                  <span className="me-1">
+                    <img src="/assets/img/icon/email.svg" alt="Email" />
+                  </span>
+                  {emailEmpresa}
+                </Link>
+                <p className="date">
+                  <span className="me-1">
+                    <img
+                      src="/assets/img/icon/calender.svg"
+                      alt="Calendar"
+                    />
+                  </span>
+                  Horario: {horario}
+                </p>
+              </div>
+            </div>
           </div>
           <div className="ak-height-70 ak-height-lg-30"></div>
           <div className="primary-color-border"></div>
@@ -230,15 +264,21 @@ const PiePagina = () => {
               </Link>
             </p>
             <div className="social-icon">
-              <Link to="https://www.facebook.com/">
-                <img src="/assets/img/icon/facebookicon.svg" alt="..." />
-              </Link>
-              <Link to="https://www.linkedin.com/">
-                <img src="/assets/img/icon/linkedinicon.svg" alt="..." />
-              </Link>
-              <Link to="https://www.x.com/">
-                <img src="/assets/img/icon/twittericon.svg" alt="..." />
-              </Link>
+              {redesSociales.facebook && (
+                <Link to={redesSociales.facebook}>
+                  <img src="/assets/img/icon/facebookicon.svg" alt="..." />
+                </Link>
+              )}
+              {redesSociales.linkedin && (
+                <Link to={redesSociales.linkedin}>
+                  <img src="/assets/img/icon/linkedinicon.svg" alt="..." />
+                </Link>
+              )}
+              {redesSociales.twitter && (
+                <Link to={redesSociales.twitter}>
+                  <img src="/assets/img/icon/twittericon.svg" alt="..." />
+                </Link>
+              )}
             </div>
           </div>
         </div>

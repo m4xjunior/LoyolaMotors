@@ -1,13 +1,24 @@
+import { useState, useEffect } from "react";
 import { CtaBtn } from "../Button/Button";
+import { servicioConfiguracion } from "../../servicios/servicioConfiguracion";
 
-const ctaData = {
-  title: "¡Oferta limitada!",
-  description:
-    "Sólo 15 plazas disponibles este mes para el paquete 'Transformación completa' (pintura total + revisión + garantía 1 año). Precio: €1.400 (normal €1.650) – ahorra 15%.",
+const CONFIG_POR_DEFECTO = {
+  telefono: '+34 640 16 29 47',
+  ctaTitulo: '¡Oferta limitada!',
+  ctaDescripcion: "Sólo 15 plazas disponibles este mes para el paquete 'Transformación completa' (pintura total + revisión + garantía 1 año). Precio: €1.400 (normal €1.650) – ahorra 15%.",
 };
 
 const Cta = () => {
-  const { title, description } = ctaData;
+  const [config, setConfig] = useState(CONFIG_POR_DEFECTO);
+
+  useEffect(() => {
+    servicioConfiguracion.obtener().then(setConfig);
+  }, []);
+
+  const title = config.ctaTitulo || CONFIG_POR_DEFECTO.ctaTitulo;
+  const description = config.ctaDescripcion || CONFIG_POR_DEFECTO.ctaDescripcion;
+  const telefono = config.telefono || CONFIG_POR_DEFECTO.telefono;
+  const telefonoHref = `tel:${telefono.replace(/\s/g, '')}`;
 
   return (
     <div className="container">
@@ -20,8 +31,8 @@ const Cta = () => {
             {title}
           </h2>
           <p className="cta-desp">{description}</p>
-          <CtaBtn to="tel:+34640162947">
-            Reserva tu plaza ahora – Llama +34 640 16 29 47
+          <CtaBtn to={telefonoHref}>
+            Reserva tu plaza ahora – Llama {telefono}
           </CtaBtn>
         </div>
       </div>

@@ -1,11 +1,13 @@
+import { useState, useEffect } from "react";
 import {
   Accordion as ShadcnAccordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { servicioContenido } from "../../servicios/servicioContenido";
 
-const faqItems = [
+const FAQ_POR_DEFECTO = [
   {
     title: "¿Qué servicios ofrecéis en vuestro taller?",
     content:
@@ -34,6 +36,14 @@ const faqItems = [
 ];
 
 const Accordion = () => {
+  const [faqItems, setFaqItems] = useState(FAQ_POR_DEFECTO);
+
+  useEffect(() => {
+    servicioContenido.obtener('preguntas').then(r => {
+      if (r.length > 0) setFaqItems(r);
+    });
+  }, []);
+
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",

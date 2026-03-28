@@ -1,12 +1,22 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import LightGallery from "lightgallery/react";
 import lgThumbnail from "lightgallery/plugins/thumbnail";
 import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
 
-import imageData from "../dataJson/galleryImgData.json";
+import imageDataFallback from "../dataJson/galleryImgData.json";
+import { servicioContenido } from "../servicios/servicioContenido";
 
 const Gallery = () => {
+  const [imageData, setImageData] = useState(imageDataFallback);
+
+  useEffect(() => {
+    servicioContenido.obtener('galeria').then(r => {
+      if (r.length > 0) setImageData(r);
+    });
+  }, []);
+
   return (
     <>
       <CommonPageHero title={"Galería"} />
