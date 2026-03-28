@@ -1,0 +1,198 @@
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: inherit;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    /* Light defaults — public pages (Bootstrap) */
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: #DC2626;
+    --primary-foreground: #FFFFFF;
+    --secondary: oklch(0.96 0 0);
+    --secondary-foreground: oklch(0.145 0 0);
+    --muted: oklch(0.96 0 0);
+    --muted-foreground: oklch(0.45 0 0);
+    --accent: oklch(0.96 0 0);
+    --accent-foreground: oklch(0.145 0 0);
+    --destructive: #EF4444;
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: #DC2626;
+    --chart-1: #DC2626;
+    --chart-2: #3B82F6;
+    --chart-3: #22C55E;
+    --chart-4: #F59E0B;
+    --chart-5: #8B5CF6;
+    --radius: 0.625rem;
+
+    /* Semantic colors — available in both themes */
+    --exito: #22C55E;
+    --advertencia: #F59E0B;
+    --peligro: #EF4444;
+    --info: #3B82F6;
+
+    /* Typography */
+    --fuente-encabezado: 'Inter', sans-serif;
+    --fuente-cuerpo: 'Fira Sans', sans-serif;
+    --fuente-datos: 'Fira Code', monospace;
+
+    /* Sidebar — always dark */
+    --sidebar: #0F172A;
+    --sidebar-foreground: #E2E8F0;
+    --sidebar-primary: #DC2626;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #1E293B;
+    --sidebar-accent-foreground: #F1F5F9;
+    --sidebar-border: #334155;
+    --sidebar-ring: #DC2626;
+}
+
+/* Loyola Motors dark theme — applied to admin/dashboard via .dark class */
+.dark {
+    --background: #0F172A;
+    --foreground: #F8FAFC;
+    --card: #1E293B;
+    --card-foreground: #F8FAFC;
+    --popover: #1E293B;
+    --popover-foreground: #F8FAFC;
+    --primary: #DC2626;
+    --primary-foreground: #FFFFFF;
+    --secondary: #334155;
+    --secondary-foreground: #F8FAFC;
+    --muted: #334155;
+    --muted-foreground: #94A3B8;
+    --accent: #334155;
+    --accent-foreground: #F8FAFC;
+    --destructive: #EF4444;
+    --border: #334155;
+    --input: #334155;
+    --ring: #DC2626;
+
+    /* Backward-compat aliases — map old custom tokens to unified system.
+       These allow existing var(--fondo) etc. references to keep working
+       while we migrate files to use bg-background, text-foreground, etc. */
+    --fondo: var(--background);
+    --fondo-tarjeta: var(--card);
+    --fondo-elevado: var(--muted);
+    --texto-principal: var(--foreground);
+    --texto-secundario: var(--muted-foreground);
+    --texto-deshabilitado: #64748B;
+    --acento: var(--primary);
+    --acento-hover: #B91C1C;
+    --borde: var(--border);
+    --borde-enfoque: var(--ring);
+    --radio-sm: calc(var(--radius) * 0.6);
+    --radio-md: calc(var(--radius) * 0.8);
+    --radio-lg: var(--radius);
+    --radio-xl: calc(var(--radius) * 1.4);
+}
+
+/* Override Bootstrap .bg-primary inside shadcn/dark admin areas.
+   Bootstrap sets .bg-primary { background-color: #0d6efd !important; }
+   which hijacks Tailwind's bg-primary utility. */
+.dark .bg-primary {
+  background-color: var(--primary) !important;
+}
+.dark .text-primary {
+  color: var(--primary) !important;
+}
+.dark .text-primary-foreground {
+  color: var(--primary-foreground) !important;
+}
+.dark .border-primary {
+  border-color: var(--primary) !important;
+}
+
+/* Selective reset for shadcn components inside admin panel.
+   We can't use Tailwind preflight globally (breaks Bootstrap), so we
+   reset only the elements shadcn needs — specifically buttons inside
+   the sidebar and admin layout which inherit browser UA gray bg. */
+/* Reset browser UA defaults inside shadcn sidebar + admin inset.
+   We skip Tailwind preflight to preserve Bootstrap, so we must
+   manually reset elements that shadcn expects to be unstyled. */
+[data-slot="sidebar"],
+[data-slot="sidebar-inset"] {
+  /* Reset all buttons */
+  & button {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  /* Reset all links */
+  & a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Reset lists (Bootstrap adds bullets + padding) */
+  & ul, & ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  & li {
+    list-style: none;
+  }
+
+  /* Reset headings */
+  & h1, & h2, & h3, & h4, & h5, & h6 {
+    font-family: inherit;
+    font-style: normal;
+  }
+}

@@ -1,29 +1,44 @@
-import SectionHeading from "../TituloSecao/TituloSecao";
+import { useState, useEffect } from "react";
+import SectionHeading from "../SectionHeading/SectionHeading";
+import { servicioConfiguracion } from "../../servicios/servicioConfiguracion";
 
-const contactData = [
-  {
-    label: "Correo",
-    icon: "/assets/img/icon/email.svg",
-    info: ["info@loyolamotors.es"],
-  },
-  {
-    label: "Ubicación",
-    icon: "/assets/img/icon/location.svg",
-    info: ["Calle Sant Ignasi de Loiola, 21 - BJ IZ", "46008 Valencia, España"],
-  },
-  {
-    label: "Teléfono",
-    icon: "/assets/img/icon/phone.svg",
-    info: ["+34 640 16 29 47"],
-  },
-  {
-    label: "Horario",
-    icon: "/assets/img/icon/date-icon.svg",
-    info: ["Lun - Vie: 9:00 - 18:00"],
-  },
-];
+const CONFIG_POR_DEFECTO = {
+  telefono: '+34 640 16 29 47',
+  email: 'info@loyolamotors.es',
+  direccion: 'Calle Sant Ignasi de Loiola, 21 - BJ IZ, 46008 Valencia, España',
+  horario: 'Lun - Vie: 9:00 - 18:00',
+};
 
 const ContactInfo = () => {
+  const [config, setConfig] = useState(CONFIG_POR_DEFECTO);
+
+  useEffect(() => {
+    servicioConfiguracion.obtener().then(setConfig);
+  }, []);
+
+  const contactData = [
+    {
+      label: "Correo",
+      icon: "/assets/img/icon/email.svg",
+      info: [config.email],
+    },
+    {
+      label: "Ubicación",
+      icon: "/assets/img/icon/location.svg",
+      info: [config.direccion],
+    },
+    {
+      label: "Teléfono",
+      icon: "/assets/img/icon/phone.svg",
+      info: [config.telefono],
+    },
+    {
+      label: "Horario",
+      icon: "/assets/img/icon/date-icon.svg",
+      info: [config.horario],
+    },
+  ];
+
   return (
     <div className="container">
       <div className="ak-height-125 ak-height-lg-80"></div>

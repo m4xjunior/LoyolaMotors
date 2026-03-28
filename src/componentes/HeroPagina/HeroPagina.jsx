@@ -1,15 +1,29 @@
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
 
 const CommonPageHero = ({ title }) => {
   return (
     <div className="container">
       <div className="common-page-title">
         <h3 className="page-title">{title}</h3>
-        <div className="d-flex gap-2 align-items-center">
-          <Link to="/">Inicio</Link>
-          <p> / {title}</p>
-        </div>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Inicio</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{title}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
       <div className="primary-color-border"></div>
     </div>

@@ -27,11 +27,6 @@
     ]
   },
   {
-    "title": "Blog",
-    "link": "/blog",
-    "key": "blog"
-  },
-  {
     "title": "Páginas",
     "link": "#",
     "key": "pages",

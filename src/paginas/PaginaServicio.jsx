@@ -1,0 +1,16 @@
+
+import Services from "../components/Services/ServicesSection";
+import Cta from "../components/Cta/Cta";
+import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+
+const Service = () => {
+  return (
+    <>
+      <CommonPageHero title={"Servicios"} />
+      <Services />
+      <Cta />
+    </>
+  );
+};
+
+export default Service;

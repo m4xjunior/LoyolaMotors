@@ -1,50 +1,63 @@
-import PricingCard from "./CartaoPreco";
-import SectionHeading from "../TituloSecao/TituloSecao";
+import { useState, useEffect } from "react";
+import PricingCard from "./PricingCard";
+import SectionHeading from "../SectionHeading/SectionHeading";
+import { servicioContenido } from "../../servicios/servicioContenido";
 
 // Precios recomendados Loyola (comparados con mercado)
-const pricingData = [
+const DATOS_POR_DEFECTO = [
   {
-    title: "Retrovisor (unidad)",
-    discountPrice: "€35",
-    mainPrice: "€40-60 mercado",
-    options: [
+    id: 1,
+    nombre: "Retrovisor (unidad)",
+    precio: "€35",
+    precioMercado: "€40-60 mercado",
+    listaCaracteristicas: [
       "Pintura y montaje",
       "Garantía de satisfacción",
       "Entrega rápida",
       "Precio transparente",
     ],
-    isActive: false,
+    destacado: false,
     aosDelay: 0,
   },
   {
-    title: "Paragolpes (unidad)",
-    discountPrice: "€140-150",
-    mainPrice: "€160 mercado",
-    options: [
+    id: 2,
+    nombre: "Paragolpes (unidad)",
+    precio: "€140-150",
+    precioMercado: "€160 mercado",
+    listaCaracteristicas: [
       "Reparación + pintura",
       "Materiales de calidad",
       "Tiempos express",
       "Garantía escrita",
     ],
-    isActive: true,
+    destacado: true,
     aosDelay: 50,
   },
   {
-    title: "Pintura completa",
-    discountPrice: "€1.400-1.500",
-    mainPrice: "€1.650 mercado",
-    options: [
+    id: 3,
+    nombre: "Pintura completa",
+    precio: "€1.400-1.500",
+    precioMercado: "€1.650 mercado",
+    listaCaracteristicas: [
       "Lijado y preparación",
       "Cabina de pintura",
       "Pulido profesional",
       "Entrega con inspección final",
     ],
-    isActive: false,
+    destacado: false,
     aosDelay: 100,
   },
 ];
 
 const PricingTable = ({ type }) => {
+  const [datos, setDatos] = useState(DATOS_POR_DEFECTO);
+
+  useEffect(() => {
+    servicioContenido.obtener('precios', { orden: true }).then(r => {
+      if (r.length > 0) setDatos(r);
+    });
+  }, []);
+
   return (
     <>
       {type ? (
@@ -68,15 +81,15 @@ const PricingTable = ({ type }) => {
           )}
 
           <div className="pricing">
-            {pricingData.map((data, index) => (
+            {datos.map((data, index) => (
               <PricingCard
-                key={index}
-                title={data.title}
-                discountPrice={data.discountPrice}
-                mainPrice={data.mainPrice}
-                options={data.options}
-                isActive={data.isActive}
-                aosDelay={data.aosDelay}
+                key={data.id || index}
+                title={data.nombre}
+                discountPrice={data.precio}
+                mainPrice={data.precioMercado}
+                options={data.listaCaracteristicas || []}
+                isActive={data.destacado}
+                aosDelay={data.aosDelay || index * 50}
               />
             ))}
           </div>

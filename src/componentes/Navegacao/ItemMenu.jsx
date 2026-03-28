@@ -1,12 +1,12 @@
 import { isArray } from "lodash";
 import { useState } from "react";
 import classNames from "classnames";
-import TextAnimation from "../AnimacaoTexto/AnimacaoTexto";
-import { useAuth } from "../../contextos/ContextoAutenticacao";
+import TextAnimation from "../TextAnimation/TextAnimation";
+import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
 
 export default function MenuItem({ props }) {
   const [showMenu, setShowMenu] = useState(false);
-  const { isAuthenticated, hasRole } = useAuth();
+  const { estaAutenticado, tieneRol } = useAutenticacion();
 
   const showsubnav = () => {
     setShowMenu(!showMenu);
@@ -26,12 +26,12 @@ export default function MenuItem({ props }) {
     
     return props.childern.filter(child => {
       // If item requires authentication and user is not authenticated, hide it
-      if (child.requiresAuth && !isAuthenticated()) {
+      if (child.requiresAuth && !estaAutenticado()) {
         return false;
       }
-      
+
       // If item requires admin role and user doesn't have it, hide it
-      if (child.requiresAdmin && !hasRole('admin')) {
+      if (child.requiresAdmin && !tieneRol('admin')) {
         return false;
       }
       

@@ -1,7 +1,13 @@
-import { useState } from 'react';
-import AccordionItem from "./ItemAcordeao";
+import { useState, useEffect } from "react";
+import {
+  Accordion as ShadcnAccordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
+import { servicioContenido } from "../../servicios/servicioContenido";
 
-const faqItems = [
+const FAQ_POR_DEFECTO = [
   {
     title: "¿Qué servicios ofrecéis en vuestro taller?",
     content:
@@ -30,23 +36,25 @@ const faqItems = [
 ];
 
 const Accordion = () => {
-  const [openIndex, setOpenIndex] = useState(0);
+  const [faqItems, setFaqItems] = useState(FAQ_POR_DEFECTO);
 
-  const handleToggle = (index) => {
-    setOpenIndex(index);
-  };
+  useEffect(() => {
+    servicioContenido.obtener('preguntas').then(r => {
+      if (r.length > 0) setFaqItems(r);
+    });
+  }, []);
 
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": faqItems.map(item => ({
+    mainEntity: faqItems.map((item) => ({
       "@type": "Question",
-      "name": item.title,
-      "acceptedAnswer": {
+      name: item.title,
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": item.content
-      }
-    }))
+        text: item.content,
+      },
+    })),
   };
 
   return (
@@ -55,16 +63,14 @@ const Accordion = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      {faqItems.map((item, index) => (
-        <AccordionItem
-          key={index}
-          index={index}
-          title={item.title}
-          content={item.content}
-          isOpen={openIndex === index}
-          onToggle={handleToggle}
-        />
-      ))}
+      <ShadcnAccordion type="single" collapsible defaultValue="item-0">
+        {faqItems.map((item, index) => (
+          <AccordionItem key={index} value={`item-${index}`}>
+            <AccordionTrigger>{item.title}</AccordionTrigger>
+            <AccordionContent>{item.content}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </ShadcnAccordion>
     </div>
   );
 };

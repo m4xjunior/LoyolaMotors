@@ -1,117 +1,125 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "../../contextos/ContextoAutenticacao";
-import "./BarraNavAdmin.scss";
+import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
+import { Menu, Home, LayoutDashboard, Car, Wrench, Users } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import "./AdminNavBar.scss";
 
-const AdminNavBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { user, hasRole } = useAuth();
-  const location = useLocation();
+const BarraNavegacaoAdmin = () => {
+  const [estaAberto, setEstaAberto] = useState(false);
+  const { user: usuario, tieneRol: temPermissao } = useAutenticacion();
+  const localizacao = useLocation();
 
-  const adminMenuItems = [
+  const itensMenuAdmin = [
     {
-      title: "Dashboard",
-      path: "/dashboard",
-      icon: "📊",
-      requiredRole: "empleado",
+      titulo: "Panel",
+      caminho: "/panel",
+      icone: <LayoutDashboard size={20} />,
+      papelNecessario: "empleado",
     },
     {
-      title: "Clientes",
-      path: "/dashboard/clientes",
-      icon: "👥",
-      requiredRole: "empleado",
+      titulo: "Veículos",
+      caminho: "/panel/vehiculos",
+      icone: <Car size={20} />,
+      papelNecessario: "empleado",
     },
     {
-      title: "Veículos",
-      path: "/dashboard/vehiculos",
-      icon: "🚗",
-      requiredRole: "empleado",
+      titulo: "Serviços",
+      caminho: "/panel/servicios",
+      icone: <Wrench size={20} />,
+      papelNecessario: "empleado",
     },
     {
-      title: "Serviços",
-      path: "/dashboard/servicios",
-      icon: "🔧",
-      requiredRole: "empleado",
-    },
-    {
-      title: "Usuários",
-      path: "/dashboard/usuarios",
-      icon: "👤",
-      requiredRole: "admin",
+      titulo: "Usuários",
+      caminho: "/panel/usuarios",
+      icone: <Users size={20} />,
+      papelNecessario: "admin",
     },
   ];
 
-  const filteredMenuItems = adminMenuItems.filter((item) =>
-    hasRole(item.requiredRole),
+  const itensFiltrados = itensMenuAdmin.filter((item) =>
+    temPermissao(item.papelNecessario),
   );
 
-  const isActiveLink = (path) => {
+  const linkEstaAtivo = (caminho) => {
     return (
-      location.pathname === path || location.pathname.startsWith(path + "/")
+      localizacao.pathname === caminho || localizacao.pathname.startsWith(caminho + "/")
     );
   };
 
-  if (!user) return null;
+  // Solo mostrar en rutas de administración (/panel/*)
+  const esRutaAdmin = localizacao.pathname.startsWith("/panel");
+  if (!usuario || !esRutaAdmin) return null;
 
   return (
     <div className="admin-navbar">
-      {/* Mobile Toggle Button */}
-      <button
-        className={`admin-nav-toggle ${isOpen ? "active" : ""}`}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle Admin Menu"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
-      {/* Admin Navigation Menu */}
-      <nav className={`admin-nav-menu ${isOpen ? "open" : ""}`}>
-        <div className="admin-nav-header">
-          <div className="admin-user-info">
-            <div className="admin-avatar">{user.nombre?.charAt(0) || "A"}</div>
-            <div className="admin-user-details">
-              <span className="admin-user-name">{user.nombre || "Admin"}</span>
-              <span className="admin-user-role">
-                {user.rol === "admin" ? "Administrador" : "Funcionário"}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="admin-nav-items">
-          {filteredMenuItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`admin-nav-item ${isActiveLink(item.path) ? "active" : ""}`}
-              onClick={() => setIsOpen(false)}
-            >
-              <span className="admin-nav-icon">{item.icon}</span>
-              <span className="admin-nav-text">{item.title}</span>
-            </Link>
-          ))}
-        </div>
-
-        <div className="admin-nav-footer">
-          <Link
-            to="/"
-            className="admin-nav-item back-to-site"
-            onClick={() => setIsOpen(false)}
+      <Sheet open={estaAberto} onOpenChange={setEstaAberto}>
+        <SheetTrigger asChild>
+          <Button
+            variant="default"
+            size="icon"
+            className="w-[50px] h-[50px] rounded-full shadow-[0_4px_20px_rgba(255,61,36,0.3)] bg-gradient-to-br from-[#ff3d24] to-[#e02912] hover:scale-105 hover:shadow-[0_6px_25px_rgba(255,61,36,0.4)] transition-all border-none"
+            aria-label="Abrir Menu Administrativo"
           >
-            <span className="admin-nav-icon">🏠</span>
-            <span className="admin-nav-text">Voltar ao Site</span>
-          </Link>
-        </div>
-      </nav>
+            <Menu className="w-6 h-6 text-white" />
+          </Button>
+        </SheetTrigger>
 
-      {/* Overlay for mobile */}
-      {isOpen && (
-        <div className="admin-nav-overlay" onClick={() => setIsOpen(false)} />
-      )}
+        <SheetContent side="right" className="w-[300px] sm:w-[340px] bg-[#1a1a1a]/98 backdrop-blur-xl border-l border-white/10 text-white flex flex-col p-0 shadow-2xl">
+          <SheetHeader className="p-6 border-b border-white/10 bg-gradient-to-br from-red-600/10 to-red-600/5 text-left">
+            <SheetTitle className="sr-only">Menu de Administração</SheetTitle>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ff3d24] to-[#e02912] flex items-center justify-center text-white font-bold uppercase text-base">
+                {usuario.nombre?.charAt(0) || "A"}
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-sm font-semibold text-white leading-tight">{usuario.nombre || "Admin"}</span>
+                <span className="text-xs text-white/60 uppercase tracking-wider">
+                  {usuario.rol === "admin" ? "Administrador" : "Funcionário"}
+                </span>
+              </div>
+            </div>
+          </SheetHeader>
+
+          <nav className="flex-1 overflow-y-auto py-4 px-3 flex flex-col gap-1">
+            {itensFiltrados.map((item) => (
+              <Link
+                key={item.caminho}
+                to={item.caminho}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group relative overflow-hidden ${linkEstaAtivo(item.caminho)
+                    ? "text-[#ff3d24] bg-[#ff3d24]/10"
+                    : "text-white/80 hover:text-white hover:bg-white/5"
+                  }`}
+                onClick={() => setEstaAberto(false)}
+              >
+                {linkEstaAtivo(item.caminho) && (
+                  <span className="absolute left-0 top-0 bottom-0 w-1 bg-[#ff3d24] rounded-r-md"></span>
+                )}
+                <span className={`transition-transform duration-200 ${linkEstaAtivo(item.caminho) ? 'scale-110' : 'group-hover:scale-110'}`}>
+                  {item.icone}
+                </span>
+                {item.titulo}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="p-4 border-t border-white/10 mt-auto">
+            <Link
+              to="/"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-white/60 hover:text-green-500 transition-colors group"
+              onClick={() => setEstaAberto(false)}
+            >
+              <span className="transition-transform duration-200 group-hover:-rotate-6 group-hover:scale-110">
+                <Home size={20} />
+              </span>
+              Voltar ao Site
+            </Link>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
 
-export default AdminNavBar;
+export default BarraNavegacaoAdmin;

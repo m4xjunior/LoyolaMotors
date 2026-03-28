@@ -1,31 +1,39 @@
-import { useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade } from "swiper/modules";
-import SectionHeading from "../TituloSecao/TituloSecao";
+import SectionHeading from "../SectionHeading/SectionHeading";
+import { servicioContenido } from "../../servicios/servicioContenido";
 
 import testimaonialBgImg from "/assets/img/bg/testimaonial-img-bg.png";
 
-const sliderData = [
+const DATOS_POR_DEFECTO = [
   {
     id: 1,
-    name: "Roberts Bush",
-    from: "Canadá",
-    desp: "Loyola Motors devolvió mi coche como nuevo y a un precio que ni el taller oficial me ofrecía. ¡Los recomiendo al 100%!",
-    img: "/assets/img/testmaonail/testimaonial.png",
+    nombre: "Roberts Bush",
+    origen: "Canadá",
+    texto: "Loyola Motors devolvió mi coche como nuevo y a un precio que ni el taller oficial me ofrecía. ¡Los recomiendo al 100%!",
+    imagenUrl: "/assets/img/testmaonail/testimaonial.png",
     alt: "Cliente Roberts Bush satisfecho con la reparación de su coche en Loyola Motors",
   },
   {
     id: 2,
-    name: "María G.",
-    from: "Valencia",
-    desp: "Rapidez increíble: mi coche estaba listo en el mismo día que lo dejé. Excelente servicio y atención.",
-    img: "/assets/img/testmaonail/testmaonail_1.png",
+    nombre: "María G.",
+    origen: "Valencia",
+    texto: "Rapidez increíble: mi coche estaba listo en el mismo día que lo dejé. Excelente servicio y atención.",
+    imagenUrl: "/assets/img/testmaonail/testmaonail_1.png",
     alt: "Clienta María G. de Valencia contenta con el servicio rápido de Loyola Motors",
   },
 ];
 
 const Testimonial = () => {
   const swiperRef = useRef(null);
+  const [datos, setDatos] = useState(DATOS_POR_DEFECTO);
+
+  useEffect(() => {
+    servicioContenido.obtener('testimonios', { orden: true }).then(r => {
+      if (r.length > 0) setDatos(r);
+    });
+  }, []);
 
   const reviewSchema = (item) => ({
     "@context": "https://schema.org",
@@ -48,9 +56,9 @@ const Testimonial = () => {
     },
     "author": {
       "@type": "Person",
-      "name": item.name
+      "name": item.nombre
     },
-    "reviewBody": item.desp
+    "reviewBody": item.texto
   });
 
   return (
@@ -92,7 +100,7 @@ const Testimonial = () => {
               swiperRef.current = swiper;
             }}
           >
-            {sliderData.map((item) => (
+            {datos.map((item) => (
               <SwiperSlide key={item.id}>
                 <div className="testimonal-info ak-style1" itemScope itemType="https://schema.org/Review">
                   <script
@@ -102,8 +110,8 @@ const Testimonial = () => {
                   <div className="slider-info">
                     <div className="d-flex justify-content-between align-items-end">
                       <div>
-                        <h5 className="name" itemProp="author">{item.name}</h5>
-                        <p className="from">{item.from}</p>
+                        <h5 className="name" itemProp="author">{item.nombre}</h5>
+                        <p className="from">{item.origen}</p>
                       </div>
                       <div className="icon">
                         <svg
@@ -136,11 +144,11 @@ const Testimonial = () => {
                         </svg>
                       </div>
                     </div>
-                    <h4 className="desp" itemProp="reviewBody">{item.desp}</h4>
+                    <h4 className="desp" itemProp="reviewBody">{item.texto}</h4>
                   </div>
                   <img
-                    src={item.img}
-                    alt={item.alt}
+                    src={item.imagenUrl}
+                    alt={item.alt || item.nombre}
                     className="testimaonial-slide-img"
                   />
                 </div>
