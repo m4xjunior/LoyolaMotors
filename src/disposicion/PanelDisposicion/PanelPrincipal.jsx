@@ -1,7 +1,8 @@
 import { useEffect, useCallback } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import PanelBarraLateral from "./PanelBarraLateral";
-import PanelCabecera from "./PanelCabecera";
+import { SidebarLeft } from "@/components/sidebar-left";
+import { SidebarRight } from "@/components/sidebar-right";
+import { SiteHeader } from "@/components/site-header";
 import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
 import useMonitorInactividad from "../../hooks/useMonitorInactividad";
 import AvisoInactividad from "../../componentes/AvisoInactividad/AvisoInactividad";
@@ -42,13 +43,14 @@ const PanelPrincipal = () => {
   return (
     <>
       <SidebarProvider className="dark">
-        <PanelBarraLateral />
+        <SidebarLeft />
         <SidebarInset>
-          <PanelCabecera />
-          <div className="p-8 flex-1 overflow-y-auto bg-muted">
+          <SiteHeader />
+          <div className="flex flex-1 flex-col gap-4 p-4">
             <Outlet />
           </div>
         </SidebarInset>
+        <SidebarRight />
       </SidebarProvider>
       <AvisoInactividad
         isVisible={isWarning}

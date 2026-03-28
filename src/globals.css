@@ -85,47 +85,45 @@
     --fuente-cuerpo: 'Fira Sans', sans-serif;
     --fuente-datos: 'Fira Code', monospace;
 
-    /* Sidebar — always dark */
-    --sidebar: #0F172A;
-    --sidebar-foreground: #E2E8F0;
+    /* Sidebar — always dark neutral */
+    --sidebar: #18181B;
+    --sidebar-foreground: #E4E4E7;
     --sidebar-primary: #DC2626;
     --sidebar-primary-foreground: #FFFFFF;
-    --sidebar-accent: #1E293B;
-    --sidebar-accent-foreground: #F1F5F9;
-    --sidebar-border: #334155;
+    --sidebar-accent: #27272A;
+    --sidebar-accent-foreground: #FAFAFA;
+    --sidebar-border: #3F3F46;
     --sidebar-ring: #DC2626;
 }
 
-/* Loyola Motors dark theme — applied to admin/dashboard via .dark class */
+/* Loyola Motors dark theme — neutral zinc palette for automotive identity */
 .dark {
-    --background: #0F172A;
-    --foreground: #F8FAFC;
-    --card: #1E293B;
-    --card-foreground: #F8FAFC;
-    --popover: #1E293B;
-    --popover-foreground: #F8FAFC;
+    --background: #09090B;
+    --foreground: #FAFAFA;
+    --card: #18181B;
+    --card-foreground: #FAFAFA;
+    --popover: #18181B;
+    --popover-foreground: #FAFAFA;
     --primary: #DC2626;
     --primary-foreground: #FFFFFF;
-    --secondary: #334155;
-    --secondary-foreground: #F8FAFC;
-    --muted: #334155;
-    --muted-foreground: #94A3B8;
-    --accent: #334155;
-    --accent-foreground: #F8FAFC;
+    --secondary: #27272A;
+    --secondary-foreground: #FAFAFA;
+    --muted: #27272A;
+    --muted-foreground: #A1A1AA;
+    --accent: #27272A;
+    --accent-foreground: #FAFAFA;
     --destructive: #EF4444;
-    --border: #334155;
-    --input: #334155;
+    --border: #27272A;
+    --input: #27272A;
     --ring: #DC2626;
 
-    /* Backward-compat aliases — map old custom tokens to unified system.
-       These allow existing var(--fondo) etc. references to keep working
-       while we migrate files to use bg-background, text-foreground, etc. */
+    /* Backward-compat aliases */
     --fondo: var(--background);
     --fondo-tarjeta: var(--card);
     --fondo-elevado: var(--muted);
     --texto-principal: var(--foreground);
     --texto-secundario: var(--muted-foreground);
-    --texto-deshabilitado: #64748B;
+    --texto-deshabilitado: #71717A;
     --acento: var(--primary);
     --acento-hover: #B91C1C;
     --borde: var(--border);
