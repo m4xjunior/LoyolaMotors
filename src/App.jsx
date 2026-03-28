@@ -40,6 +40,9 @@ import PaginaPrivacidad from "./paginas/PaginaPrivacidad";
 import PaginaRepuestos from "./paginas/PaginaRepuestos";
 import PaginaCitas from "./paginas/PaginaCitas";
 import PaginaReportes from "./paginas/PaginaReportes";
+import PaginaAdminDiapositivas from "./paginas/PaginaAdminDiapositivas";
+import PaginaAdminPrecios from "./paginas/PaginaAdminPrecios";
+import PaginaAdminConfiguracion from "./paginas/PaginaAdminConfiguracion";
 
 export default function App() {
   const location = useLocation();
@@ -120,6 +123,31 @@ export default function App() {
         <Route path="repuestos" element={<PaginaRepuestos />} />
         <Route path="citas" element={<PaginaCitas />} />
         <Route path="reportes" element={<PaginaReportes />} />
+        {/* Rutas de administracion de contenido CMS */}
+        <Route
+          path="admin/diapositivas"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <PaginaAdminDiapositivas />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/precios"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <PaginaAdminPrecios />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="admin/configuracion"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <PaginaAdminConfiguracion />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
       <Route path="/*" element={<PaginaError />} />
