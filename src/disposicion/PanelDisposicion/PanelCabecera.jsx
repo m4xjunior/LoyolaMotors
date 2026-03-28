@@ -2,7 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
 import { usarPanel } from "./PanelPrincipal";
-import { List, Bell, SignOut, UserCircle, GearSix } from "@phosphor-icons/react";
+import { Bell, SignOut, UserCircle, GearSix } from "@phosphor-icons/react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 
 const titulos = {
   "/panel": "Panel Principal",
@@ -76,13 +78,8 @@ const PanelCabecera = () => {
       <div className="flex items-center justify-between">
         {/* Left section: toggle + title + breadcrumbs */}
         <div className="flex items-center gap-4">
-          <button
-            onClick={toggleSidebar}
-            aria-label="Toggle sidebar"
-            className="p-2 rounded-[var(--radio-md)] hover:bg-[var(--fondo-elevado)] text-[var(--texto-secundario)] transition-colors"
-          >
-            <List size={24} />
-          </button>
+          <SidebarTrigger className="text-[var(--texto-secundario)] hover:text-[var(--texto-principal)] hover:bg-[var(--fondo-elevado)]" />
+          <Separator orientation="vertical" className="mr-2 h-4 bg-[var(--borde)]" />
 
           <div className="flex flex-col">
             <h1 className="text-xl font-semibold text-[var(--texto-principal)] font-[family-name:var(--fuente-encabezado)]">

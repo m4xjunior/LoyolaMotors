@@ -5,9 +5,27 @@ import { CARACTERISTICAS } from "../../configuracion/caracteristicas";
 import {
   ChartBar, Users, Car, Wrench, Receipt, UserGear, SignOut,
   Package, CalendarDots, ChartLine, Images, Newspaper, Star,
-  Question, Tag, Sliders, CaretLeft, CaretRight
+  Question, Tag, Sliders, CaretLeft, CaretRight, House
 } from "@phosphor-icons/react";
 
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+  useSidebar,
+} from "@/components/ui/sidebar";
+
+// ============================================================
+// CONFIGURACIÓN DE MENÚ — Secciones y items del sidebar
+// ============================================================
 const secciones = [
   {
     titulo: "Principal",
@@ -19,7 +37,7 @@ const secciones = [
     titulo: "Taller",
     items: [
       { etiqueta: "Clientes", icono: Users, ruta: "/panel/clientes", roles: ["admin", "empleado"] },
-      { etiqueta: "Vehiculos", icono: Car, ruta: "/panel/vehiculos", roles: ["admin", "empleado"] },
+      { etiqueta: "Vehículos", icono: Car, ruta: "/panel/vehiculos", roles: ["admin", "empleado"] },
       { etiqueta: "Servicios", icono: Wrench, ruta: "/panel/servicios", roles: ["admin", "empleado"] },
       { etiqueta: "Facturas", icono: Receipt, ruta: "/panel/facturas", roles: ["admin", "empleado"] },
     ],
@@ -43,11 +61,11 @@ const secciones = [
       { etiqueta: "Servicios Web", icono: Wrench, ruta: "/panel/admin/servicios", roles: ["admin"] },
       { etiqueta: "Blog", icono: Newspaper, ruta: "/panel/admin/blog", roles: ["admin"] },
       { etiqueta: "Equipo", icono: Users, ruta: "/panel/admin/equipo", roles: ["admin"] },
-      { etiqueta: "Galeria", icono: Images, ruta: "/panel/admin/galeria", roles: ["admin"] },
+      { etiqueta: "Galería", icono: Images, ruta: "/panel/admin/galeria", roles: ["admin"] },
       { etiqueta: "Testimonios", icono: Star, ruta: "/panel/admin/testimonios", roles: ["admin"] },
       { etiqueta: "Preguntas", icono: Question, ruta: "/panel/admin/preguntas", roles: ["admin"] },
       { etiqueta: "Precios", icono: Tag, ruta: "/panel/admin/precios", roles: ["admin"] },
-      { etiqueta: "Configuracion", icono: Sliders, ruta: "/panel/admin/configuracion", roles: ["admin"] },
+      { etiqueta: "Configuración", icono: Sliders, ruta: "/panel/admin/configuracion", roles: ["admin"] },
     ],
   },
   {
@@ -58,9 +76,11 @@ const secciones = [
   },
 ];
 
+// ============================================================
+// COMPONENTE SIDEBAR — shadcn/ui Sidebar con estructura del taller
+// ============================================================
 const PanelBarraLateral = () => {
   const { user, cerrarSesion } = useAutenticacion();
-  const { isSidebarOpen, toggleSidebar } = usarPanel();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -75,9 +95,7 @@ const PanelBarraLateral = () => {
   };
 
   const esActivo = (ruta) => {
-    if (ruta === "/panel") {
-      return location.pathname === "/panel";
-    }
+    if (ruta === "/panel") return location.pathname === "/panel";
     return location.pathname === ruta || location.pathname.startsWith(ruta + "/");
   };
 
@@ -87,55 +105,33 @@ const PanelBarraLateral = () => {
   };
 
   return (
-    <aside
-      className={`
-        fixed top-0 left-0 h-screen z-50
-        bg-[var(--fondo)] border-r border-[var(--borde)]
-        transition-all duration-300 ease-in-out
-        overflow-y-auto overflow-x-hidden
-        flex flex-col
-        ${isSidebarOpen ? "w-[260px]" : "w-[80px]"}
-      `}
-    >
-      {/* Logo / Header */}
-      <div className="p-4 border-b border-[var(--borde)] flex items-center justify-between shrink-0 relative">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="w-9 h-9 rounded-xl bg-[var(--acento)] flex items-center justify-center shrink-0 text-white font-bold text-sm">
-            LM
-          </div>
-          {isSidebarOpen && (
-            <span className="font-bold text-[var(--texto-principal)] text-base whitespace-nowrap overflow-hidden text-ellipsis">
-              LoyolaMotors
-            </span>
-          )}
-        </div>
+    <Sidebar collapsible="icon" className="border-r border-[var(--borde)]">
+      {/* ── Header: Logo ── */}
+      <SidebarHeader className="border-b border-[var(--borde)] bg-[var(--fondo)]">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild className="hover:bg-transparent active:bg-transparent">
+              <Link to="/panel" className="no-underline">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden bg-transparent">
+                  <img
+                    src="/assets/img/icon/loyola-logo-v2.png"
+                    alt="Loyola Motors"
+                    className="size-8 object-contain"
+                  />
+                </div>
+                <div className="flex flex-col gap-0.5 leading-none">
+                  <span className="font-bold text-[var(--texto-principal)] text-sm">Loyola Motors</span>
+                  <span className="text-xs text-[var(--texto-secundario)]">Panel de Control</span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
 
-        {/* Collapse toggle */}
-        <button
-          onClick={toggleSidebar}
-          className={`
-            absolute -right-3 top-1/2 -translate-y-1/2
-            w-6 h-6 rounded-full
-            bg-[var(--fondo-elevado)] border border-[var(--borde)]
-            flex items-center justify-center
-            text-[var(--texto-secundario)] hover:text-[var(--texto-principal)]
-            transition-colors duration-200
-            z-10
-          `}
-          title={isSidebarOpen ? "Contraer" : "Expandir"}
-        >
-          {isSidebarOpen ? (
-            <CaretLeft size={12} weight="bold" />
-          ) : (
-            <CaretRight size={12} weight="bold" />
-          )}
-        </button>
-      </div>
-
-      {/* Navigation */}
-      <nav className="flex-1 py-2">
+      {/* ── Content: Secciones de navegación ── */}
+      <SidebarContent className="bg-[var(--fondo)]">
         {secciones.map((seccion) => {
-          // Check section visibility (for toggle-gated sections)
           if (seccion.visible && !seccion.visible()) return null;
 
           const itemsVisibles = seccion.items.filter(
@@ -145,99 +141,88 @@ const PanelBarraLateral = () => {
           if (itemsVisibles.length === 0) return null;
 
           return (
-            <div key={seccion.titulo}>
-              {/* Section title - only shown when sidebar is open */}
-              {isSidebarOpen && (
-                <p className="text-xs font-semibold uppercase tracking-wider text-[var(--texto-deshabilitado)] px-4 py-2 mt-4">
-                  {seccion.titulo}
-                </p>
-              )}
-              {/* Divider when collapsed */}
-              {!isSidebarOpen && (
-                <div className="mx-4 my-2 border-t border-[var(--borde)]" />
-              )}
+            <SidebarGroup key={seccion.titulo}>
+              <SidebarGroupLabel className="text-[var(--texto-deshabilitado)] uppercase tracking-wider text-xs font-semibold">
+                {seccion.titulo}
+              </SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {itemsVisibles.map((item) => {
+                    const Icono = item.icono;
+                    const activo = esActivo(item.ruta);
 
-              <ul className="list-none m-0 p-0">
-                {itemsVisibles.map((item) => {
-                  const Icono = item.icono;
-                  const activo = esActivo(item.ruta);
-
-                  return (
-                    <li key={item.ruta}>
-                      <Link
-                        to={item.ruta}
-                        title={!isSidebarOpen ? item.etiqueta : undefined}
-                        className={`
-                          flex items-center gap-3 px-4 py-3 mx-2 rounded-[var(--radio-md)]
-                          text-[var(--texto-secundario)] transition-all duration-200
-                          hover:bg-[var(--fondo-elevado)] hover:text-[var(--texto-principal)]
-                          no-underline
-                          ${activo
-                            ? "bg-[var(--fondo-tarjeta)] text-[var(--texto-principal)] border-l-[3px] border-[var(--acento)]"
-                            : ""
+                    return (
+                      <SidebarMenuItem key={item.ruta}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={activo}
+                          tooltip={item.etiqueta}
+                          className={activo
+                            ? "bg-[var(--fondo-tarjeta)] text-[var(--acento)] border-l-[3px] border-[var(--acento)] font-semibold"
+                            : "text-[var(--texto-secundario)] hover:bg-[var(--fondo-elevado)] hover:text-[var(--texto-principal)]"
                           }
-                          ${!isSidebarOpen ? "justify-center" : ""}
-                        `}
-                      >
-                        <Icono
-                          size={22}
-                          weight="duotone"
-                          className={activo ? "text-[var(--acento)] shrink-0" : "shrink-0"}
-                        />
-                        {isSidebarOpen && (
-                          <span className="text-sm font-medium whitespace-nowrap overflow-hidden text-ellipsis">
-                            {item.etiqueta}
-                          </span>
-                        )}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+                        >
+                          <Link to={item.ruta} className="no-underline">
+                            <Icono size={20} weight={activo ? "duotone" : "regular"} />
+                            <span>{item.etiqueta}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
           );
         })}
-      </nav>
+      </SidebarContent>
 
-      {/* User section */}
-      <div className="shrink-0 border-t border-[var(--borde)] p-4">
-        <div className={`flex items-center gap-3 ${!isSidebarOpen ? "justify-center flex-col" : ""}`}>
-          {/* Avatar */}
-          <div className="w-9 h-9 rounded-full bg-[var(--acento)] flex items-center justify-center text-white font-semibold text-sm shrink-0">
-            {user?.nombre?.charAt(0)?.toUpperCase() || "U"}
-          </div>
+      {/* ── Footer: Usuario + Cerrar Sesión + Volver al sitio ── */}
+      <SidebarFooter className="border-t border-[var(--borde)] bg-[var(--fondo)]">
+        <SidebarMenu>
+          {/* Volver al sitio */}
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip="Volver al sitio" className="text-[var(--texto-secundario)] hover:text-green-400 hover:bg-[var(--fondo-elevado)]">
+              <Link to="/" className="no-underline">
+                <House size={20} weight="duotone" />
+                <span>Volver al sitio</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
 
-          {/* Name + role */}
-          {isSidebarOpen && (
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-[var(--texto-principal)] whitespace-nowrap overflow-hidden text-ellipsis m-0">
-                {user?.nombre} {user?.apellidos}
-              </p>
-              <p className="text-xs text-[var(--texto-secundario)] whitespace-nowrap overflow-hidden text-ellipsis m-0">
-                {user?.rol === "admin" ? "Administrador" : "Empleado"}
-              </p>
-            </div>
-          )}
+          {/* Usuario */}
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" className="cursor-default hover:bg-transparent active:bg-transparent">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-full bg-[var(--acento)] text-white font-semibold text-sm shrink-0">
+                {user?.nombre?.charAt(0)?.toUpperCase() || "U"}
+              </div>
+              <div className="flex flex-col gap-0.5 leading-none min-w-0">
+                <span className="text-sm font-semibold text-[var(--texto-principal)] truncate">
+                  {user?.nombre} {user?.apellidos}
+                </span>
+                <span className="text-xs text-[var(--texto-secundario)] truncate">
+                  {user?.rol === "admin" ? "Administrador" : "Empleado"}
+                </span>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
 
-          {/* Logout button */}
-          <button
-            onClick={handleCerrarSesion}
-            title="Cerrar Sesion"
-            className={`
-              flex items-center justify-center gap-2 shrink-0
-              text-[var(--texto-secundario)] hover:text-red-400
-              transition-colors duration-200 bg-transparent border-0 cursor-pointer
-              ${isSidebarOpen ? "p-1 rounded" : "p-1 rounded"}
-            `}
-          >
-            <SignOut size={20} weight="duotone" />
-            {isSidebarOpen && (
-              <span className="text-xs font-medium">Cerrar Sesion</span>
-            )}
-          </button>
-        </div>
-      </div>
-    </aside>
+          {/* Cerrar sesión */}
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              tooltip="Cerrar sesión"
+              onClick={handleCerrarSesion}
+              className="text-[var(--texto-secundario)] hover:text-red-400 hover:bg-red-500/10"
+            >
+              <SignOut size={20} weight="duotone" />
+              <span>Cerrar sesión</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+
+      <SidebarRail />
+    </Sidebar>
   );
 };
 

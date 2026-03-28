@@ -5,20 +5,18 @@ import PanelCabecera from "./PanelCabecera";
 import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
 import useMonitorInactividad from "../../hooks/useMonitorInactividad";
 import AvisoInactividad from "../../componentes/AvisoInactividad/AvisoInactividad";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 
-// 1. Create the context for the dashboard layout
+// Context for dashboard layout (kept for backward compat)
 const ContextoPanel = createContext();
-
 export const usarPanel = () => useContext(ContextoPanel);
 
-// 3. Main Layout Component for the entire dashboard area
 const PanelPrincipal = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const { user, loading, cerrarSesion } = useAutenticacion();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Redirect to login if user is not authenticated
   useEffect(() => {
     if (!loading && !user) {
       navigate("/inicio-sesion", { replace: true });
@@ -31,24 +29,18 @@ const PanelPrincipal = () => {
   }, [cerrarSesion, navigate]);
 
   const { isWarning, remainingSeconds, resetTimer } = useMonitorInactividad({
-    timeout: 900000,      // 15 minutes
-    warningTime: 60000,   // 60 seconds warning
+    timeout: 900000,
+    warningTime: 60000,
     onTimeout: handleInactivityLogout,
     enabled: !loading && !!user,
   });
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
-  // Close sidebar on small screens when changing pages for better UX
   useEffect(() => {
-    if (window.innerWidth < 768) {
-      setSidebarOpen(false);
-    }
+    if (window.innerWidth < 768) setSidebarOpen(false);
   }, [location.pathname]);
 
-  // A simple loading state while auth is being checked
   if (loading || !user) {
     return (
       <div className="flex items-center justify-center h-screen bg-[var(--fondo)]">
@@ -59,23 +51,18 @@ const PanelPrincipal = () => {
     );
   }
 
-  // Provide sidebar state to all children of the layout
   return (
     <>
       <ContextoPanel.Provider value={{ isSidebarOpen, toggleSidebar }}>
-        <div className="flex min-h-screen bg-[var(--fondo)]">
+        <SidebarProvider>
           <PanelBarraLateral />
-          <main
-            className="flex-1 flex flex-col transition-all duration-300"
-            style={{ marginLeft: isSidebarOpen ? "260px" : "80px" }}
-          >
+          <SidebarInset>
             <PanelCabecera />
             <div className="p-8 flex-1 overflow-y-auto bg-[var(--fondo-elevado)]">
-              {/* Renders the specific dashboard page (e.g., Clientes, Vehiculos) */}
               <Outlet />
             </div>
-          </main>
-        </div>
+          </SidebarInset>
+        </SidebarProvider>
       </ContextoPanel.Provider>
       <AvisoInactividad
         isVisible={isWarning}
