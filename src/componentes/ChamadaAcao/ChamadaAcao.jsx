@@ -1,4 +1,4 @@
-import { CtaBtn } from "../Button/Button";
+import { CtaBtn } from "../Botao/Botao";
 
 const ctaData = {
   title: "¡Oferta limitada!",

@@ -1,5 +1,5 @@
-import { MoreBtn } from "../Button/Button";
-import blogsData from "../../dataJson/blogsData.json";
+import { MoreBtn } from "../Botao/Botao";
+import blogsData from "../../dadosJson/dadosBlog.json";
 
 const BlogFeature = () => {
   const blogData = blogsData[0]; // Get the first blog post for the feature

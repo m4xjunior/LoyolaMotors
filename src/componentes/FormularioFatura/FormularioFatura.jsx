@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import InvoiceTemplate from './InvoiceTemplate';
+import InvoiceTemplate from './ModeloFatura';
 
 export default function InvoiceForm() {
   const { register, control, handleSubmit, watch } = useForm({

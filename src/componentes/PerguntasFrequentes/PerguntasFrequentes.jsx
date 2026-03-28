@@ -1,4 +1,4 @@
-import Accordion from "../Accordion/Accordion";
+import Accordion from "../Acordeao/Acordeao";
 
 import accordionImg from "/assets/img/accordion-side-img.jpg";
 

@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contextos/ContextoAutenticacao";
 import {
   mockCustomers,
   mockVehicles,
   mockServiceHistory,
-} from "../data/mockCustomers";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+} from "../dados/clientesMock";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 import { format } from "date-fns";
 
 const ServiceCard = ({ service, onEdit, onDelete }) => {

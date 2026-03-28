@@ -1,4 +1,4 @@
-import Counter from "./Counter";
+import Counter from "./Contador";
 
 const counters = [
   { id: 1, number: 22, text: "AÑOS DE EXPERIENCIA" },

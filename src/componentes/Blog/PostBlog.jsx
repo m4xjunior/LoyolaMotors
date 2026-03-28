@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import CommentForm from "../CommentForm/CommentForm";
+import CommentForm from "../FormularioComentario/FormularioComentario";
 
 const BlogPost = ({ post }) => {
   const {

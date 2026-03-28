@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contextos/ContextoAutenticacao";
 import { useNavigate, Link } from "react-router-dom";
-import { mockCustomers } from "../data/mockCustomers";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import { mockCustomers } from "../dados/clientesMock";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import "../styles/Dashboard.scss";
-import SimpleChart from "../components/Dashboard/SimpleChart";
-import CircularProgress from "../components/Dashboard/CircularProgress";
+import "../estilos/Painel.scss";
+import SimpleChart from "../componentes/Painel/GraficoSimples";
+import CircularProgress from "../componentes/Painel/ProgressoCircular";
 import db, {
   getMetricas,
   getChartData,
   getRecentActivities,
-} from "../data/database";
+} from "../dados/bancoDados";
 
 const DashboardPage = () => {
   const { user, logout } = useAuth();

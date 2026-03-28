@@ -1,8 +1,8 @@
 
-import AppointmentForm from "../components/AppointmentForm/AppointmentForm";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import ServiceProgres from "../components/ServiceProgres/ServiceProgres";
-import SectionHeading from "../components/SectionHeading/SectionHeading";
+import AppointmentForm from "../componentes/FormularioAgendamento/FormularioAgendamento";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
+import ServiceProgres from "../componentes/ProgressoServico/ProgressoServico";
+import SectionHeading from "../componentes/TituloSecao/TituloSecao";
 
 const Appointment = () => {
   return (

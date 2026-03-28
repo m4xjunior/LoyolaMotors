@@ -1,9 +1,9 @@
 
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import PersonDetails from "../components/Team/PersonDetails";
-import MemberCard from "../components/Team/MemberCard";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
+import PersonDetails from "../componentes/Equipe/DetalhesPessoa";
+import MemberCard from "../componentes/Equipe/CartaoMembro";
 
-import membersData from "../dataJson/teamMembersData.json";
+import membersData from "../dadosJson/dadosMembrosEquipe.json";
 
 const Team = () => {
   return (

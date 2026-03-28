@@ -1,4 +1,4 @@
-import SectionHeading from "../SectionHeading/SectionHeading";
+import SectionHeading from "../TituloSecao/TituloSecao";
 
 const contactData = [
   {

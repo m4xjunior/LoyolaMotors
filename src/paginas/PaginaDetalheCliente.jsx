@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import { useAuth } from "../contextos/ContextoAutenticacao";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 import {
   clienteService,
   vehiculoService,
   servicioService,
-} from "../data/database";
-import "../styles/Dashboard.scss";
+} from "../dados/bancoDados";
+import "../estilos/Painel.scss";
 
 const ClienteDetailPage = () => {
   const { clienteId } = useParams();

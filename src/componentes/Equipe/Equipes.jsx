@@ -1,6 +1,6 @@
-import SectionHeading from "../SectionHeading/SectionHeading";
-import { MoreBtn } from "../Button/Button";
-import TeamCard from "./TeamCard";
+import SectionHeading from "../TituloSecao/TituloSecao";
+import { MoreBtn } from "../Botao/Botao";
+import TeamCard from "./CartaoEquipe";
 
 const membersData = [
   {

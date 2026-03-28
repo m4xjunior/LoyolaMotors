@@ -1,7 +1,7 @@
 
-import PricingTable from "../components/Pricing/PricingTable";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import AppointmentForm from "../components/AppointmentForm/AppointmentForm";
+import PricingTable from "../componentes/Precos/TabelaPrecos";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
+import AppointmentForm from "../componentes/FormularioAgendamento/FormularioAgendamento";
 
 export default function Pricing() {
   return (

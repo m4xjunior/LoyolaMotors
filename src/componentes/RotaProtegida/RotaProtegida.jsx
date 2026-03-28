@@ -1,7 +1,7 @@
 
 import { Navigate, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contextos/ContextoAutenticacao';
 
 const ProtectedRoute = ({ children, requiredRole = null }) => {
   const { isAuthenticated, hasRole } = useAuth();

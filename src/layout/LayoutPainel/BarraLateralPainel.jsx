@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
-import { useDashboard } from "./DashboardMain";
+import { useAuth } from "../../contextos/ContextoAutenticacao";
+import { useDashboard } from "./PrincipalPainel";
 
 const DashboardSidebar = () => {
   const { user, hasRole } = useAuth();

@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import { useAuth } from "../contextos/ContextoAutenticacao";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 import {
   servicioService,
   clienteService,
   vehiculoService,
-} from "../data/database";
-import "../styles/Dashboard.scss";
+} from "../dados/bancoDados";
+import "../estilos/Painel.scss";
 
 const NovoServicoPage = () => {
   const { user } = useAuth();

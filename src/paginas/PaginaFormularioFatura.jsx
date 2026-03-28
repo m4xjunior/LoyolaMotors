@@ -1,7 +1,7 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { addInvoice } from "../data/mockData";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import { addInvoice } from "../dados/dadosMock";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 
 const InvoiceFormPage = () => {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ const InvoiceFormPage = () => {
     defaultValues: {
       clientName: "",
       clientCIF: "",
+      clientEmail: "",
       items: [{ description: "", quantity: 1, unitPrice: 0 }],
     },
   });
@@ -34,7 +35,9 @@ const InvoiceFormPage = () => {
 
     const newInvoice = {
       ...data,
-      number: `2024-${Math.floor(Math.random() * 1000)}`, // Mock number
+      number: `FAC-${new Date().getFullYear()}-${String(
+        Math.floor(Math.random() * 1000),
+      ).padStart(3, "0")}`,
       subtotal,
       iva,
       total,
@@ -67,6 +70,34 @@ const InvoiceFormPage = () => {
             {errors.clientName && (
               <span style={{ color: "red" }}>Campo requerido</span>
             )}
+          </div>
+
+          <div style={{ marginBottom: "20px" }}>
+            <label>CIF / NIF</label>
+            <input
+              {...register("clientCIF", { required: true })}
+              style={{
+                width: "100%",
+                padding: "8px",
+                border: "1px solid #ccc",
+              }}
+            />
+            {errors.clientCIF && (
+              <span style={{ color: "red" }}>Campo requerido</span>
+            )}
+          </div>
+
+          <div style={{ marginBottom: "20px" }}>
+            <label>Email de Facturación</label>
+            <input
+              type="email"
+              {...register("clientEmail")}
+              style={{
+                width: "100%",
+                padding: "8px",
+                border: "1px solid #ccc",
+              }}
+            />
           </div>
 
           {/* Invoice Items */}

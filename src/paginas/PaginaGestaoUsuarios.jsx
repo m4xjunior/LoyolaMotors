@@ -2,8 +2,8 @@ import { useState, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import { usuarioService } from "../data/database";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
+import { usuarioService } from "../dados/bancoDados";
 import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`

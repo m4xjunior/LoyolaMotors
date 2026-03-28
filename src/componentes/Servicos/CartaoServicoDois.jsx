@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MoreBtn } from "../Button/Button";
+import { MoreBtn } from "../Botao/Botao";
 
 export const ServiceCardTwo = ({ service }) => {
   return (

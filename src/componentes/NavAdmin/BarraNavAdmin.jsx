@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
-import "./AdminNavBar.scss";
+import { useAuth } from "../../contextos/ContextoAutenticacao";
+import "./BarraNavAdmin.scss";
 
 const AdminNavBar = () => {
   const [isOpen, setIsOpen] = useState(false);

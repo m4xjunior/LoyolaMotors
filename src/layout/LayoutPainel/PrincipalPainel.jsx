@@ -1,8 +1,8 @@
 import { useState, createContext, useContext, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import DashboardSidebar from "./DashboardSidebar";
-import DashboardHeader from "./DashboardHeader";
-import { useAuth } from "../../contexts/AuthContext";
+import DashboardSidebar from "./BarraLateralPainel";
+import DashboardHeader from "./CabecalhoPainel";
+import { useAuth } from "../../contextos/ContextoAutenticacao";
 
 // 1. Create the context for the dashboard layout
 const DashboardContext = createContext();

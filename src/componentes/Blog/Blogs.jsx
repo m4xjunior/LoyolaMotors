@@ -1,6 +1,6 @@
-import BlogCard from "./BlogCard";
-import SectionHeading from "../SectionHeading/SectionHeading";
-import blogsData from "../../dataJson/blogsData.json";
+import BlogCard from "./CartaoBlog";
+import SectionHeading from "../TituloSecao/TituloSecao";
+import blogsData from "../../dadosJson/dadosBlog.json";
 
 
 const Blogs = () => {

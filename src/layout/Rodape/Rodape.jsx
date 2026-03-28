@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import TextAnimation from "../../components/TextAnimation/TextAnimation";
+import TextAnimation from "../../componentes/AnimacaoTexto/AnimacaoTexto";
 
 import footerLogo from "/assets/img/icon/loyola-logo-v2.png";
 

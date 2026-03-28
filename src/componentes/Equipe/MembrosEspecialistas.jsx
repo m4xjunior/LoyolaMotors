@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-import { MoreBtn } from "../Button/Button";
-import SectionHeading from "../SectionHeading/SectionHeading";
+import { MoreBtn } from "../Botao/Botao";
+import SectionHeading from "../TituloSecao/TituloSecao";
 
 const speciaList = [
   {

@@ -1,5 +1,5 @@
-import SectionHeading from "../SectionHeading/SectionHeading";
-import { ButtonCommon } from "../Button/Button";
+import SectionHeading from "../TituloSecao/TituloSecao";
+import { ButtonCommon } from "../Botao/Botao";
 
 const chooseUsData = {
   bgText: "CARACTERÍSTICAS",

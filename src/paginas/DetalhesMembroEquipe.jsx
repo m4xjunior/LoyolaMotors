@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import SingleTeamMemberDetails from "../components/Team/SingleTeamMemberDetails";
-import TeamDetailsSlider from "../components/Team/TeamDetailsSlider";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
+import SingleTeamMemberDetails from "../componentes/Equipe/DetalhesMembroEquipe";
+import TeamDetailsSlider from "../componentes/Equipe/CarrosselDetalhesEquipe";
 
-import membersData from "../dataJson/teamMembersData.json";
-import SpecialistTeamMembers from "../components/Team/SpecialistTeamMembers";
+import membersData from "../dadosJson/dadosMembrosEquipe.json";
+import SpecialistTeamMembers from "../componentes/Equipe/MembrosEspecialistas";
 
 const TeamMemberDetails = () => {
   const { teamId } = useParams();

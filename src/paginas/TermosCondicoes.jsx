@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 
 const TermsConditions = () => {
   return (

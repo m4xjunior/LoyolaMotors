@@ -1,4 +1,4 @@
-import { MoreBtn } from "../Button/Button";
+import { MoreBtn } from "../Botao/Botao";
 import { Link } from "react-router-dom";
 
 const BlogCard = ({ post }) => {

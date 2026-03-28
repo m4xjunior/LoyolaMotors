@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AccordionItem from "./AccordionItem";
+import AccordionItem from "./ItemAcordeao";
 
 const faqItems = [
   {

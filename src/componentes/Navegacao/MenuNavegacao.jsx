@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import MenuItem from "./MenuItem";
-import { useAuth } from "../../contexts/AuthContext";
+import MenuItem from "./ItemMenu";
+import { useAuth } from "../../contextos/ContextoAutenticacao";
 
 import logo from "/assets/img/icon/loyola-logo-v2.png";
 
-import navitemlist from "../../dataJson/navitemlist.json";
+import navitemlist from "../../dadosJson/listaItensNavegacao.json";
 
 export default function NavMenu() {
   const { isAuthenticated } = useAuth();

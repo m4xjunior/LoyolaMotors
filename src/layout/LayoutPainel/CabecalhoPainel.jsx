@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
-import { useDashboard } from "./DashboardMain";
+import { useAuth } from "../../contextos/ContextoAutenticacao";
+import { useDashboard } from "./PrincipalPainel";
 
 const DashboardHeader = () => {
   const { user } = useAuth();

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import classNames from "classnames";
-import NavMenu from "../../components/Nav/NavMenu";
-import navitemlist from "../../dataJson/navitemlist.json";
+import NavMenu from "../../componentes/Navegacao/MenuNavegacao";
+import navitemlist from "../../dadosJson/listaItensNavegacao.json";
 
 const Header = () => {
   const [lastScrollTop, setLastScrollTop] = useState(0);

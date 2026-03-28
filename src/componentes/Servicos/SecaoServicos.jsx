@@ -1,8 +1,8 @@
-import { MoreBtn } from "../Button/Button";
-import SectionHeading from "../SectionHeading/SectionHeading";
+import { MoreBtn } from "../Botao/Botao";
+import SectionHeading from "../TituloSecao/TituloSecao";
 import { Link } from "react-router-dom";
 
-import servicesData from "../../dataJson/servicesData.json";
+import servicesData from "../../dadosJson/dadosServicos.json";
 
 const ServicesSection = ({ styleTypeTwo }) => {
   const data = styleTypeTwo ? servicesData.slice(0, 3) : servicesData;

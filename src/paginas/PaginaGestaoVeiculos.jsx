@@ -1,20 +1,20 @@
 import { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contextos/ContextoAutenticacao";
 import { useNavigate, Link } from "react-router-dom";
 import {
   vehiculoService,
   clienteService,
   servicioService,
-} from "../data/database";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+} from "../dados/bancoDados";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 import {
   VEHICLE_STATUS,
   SORT_OPTIONS_VEHICLES,
   getCombustibleColor,
   getCombustibleIcon,
-} from "../constants/vehicleConstants";
-import "../styles/Dashboard.scss";
+} from "../constantes/constantesVeiculo";
+import "../estilos/Painel.scss";
 
 const VehiclesManagementPage = () => {
   const { user } = useAuth();

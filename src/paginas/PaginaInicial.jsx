@@ -1,16 +1,16 @@
 
-import HeroSlider from "../components/Sliders/HeroSlider";
-import ServiceProgres from "../components/ServiceProgres/ServiceProgres";
-import ChooseUs from "../components/ChooseUs/ChooseUs";
-import Services from "../components/Services/ServicesSection";
-import Videos from "../components/VideoPopUp/Videos";
-import TrustedClient from "../components/TrustedClient/TrustedClient";
-import Testimonial from "../components/Testimonial/Testimonial";
-import PricingTable from "../components/Pricing/PricingTable";
-import Blogs from "../components/Blog/Blogs";
-import Teams from "../components/Team/Teams";
-import AutoCounter from "../components/AutoCounter/AutoCounter";
-import Cta from "../components/Cta/Cta";
+import HeroSlider from "../componentes/Carroseis/CarrosselHero";
+import ServiceProgres from "../componentes/ProgressoServico/ProgressoServico";
+import ChooseUs from "../componentes/PorQueNos/PorQueNos";
+import Services from "../componentes/Servicos/SecaoServicos";
+import Videos from "../componentes/VideoPopup/Videos";
+import TrustedClient from "../componentes/ClienteConfiavel/ClienteConfiavel";
+import Testimonial from "../componentes/Depoimento/Depoimento";
+import PricingTable from "../componentes/Precos/TabelaPrecos";
+import Blogs from "../componentes/Blog/Blogs";
+import Teams from "../componentes/Equipe/Equipes";
+import AutoCounter from "../componentes/ContadorAutomatico/ContadorAutomatico";
+import Cta from "../componentes/ChamadaAcao/ChamadaAcao";
 
 export default function Home() {
   return (

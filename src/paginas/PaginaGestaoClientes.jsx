@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import { clienteService } from "../data/database";
+import { useAuth } from "../contextos/ContextoAutenticacao";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
+import { clienteService } from "../dados/bancoDados";
 import {
   CUSTOMER_TYPES,
   SORT_OPTIONS_CLIENTS,
-} from "../constants/vehicleConstants";
-import "../styles/Dashboard.scss";
+} from "../constantes/constantesVeiculo";
+import "../estilos/Painel.scss";
 
 const ClientesManagementPage = () => {
   const { user } = useAuth();

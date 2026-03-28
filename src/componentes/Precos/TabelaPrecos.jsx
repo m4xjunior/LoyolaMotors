@@ -1,5 +1,5 @@
-import PricingCard from "./PricingCard";
-import SectionHeading from "../SectionHeading/SectionHeading";
+import PricingCard from "./CartaoPreco";
+import SectionHeading from "../TituloSecao/TituloSecao";
 
 // Precios recomendados Loyola (comparados con mercado)
 const pricingData = [

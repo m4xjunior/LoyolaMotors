@@ -1,5 +1,5 @@
-import { ServiceCardTwo } from "./ServiceCardTwo";
-import servicesDataTwo from "../../dataJson/servicesDataTwo.json";
+import { ServiceCardTwo } from "./CartaoServicoDois";
+import servicesDataTwo from "../../dadosJson/dadosServicosDois.json";
 
 const ServicesSectionTwo = ({ styleTypleTwo }) => {
   const data = styleTypleTwo ? servicesDataTwo.slice(0, 3) : servicesDataTwo;

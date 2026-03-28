@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contextos/ContextoAutenticacao";
 import { useNavigate, Link } from "react-router-dom";
-import { clienteService, vehiculoService } from "../data/database";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import { clienteService, vehiculoService } from "../dados/bancoDados";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 import { format } from "date-fns";
 
 const CustomerCard = ({

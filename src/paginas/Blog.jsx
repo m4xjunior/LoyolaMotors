@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import BlogCard from "../components/Blog/BlogCard";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import BlogFeature from "../components/Blog/BlogFeature";
-import Pagination from "../components/Pagination/Pagination";
+import BlogCard from "../componentes/Blog/CartaoBlog";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
+import BlogFeature from "../componentes/Blog/DestaqueBlog";
+import Pagination from "../componentes/Paginacao/Paginacao";
 
-import blogsData from "../dataJson/blogsData.json";
+import blogsData from "../dadosJson/dadosBlog.json";
 
 const Blog = () => {
   const [currentPage, setCurrentPage] = useState(1);

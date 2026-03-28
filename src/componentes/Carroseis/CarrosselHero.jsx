@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax, Pagination } from "swiper/modules";
-import { ButtonCommon } from "../Button/Button";
+import { ButtonCommon } from "../Botao/Botao";
 import { Link } from "react-router-dom";
 
 const sliderData = [

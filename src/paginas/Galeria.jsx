@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 import LightGallery from "lightgallery/react";
 import lgThumbnail from "lightgallery/plugins/thumbnail";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 
-import imageData from "../dataJson/galleryImgData.json";
+import imageData from "../dadosJson/dadosImagensGaleria.json";
 
 const Gallery = () => {
   return (
