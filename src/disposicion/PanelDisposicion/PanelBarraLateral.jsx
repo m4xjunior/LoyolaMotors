@@ -1,11 +1,10 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
-import { usarPanel } from "./PanelPrincipal";
 import { CARACTERISTICAS } from "../../configuracion/caracteristicas";
 import {
   ChartBar, Users, Car, Wrench, Receipt, UserGear, SignOut,
   Package, CalendarDots, ChartLine, Images, Newspaper, Star,
-  Question, Tag, Sliders, CaretLeft, CaretRight, House
+  Question, Tag, Sliders, House
 } from "@phosphor-icons/react";
 
 import {
@@ -20,11 +19,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-  useSidebar,
 } from "@/components/ui/sidebar";
 
 // ============================================================
-// CONFIGURACIÓN DE MENÚ — Secciones y items del sidebar
+// CONFIGURACIÓN DE MENÚ
 // ============================================================
 const secciones = [
   {
@@ -77,7 +75,7 @@ const secciones = [
 ];
 
 // ============================================================
-// COMPONENTE SIDEBAR — shadcn/ui Sidebar con estructura del taller
+// COMPONENTE SIDEBAR — 100% spec shadcn/ui
 // ============================================================
 const PanelBarraLateral = () => {
   const { user, cerrarSesion } = useAutenticacion();
@@ -105,14 +103,14 @@ const PanelBarraLateral = () => {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-[var(--borde)]">
+    <Sidebar collapsible="icon">
       {/* ── Header: Logo ── */}
-      <SidebarHeader className="border-b border-[var(--borde)] ">
+      <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild className="hover:bg-transparent active:bg-transparent">
-              <Link to="/panel" className="no-underline">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden bg-transparent">
+            <SidebarMenuButton size="lg" asChild>
+              <Link to="/panel">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden">
                   <img
                     src="/assets/img/icon/loyola-logo-v2.png"
                     alt="Loyola Motors"
@@ -120,8 +118,8 @@ const PanelBarraLateral = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-bold text-[var(--texto-principal)] text-sm">Loyola Motors</span>
-                  <span className="text-xs text-[var(--texto-secundario)]">Panel de Control</span>
+                  <span className="font-semibold">Loyola Motors</span>
+                  <span className="text-xs text-sidebar-foreground/60">Panel de Control</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -130,7 +128,7 @@ const PanelBarraLateral = () => {
       </SidebarHeader>
 
       {/* ── Content: Secciones de navegación ── */}
-      <SidebarContent className="">
+      <SidebarContent>
         {secciones.map((seccion) => {
           if (seccion.visible && !seccion.visible()) return null;
 
@@ -142,9 +140,7 @@ const PanelBarraLateral = () => {
 
           return (
             <SidebarGroup key={seccion.titulo}>
-              <SidebarGroupLabel className="text-[var(--texto-deshabilitado)] uppercase tracking-wider text-xs font-semibold">
-                {seccion.titulo}
-              </SidebarGroupLabel>
+              <SidebarGroupLabel>{seccion.titulo}</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {itemsVisibles.map((item) => {
@@ -153,17 +149,9 @@ const PanelBarraLateral = () => {
 
                     return (
                       <SidebarMenuItem key={item.ruta}>
-                        <SidebarMenuButton
-                          asChild
-                          isActive={activo}
-                          tooltip={item.etiqueta}
-                          className={activo
-                            ? "bg-[var(--fondo-tarjeta)] text-[var(--acento)] border-l-[3px] border-[var(--acento)] font-semibold"
-                            : "text-[var(--texto-secundario)] hover:bg-[var(--fondo-elevado)] hover:text-[var(--texto-principal)]"
-                          }
-                        >
-                          <Link to={item.ruta} className="no-underline">
-                            <Icono size={20} weight={activo ? "duotone" : "regular"} />
+                        <SidebarMenuButton asChild isActive={activo} tooltip={item.etiqueta}>
+                          <Link to={item.ruta}>
+                            <Icono size={20} weight={activo ? "fill" : "regular"} />
                             <span>{item.etiqueta}</span>
                           </Link>
                         </SidebarMenuButton>
@@ -177,43 +165,36 @@ const PanelBarraLateral = () => {
         })}
       </SidebarContent>
 
-      {/* ── Footer: Usuario + Cerrar Sesión + Volver al sitio ── */}
-      <SidebarFooter className="border-t border-[var(--borde)] ">
+      {/* ── Footer: Usuario + acciones ── */}
+      <SidebarFooter>
         <SidebarMenu>
-          {/* Volver al sitio */}
           <SidebarMenuItem>
-            <SidebarMenuButton asChild tooltip="Volver al sitio" className="text-[var(--texto-secundario)] hover:text-green-400 hover:bg-[var(--fondo-elevado)]">
-              <Link to="/" className="no-underline">
+            <SidebarMenuButton asChild tooltip="Volver al sitio">
+              <Link to="/">
                 <House size={20} weight="duotone" />
                 <span>Volver al sitio</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
-          {/* Usuario */}
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" className="cursor-default hover:bg-transparent active:bg-transparent">
-              <div className="flex aspect-square size-8 items-center justify-center rounded-full bg-[var(--acento)] text-white font-semibold text-sm shrink-0">
+            <SidebarMenuButton size="lg">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-full bg-sidebar-primary text-sidebar-primary-foreground font-semibold text-sm">
                 {user?.nombre?.charAt(0)?.toUpperCase() || "U"}
               </div>
-              <div className="flex flex-col gap-0.5 leading-none min-w-0">
-                <span className="text-sm font-semibold text-[var(--texto-principal)] truncate">
+              <div className="flex flex-col gap-0.5 leading-none">
+                <span className="font-semibold text-sm truncate">
                   {user?.nombre} {user?.apellidos}
                 </span>
-                <span className="text-xs text-[var(--texto-secundario)] truncate">
+                <span className="text-xs text-sidebar-foreground/60 truncate">
                   {user?.rol === "admin" ? "Administrador" : "Empleado"}
                 </span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
-          {/* Cerrar sesión */}
           <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip="Cerrar sesión"
-              onClick={handleCerrarSesion}
-              className="text-[var(--texto-secundario)] hover:text-red-400 hover:bg-red-500/10"
-            >
+            <SidebarMenuButton tooltip="Cerrar sesión" onClick={handleCerrarSesion}>
               <SignOut size={20} weight="duotone" />
               <span>Cerrar sesión</span>
             </SidebarMenuButton>
