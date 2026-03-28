@@ -92,6 +92,7 @@ export default function App() {
         <Route path="clientes/editar/:clienteId" element={<PaginaNuevoCliente />} />
         <Route path="vehiculos" element={<PaginaVehiculos />} />
         <Route path="vehiculos/novo" element={<PaginaNuevoVehiculo />} />
+        <Route path="vehiculos/editar/:vehiculoId" element={<PaginaNuevoVehiculo />} />
         <Route path="vehiculos/:vehicleId/servicios" element={<PaginaServiciosVehiculo />} />
         <Route path="servicios" element={<PaginaServicios />} />
         <Route path="servicios/nuevo" element={<PaginaNuevoServicio />} />
