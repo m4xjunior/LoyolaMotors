@@ -1,41 +1,49 @@
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Parallax, Pagination } from "swiper/modules";
 import { ButtonCommon } from "../Button/Button";
 import { Link } from "react-router-dom";
+import { servicioContenido } from "../../servicios/servicioContenido";
 
-const sliderData = [
+const DIAPOSITIVAS_POR_DEFECTO = [
   {
     id: 1,
-    title: "Taller de Chapa y Pintura en Valencia",
-    maintitle: "Transformamos tu coche en 24h",
-    desp: "Más de 20 años de experiencia, garantía de 1 año y precios 15% más baratos. Presupuesto gratuito.",
-    url: "tel:+34640162947",
-    img: "/assets/img/hero/hero_slider_bg_1.png",
+    titulo: "Taller de Chapa y Pintura en Valencia",
+    subtitulo: "Transformamos tu coche en 24h",
+    descripcion: "Más de 20 años de experiencia, garantía de 1 año y precios 15% más baratos. Presupuesto gratuito.",
+    enlaceBoton: "tel:+34640162947",
+    imagenUrl: "/assets/img/hero/hero_slider_bg_1.png",
     alt: "Coche de lujo siendo reparado en taller de chapa y pintura Loyola Motors en Valencia",
   },
   {
     id: 2,
-    title: "900 Reseñas de 5 Estrellas",
-    maintitle: "Confianza y Calidad Garantizada",
-    desp: "Clientes satisfechos nos avalan. Atendemos solo 15 coches al mes para máxima dedicación.",
-    url: "tel:+34640162947",
-    img: "/assets/img/hero/hero_slider_bg_2.png",
+    titulo: "900 Reseñas de 5 Estrellas",
+    subtitulo: "Confianza y Calidad Garantizada",
+    descripcion: "Clientes satisfechos nos avalan. Atendemos solo 15 coches al mes para máxima dedicación.",
+    enlaceBoton: "tel:+34640162947",
+    imagenUrl: "/assets/img/hero/hero_slider_bg_2.png",
     alt: "Cliente satisfecho recibiendo su coche reparado en Loyola Motors",
   },
   {
     id: 3,
-    title: "Presupuesto de Pintura de Coche",
-    maintitle: "Ahorra hasta un 25%",
-    desp: "Compara nuestros precios transparentes y ahorra. Presupuesto detallado en menos de 30 minutos.",
-    url: "tel:+34640162947",
-    img: "/assets/img/hero/hero_slider_bg_1.png",
+    titulo: "Presupuesto de Pintura de Coche",
+    subtitulo: "Ahorra hasta un 25%",
+    descripcion: "Compara nuestros precios transparentes y ahorra. Presupuesto detallado en menos de 30 minutos.",
+    enlaceBoton: "tel:+34640162947",
+    imagenUrl: "/assets/img/hero/hero_slider_bg_1.png",
     alt: "Mecánico de Loyola Motors preparando presupuesto para pintura de coche",
   },
 ];
 
 const HeroSlider = () => {
   const swiperRef = useRef(null);
+  const [diapositivas, setDiapositivas] = useState(DIAPOSITIVAS_POR_DEFECTO);
+
+  useEffect(() => {
+    servicioContenido.obtener('diapositivas', { orden: true }).then(resultado => {
+      if (resultado.length > 0) setDiapositivas(resultado);
+    });
+  }, []);
   return (
     <section className="ak-slider ak-slider-hero-1">
       <Swiper
@@ -55,13 +63,13 @@ const HeroSlider = () => {
           swiperRef.current = swiper;
         }}
       >
-        {sliderData.map((item) => (
+        {diapositivas.map((item) => (
           <SwiperSlide key={item.id}>
             <div className="ak-hero ak-style1 slide-inner">
               <img
-                src={item.img}
+                src={item.imagenUrl}
                 className="ak-hero-bg ak-bg object-cover"
-                alt={item.alt}
+                alt={item.alt || item.titulo}
               />
               <div className="container">
                 <div className="hero-slider-info">
@@ -71,21 +79,23 @@ const HeroSlider = () => {
                         className="hero-main-title"
                         data-swiper-parallax="300"
                       >
-                        {item.title}
+                        {item.titulo}
                       </h1>
                       <h1
                         className="hero-main-title-1 style-2"
                         data-swiper-parallax="100"
                       >
-                        {item.maintitle}
+                        {item.subtitulo}
                       </h1>
                       <p className="mini-title" data-swiper-parallax="400">
-                        {item.desp}
+                        {item.descripcion}
                       </p>
                     </div>
                     <div className="ak-height-45 ak-height-lg-30"></div>
                     <div data-swiper-parallax="300">
-                      <ButtonCommon to={item.url}>Llama ahora +34 640 16 29 47</ButtonCommon>
+                      <ButtonCommon to={item.enlaceBoton || "tel:+34640162947"}>
+                        {item.textoBoton || "Llama ahora +34 640 16 29 47"}
+                      </ButtonCommon>
                     </div>
                   </div>
                 </div>
