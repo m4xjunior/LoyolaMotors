@@ -19,13 +19,13 @@ const MemberCard = ({ member, delay }) => {
             <p className="desp">{member.title}</p>
           </div>
           <div className="member-info-social">
-            <Link href={member.socialLinks.linkedin} className="icon">
+            <Link href={member.socialLinks?.linkedin || '#'} className="icon">
               <img src="/assets/img/icon/linkedinicon.svg" alt="LinkedIn" />
             </Link>
-            <Link to={member.socialLinks.facebook} className="icon">
+            <Link to={member.socialLinks?.facebook || '#'} className="icon">
               <img src="/assets/img/icon/facebookicon.svg" alt="Facebook" />
             </Link>
-            <Link to={member.socialLinks.twitter} className="icon">
+            <Link to={member.socialLinks?.twitter || '#'} className="icon">
               <img src="/assets/img/icon/twittericon.svg" alt="Twitter" />
             </Link>
           </div>
