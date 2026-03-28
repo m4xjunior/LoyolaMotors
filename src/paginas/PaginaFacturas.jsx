@@ -1,288 +1,365 @@
-
-import { useState, useEffect, useMemo } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { mockInvoices } from '../data/mockData';
-import CommonPageHero from '../components/CommonPageHero/CommonPageHero';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
-
-// shadcn/ui components
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Separator } from '@/components/ui/separator';
-
-// lucide-react icons
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Receipt, Plus, MagnifyingGlass, PencilSimple, Trash, Eye } from "@phosphor-icons/react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Search, Plus, MoreHorizontal, Eye, Pencil, Download, Trash2,
-  TrendingUp, Clock, AlertTriangle, FileText, ChevronLeft, ChevronRight,
-} from 'lucide-react';
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { servicioFacturas } from "../servicios/servicioFacturas";
 
-// ── Helpers ────────────────────────────────────────────────────
-const statusConfig = {
-  pagada:    { label: 'Pagada',    variant: 'default' },
-  pendiente: { label: 'Pendiente', variant: 'secondary' },
-  vencida:   { label: 'Vencida',   variant: 'destructive' },
+const ITEMS_POR_PAGINA = 10;
+
+const formatEUR = (valor) =>
+  new Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(valor || 0) + " €";
+
+const badgeEstado = (estado) => {
+  switch (estado) {
+    case "pagado":
+      return "bg-green-500/10 text-green-500 border-green-500/20";
+    case "parcial":
+      return "bg-amber-500/10 text-amber-500 border-amber-500/20";
+    case "pendiente":
+    default:
+      return "bg-red-500/10 text-red-500 border-red-500/20";
+  }
 };
 
-const formatCurrency = (value) =>
-  value.toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €';
+const etiquetaEstado = (estado) => {
+  switch (estado) {
+    case "pagado":   return "Pagado";
+    case "parcial":  return "Parcial";
+    case "pendiente":
+    default:         return "Pendiente";
+  }
+};
 
-// ── Componente principal ───────────────────────────────────────
-const InvoicesPage = () => {
+const PaginaFacturas = () => {
   const navigate = useNavigate();
-  const [invoices, setInvoices] = useState([]);
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('todas');
-  const [currentPage, setCurrentPage] = useState(1);
-  const perPage = 10;
+
+  const [facturas, setFacturas] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [busqueda, setBusqueda] = useState("");
+  const [paginaActual, setPaginaActual] = useState(1);
+  const [stats, setStats] = useState({
+    total: 0,
+    pendientes: 0,
+    montoTotal: 0,
+    pagadas: 0,
+  });
+
+  const cargarFacturas = async (termino = "") => {
+    setCargando(true);
+    try {
+      const datos = await servicioFacturas.obtenerTodos(termino ? { termino } : {});
+      setFacturas(datos);
+      setStats({
+        total: datos.length,
+        pendientes: datos.filter((f) => f.estadoPago === "pendiente" || !f.estadoPago).length,
+        montoTotal: datos.reduce((s, f) => s + (f.total || 0), 0),
+        pagadas: datos.filter((f) => f.estadoPago === "pagado").length,
+      });
+    } catch (err) {
+      console.error("Error al cargar facturas:", err);
+      setFacturas([]);
+    } finally {
+      setCargando(false);
+    }
+  };
 
   useEffect(() => {
-    setInvoices(mockInvoices);
+    cargarFacturas();
   }, []);
 
-  const filtered = useMemo(() => {
-    return invoices.filter(inv => {
-      const q = search.toLowerCase();
-      const matchSearch =
-        inv.number.toLowerCase().includes(q) ||
-        inv.clientName.toLowerCase().includes(q) ||
-        inv.clientCIF.toLowerCase().includes(q);
-      const matchStatus = statusFilter === 'todas' || inv.status === statusFilter;
-      return matchSearch && matchStatus;
-    });
-  }, [invoices, search, statusFilter]);
+  const handleBusqueda = (e) => {
+    const valor = e.target.value;
+    setBusqueda(valor);
+    setPaginaActual(1);
+    cargarFacturas(valor);
+  };
 
-  const totalPages = Math.ceil(filtered.length / perPage);
-  const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
+  const handleEliminar = async (id) => {
+    try {
+      await servicioFacturas.eliminar(id);
+      cargarFacturas(busqueda);
+    } catch (err) {
+      console.error("Error al eliminar factura:", err);
+    }
+  };
 
-  useEffect(() => { setCurrentPage(1); }, [search, statusFilter]);
-
-  const stats = useMemo(() => {
-    const pagadas = invoices.filter(i => i.status === 'pagada');
-    const pendientes = invoices.filter(i => i.status === 'pendiente');
-    const vencidas = invoices.filter(i => i.status === 'vencida');
-    return {
-      total: invoices.reduce((s, i) => s + i.total, 0),
-      cobrado: pagadas.reduce((s, i) => s + i.total, 0),
-      porCobrar: pendientes.reduce((s, i) => s + i.total, 0),
-      vencidas: vencidas.length,
-      count: invoices.length,
-    };
-  }, [invoices]);
+  const totalPaginas = Math.ceil(facturas.length / ITEMS_POR_PAGINA);
+  const facturasPagina = facturas.slice(
+    (paginaActual - 1) * ITEMS_POR_PAGINA,
+    paginaActual * ITEMS_POR_PAGINA
+  );
 
   return (
-    <>
-      <CommonPageHero title="Facturas" />
-      <div className="container" style={{ paddingTop: '40px', paddingBottom: '100px' }}>
-
-        {/* ── Cards de resumo ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Facturado</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatCurrency(stats.total)}</div>
-              <p className="text-xs text-muted-foreground mt-1">{stats.count} facturas emitidas</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Cobrado</CardTitle>
-              <TrendingUp className="h-4 w-4 text-emerald-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-emerald-500">{formatCurrency(stats.cobrado)}</div>
-              <p className="text-xs text-muted-foreground mt-1">Facturas pagadas</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Por Cobrar</CardTitle>
-              <Clock className="h-4 w-4 text-amber-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-amber-500">{formatCurrency(stats.porCobrar)}</div>
-              <p className="text-xs text-muted-foreground mt-1">Pendientes de pago</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Vencidas</CardTitle>
-              <AlertTriangle className="h-4 w-4 text-destructive" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-destructive">{stats.vencidas}</div>
-              <p className="text-xs text-muted-foreground mt-1">Requieren atención</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* ── Toolbar ── */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 flex-1">
-            <div className="relative w-full sm:w-72">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Buscar por número, cliente o CIF..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-
-            <Tabs value={statusFilter} onValueChange={setStatusFilter}>
-              <TabsList>
-                <TabsTrigger value="todas">Todas</TabsTrigger>
-                <TabsTrigger value="pagada">
-                  Pagada ({invoices.filter(i => i.status === 'pagada').length})
-                </TabsTrigger>
-                <TabsTrigger value="pendiente">
-                  Pendiente ({invoices.filter(i => i.status === 'pendiente').length})
-                </TabsTrigger>
-                <TabsTrigger value="vencida">
-                  Vencida ({invoices.filter(i => i.status === 'vencida').length})
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Receipt weight="duotone" className="size-7 text-[var(--acento)]" />
+          <div>
+            <h1 className="text-2xl font-bold text-[var(--texto-principal)]">
+              Gestion de Facturas
+            </h1>
+            <p className="text-sm text-[var(--texto-deshabilitado)] mt-1">
+              Administra las facturas del taller
+            </p>
           </div>
-
-          <Button asChild>
-            <Link to="/create-invoice">
-              <Plus className="h-4 w-4 mr-1" />
-              Nueva Factura
-            </Link>
-          </Button>
         </div>
+        <Button
+          asChild
+          className="bg-[var(--acento)] text-white hover:bg-[var(--acento)]/90"
+        >
+          <Link to="/dashboard/facturas/nueva">
+            <Plus weight="bold" className="mr-2 size-4" />
+            Nueva Factura
+          </Link>
+        </Button>
+      </div>
 
-        {/* ── Tabela ── */}
-        <Card>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Factura</TableHead>
-                <TableHead>Cliente</TableHead>
-                <TableHead>Fecha</TableHead>
-                <TableHead>Estado</TableHead>
-                <TableHead className="text-right">Total</TableHead>
-                <TableHead className="text-right">Acciones</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {paginated.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
-                    {search || statusFilter !== 'todas'
-                      ? 'No se encontraron facturas con esos filtros.'
-                      : 'No hay facturas registradas.'}
-                  </TableCell>
-                </TableRow>
-              ) : (
-                paginated.map((invoice) => {
-                  const config = statusConfig[invoice.status] || statusConfig.pendiente;
-                  return (
-                    <TableRow
-                      key={invoice.id}
-                      className="cursor-pointer"
-                      onClick={() => navigate(`/invoice/${invoice.id}`)}
-                    >
-                      <TableCell className="font-semibold">
-                        <span className="text-muted-foreground font-normal">#</span>
-                        {invoice.number}
-                      </TableCell>
-                      <TableCell>
-                        <div className="font-medium">{invoice.clientName}</div>
-                        <div className="text-xs text-muted-foreground">{invoice.clientCIF}</div>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {format(invoice.date, "dd MMM yyyy", { locale: es })}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={config.variant}>{config.label}</Badge>
-                      </TableCell>
-                      <TableCell className="text-right font-semibold">
-                        {formatCurrency(invoice.total)}
-                      </TableCell>
-                      <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon-xs">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => navigate(`/invoice/${invoice.id}`)}>
-                              <Eye className="mr-2 h-4 w-4" />
-                              Ver Detalles
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => navigate(`/invoice/${invoice.id}`)}>
-                              <Pencil className="mr-2 h-4 w-4" />
-                              Editar
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Download className="mr-2 h-4 w-4" />
-                              Descargar PDF
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-destructive">
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Eliminar
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              )}
-            </TableBody>
-          </Table>
-
-          {/* ── Paginacao ── */}
-          {filtered.length > perPage && (
-            <>
-              <Separator />
-              <div className="flex items-center justify-between px-4 py-3">
-                <p className="text-sm text-muted-foreground">
-                  Mostrando {((currentPage - 1) * perPage) + 1}–{Math.min(currentPage * perPage, filtered.length)} de {filtered.length}
-                </p>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                    disabled={currentPage === 1}
-                  >
-                    <ChevronLeft className="h-4 w-4 mr-1" />
-                    Anterior
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                    disabled={currentPage === totalPages}
-                  >
-                    Siguiente
-                    <ChevronRight className="h-4 w-4 ml-1" />
-                  </Button>
-                </div>
-              </div>
-            </>
-          )}
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-xs font-medium text-[var(--texto-deshabilitado)] uppercase tracking-wide">
+              Total Facturas
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold text-[var(--texto-principal)] font-[family-name:var(--fuente-datos)]">
+              {stats.total}
+            </p>
+          </CardContent>
         </Card>
 
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-xs font-medium text-[var(--texto-deshabilitado)] uppercase tracking-wide">
+              Pendientes de Pago
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold text-red-500 font-[family-name:var(--fuente-datos)]">
+              {stats.pendientes}
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-xs font-medium text-[var(--texto-deshabilitado)] uppercase tracking-wide">
+              Monto Total
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold text-[var(--texto-principal)] font-[family-name:var(--fuente-datos)]">
+              {formatEUR(stats.montoTotal)}
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-xs font-medium text-[var(--texto-deshabilitado)] uppercase tracking-wide">
+              Pagadas
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold text-green-500 font-[family-name:var(--fuente-datos)]">
+              {stats.pagadas}
+            </p>
+          </CardContent>
+        </Card>
       </div>
-    </>
+
+      {/* Search + Table */}
+      <Card className="bg-[var(--fondo-tarjeta)] border-[var(--borde)]">
+        <CardHeader>
+          <div className="relative">
+            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[var(--texto-deshabilitado)]" />
+            <Input
+              placeholder="Buscar por numero, cliente..."
+              value={busqueda}
+              onChange={handleBusqueda}
+              className="pl-9 bg-[var(--fondo-tarjeta)] border-[var(--borde)] text-[var(--texto-principal)] placeholder:text-[var(--texto-deshabilitado)]"
+            />
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          {cargando ? (
+            <div className="py-12 text-center text-[var(--texto-deshabilitado)]">
+              Cargando facturas...
+            </div>
+          ) : facturas.length === 0 ? (
+            <div className="py-12 text-center text-[var(--texto-deshabilitado)]">
+              No hay facturas registradas
+            </div>
+          ) : (
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-[var(--borde)]">
+                    <TableHead className="text-[var(--texto-deshabilitado)]">Numero</TableHead>
+                    <TableHead className="text-[var(--texto-deshabilitado)]">Cliente</TableHead>
+                    <TableHead className="text-[var(--texto-deshabilitado)]">Servicios</TableHead>
+                    <TableHead className="text-[var(--texto-deshabilitado)] text-right">Total</TableHead>
+                    <TableHead className="text-[var(--texto-deshabilitado)]">Estado Pago</TableHead>
+                    <TableHead className="text-[var(--texto-deshabilitado)]">Fecha</TableHead>
+                    <TableHead className="text-[var(--texto-deshabilitado)] text-right">
+                      Acciones
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {facturasPagina.map((factura) => (
+                    <TableRow
+                      key={factura.id}
+                      className="border-[var(--borde)] hover:bg-[var(--fondo-elevado)]/50"
+                    >
+                      <TableCell className="text-[var(--texto-principal)] font-medium font-[family-name:var(--fuente-datos)]">
+                        {factura.numero || "-"}
+                      </TableCell>
+                      <TableCell className="text-[var(--texto-principal)]">
+                        {factura.clienteNombre || "-"}
+                      </TableCell>
+                      <TableCell className="text-[var(--texto-principal)]">
+                        {Array.isArray(factura.servicios)
+                          ? factura.servicios.length
+                          : factura.servicios ?? "-"}
+                      </TableCell>
+                      <TableCell className="text-right text-[var(--texto-principal)] font-[family-name:var(--fuente-datos)]">
+                        {formatEUR(factura.total)}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          className={badgeEstado(factura.estadoPago)}
+                          variant="outline"
+                        >
+                          {etiquetaEstado(factura.estadoPago)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-[var(--texto-principal)] font-[family-name:var(--fuente-datos)]">
+                        {factura.fecha
+                          ? new Date(factura.fecha).toLocaleDateString("es-ES")
+                          : factura.creadoEn
+                          ? new Date(factura.creadoEn).toLocaleDateString("es-ES")
+                          : "-"}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            title="Ver detalle"
+                            onClick={() =>
+                              navigate(`/dashboard/facturas/${factura.id}`)
+                            }
+                          >
+                            <Eye className="size-4 text-[var(--texto-deshabilitado)]" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            title="Editar"
+                            onClick={() =>
+                              navigate(
+                                `/dashboard/facturas/editar/${factura.id}`
+                              )
+                            }
+                          >
+                            <PencilSimple className="size-4 text-[var(--texto-deshabilitado)]" />
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="ghost" size="icon-sm" title="Eliminar">
+                                <Trash className="size-4 text-[var(--peligro)]" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Eliminar factura
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Esta accion no se puede deshacer. Se eliminara
+                                  permanentemente la factura{" "}
+                                  <strong>{factura.numero || factura.id}</strong>.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-[var(--peligro)] text-white hover:bg-[var(--peligro)]/90"
+                                  onClick={() => handleEliminar(factura.id)}
+                                >
+                                  Eliminar
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+
+              {/* Pagination */}
+              {totalPaginas > 1 && (
+                <div className="flex items-center justify-between px-4 py-3 border-t border-[var(--borde)]">
+                  <p className="text-sm text-[var(--texto-deshabilitado)]">
+                    Pagina {paginaActual} de {totalPaginas}
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPaginaActual((p) => Math.max(1, p - 1))}
+                      disabled={paginaActual === 1}
+                      className="border-[var(--borde)] text-[var(--texto-principal)]"
+                    >
+                      Anterior
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setPaginaActual((p) => Math.min(totalPaginas, p + 1))
+                      }
+                      disabled={paginaActual === totalPaginas}
+                      className="border-[var(--borde)] text-[var(--texto-principal)]"
+                    >
+                      Siguiente
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
-export default InvoicesPage;
+export default PaginaFacturas;

@@ -22,7 +22,7 @@ import PaginaContacto from "./paginas/PaginaContacto";
 import PaginaDetalleServicio from "./paginas/PaginaDetalleServicio";
 import PaginaInicioSesion from "./paginas/PaginaInicioSesion";
 import PaginaDetalleFactura from "./paginas/PaginaDetalleFactura";
-import InvoiceForm from "./components/InvoiceForm/InvoiceForm";
+import PaginaNuevaFactura from "./paginas/PaginaNuevaFactura";
 import ProtectedRoute from "./componentes/RutaProtegida/RutaProtegida";
 import PaginaFacturas from "./paginas/PaginaFacturas";
 import PaginaPanel from "./paginas/PaginaPanel";
@@ -105,9 +105,13 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        {/* Invoice routes - moved from /invoices to /dashboard/invoices */}
+        {/* Rutas de facturas */}
+        <Route path="facturas" element={<PaginaFacturas />} />
+        <Route path="facturas/nueva" element={<PaginaNuevaFactura />} />
+        <Route path="facturas/editar/:facturaId" element={<PaginaNuevaFactura />} />
+        <Route path="facturas/:facturaId" element={<PaginaDetalleFactura />} />
+        {/* Rutas legacy para compatibilidad */}
         <Route path="invoices" element={<PaginaFacturas />} />
-        <Route path="create-invoice" element={<InvoiceForm />} />
         <Route path="invoice/:id" element={<PaginaDetalleFactura />} />
       </Route>
 
