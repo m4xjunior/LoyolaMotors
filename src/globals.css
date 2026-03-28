@@ -142,5 +142,27 @@
 
 /* .dark class removed — :root already defines dark theme for Loyola Motors brand */
 
-/* Base resets removidos para não conflitar com Bootstrap/CSS existente.
-   Os componentes shadcn/ui aplicam seus próprios estilos via classes Tailwind. */
+/* Selective reset for shadcn components inside admin panel.
+   We can't use Tailwind preflight globally (breaks Bootstrap), so we
+   reset only the elements shadcn needs — specifically buttons inside
+   the sidebar and admin layout which inherit browser UA gray bg. */
+[data-slot="sidebar"] button,
+[data-slot="sidebar"] a,
+.peer\/menu-button,
+[data-sidebar="menu-button"] {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* SidebarInset — admin main content area */
+[data-slot="sidebar-inset"] button {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+}

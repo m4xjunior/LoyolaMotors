@@ -7,8 +7,8 @@ export const ContextoAutenticacion = createContext(null);
 const MOCK_USERS = [
   {
     id: "1",
-    email: "admin@lexusfx.com",
-    password: "Admin2025",
+    email: "admin@loyolamotors.com",
+    password: "admin123",
     nombre: "Administrador",
     apellidos: "Sistema",
     rol: "admin",
