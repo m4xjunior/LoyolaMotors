@@ -142,6 +142,7 @@ export default function App() {
               <PaginaAdminPrecios />
             </ProtectedRoute>
           }
+          
         />
         <Route
           path="admin/configuracion"

@@ -1,5 +1,5 @@
-import Testimonial from "../components/Testimonial/Testimonial";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import Testimonial from "../componentes/Depoimento/Depoimento";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 
 const Testimonials = () => {
   return (

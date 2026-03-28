@@ -1,7 +1,11 @@
 
 import { Navigate, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
+<<<<<<<< HEAD:src/componentes/RutaProtegida/RutaProtegida.jsx
 import { useAutenticacion } from '../../contextos/ContextoAutenticacion';
+========
+import { useAuth } from '../../contextos/ContextoAutenticacao';
+>>>>>>>> origin/main:src/componentes/RotaProtegida/RotaProtegida.jsx
 
 const ProtectedRoute = ({ children, requiredRole = null }) => {
   const { estaAutenticado, tieneRol, loading } = useAutenticacion();

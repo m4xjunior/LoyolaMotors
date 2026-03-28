@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 
 import LightGallery from "lightgallery/react";
 import lgThumbnail from "lightgallery/plugins/thumbnail";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 
+<<<<<<<< HEAD:src/paginas/PaginaGaleria.jsx
 import imageDataFallback from "../dataJson/galleryImgData.json";
 import { servicioContenido } from "../servicios/servicioContenido";
+========
+import imageData from "../dadosJson/dadosImagensGaleria.json";
+>>>>>>>> origin/main:src/paginas/Galeria.jsx
 
 const Gallery = () => {
   const [imageData, setImageData] = useState(imageDataFallback);

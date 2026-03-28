@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import ServicesDetailContent from "../components/Services/ServicesDetailContent";
-import FrequentlyQuestions from "../components/FrequentlyQuestions/FrequentlyQuestions";
-import Cta from "../components/Cta/Cta";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
+import ServicesDetailContent from "../componentes/Servicos/ConteudoDetalheServico";
+import FrequentlyQuestions from "../componentes/PerguntasFrequentes/PerguntasFrequentes";
+import Cta from "../componentes/ChamadaAcao/ChamadaAcao";
 
-import serviceData from "../dataJson/serviceDetails.json";
+import serviceData from "../dadosJson/detalhesServico.json";
 
 const SingleService = () => {
   const { serviceId } = useParams();

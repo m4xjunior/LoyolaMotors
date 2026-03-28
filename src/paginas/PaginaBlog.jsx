@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 
-import BlogCard from "../components/Blog/BlogCard";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import BlogFeature from "../components/Blog/BlogFeature";
-import Pagination from "../components/Pagination/Pagination";
+import BlogCard from "../componentes/Blog/CartaoBlog";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
+import BlogFeature from "../componentes/Blog/DestaqueBlog";
+import Pagination from "../componentes/Paginacao/Paginacao";
 
+<<<<<<<< HEAD:src/paginas/PaginaBlog.jsx
 import blogsDataFallback from "../dataJson/blogsData.json";
 import { servicioContenido } from "../servicios/servicioContenido";
+========
+import blogsData from "../dadosJson/dadosBlog.json";
+>>>>>>>> origin/main:src/paginas/Blog.jsx
 
 const Blog = () => {
   const [blogsData, setBlogsData] = useState(blogsDataFallback);

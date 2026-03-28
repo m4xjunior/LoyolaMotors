@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import BlogCard from "../components/Blog/BlogCard";
-import BlogPost from "../components/Blog/BlogPost";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import SectionHeading from "../components/SectionHeading/SectionHeading";
+import BlogCard from "../componentes/Blog/CartaoBlog";
+import BlogPost from "../componentes/Blog/PostBlog";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
+import SectionHeading from "../componentes/TituloSecao/TituloSecao";
 
+<<<<<<<< HEAD:src/paginas/PaginaArticuloBlog.jsx
 import blogsDataFallback from "../dataJson/blogsData.json";
 import { servicioContenido } from "../servicios/servicioContenido";
+========
+import blogsData from "../dadosJson/dadosBlog.json";
+>>>>>>>> origin/main:src/paginas/BlogUnico.jsx
 
 const SingleBlog = () => {
   const { blogId } = useParams();

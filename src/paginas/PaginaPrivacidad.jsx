@@ -1,4 +1,4 @@
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 
 const PrivacyPolicy = () => {
   return (
