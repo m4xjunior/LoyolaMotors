@@ -1,10 +1,10 @@
 import { servicioContenido } from "../servicios/servicioContenido";
 
 // Importar datos JSON existentes
-import blogsData from "../dataJson/blogsData.json";
-import teamMembersData from "../dataJson/teamMembersData.json";
-import servicesData from "../dataJson/servicesData.json";
-import galleryData from "../dataJson/galleryImgData.json";
+import blogsData from "../dadosJson/dadosBlog.json";
+import teamMembersData from "../dadosJson/dadosMembrosEquipe.json";
+import servicesData from "../dadosJson/dadosServicos.json";
+import galleryData from "../dadosJson/dadosImagensGaleria.json";
 
 export const sembrarDatosIniciales = async () => {
   // Blog posts

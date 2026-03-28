@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import BlogCard from "./BlogCard";
-import SectionHeading from "../SectionHeading/SectionHeading";
-import blogsDataFallback from "../../dataJson/blogsData.json";
+import BlogCard from "./CartaoBlog";
+import SectionHeading from "../TituloSecao/TituloSecao";
+import blogsDataFallback from "../../dadosJson/dadosBlog.json";
 import { servicioContenido } from "../../servicios/servicioContenido";
 
 const Blogs = () => {

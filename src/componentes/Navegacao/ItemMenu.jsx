@@ -1,7 +1,7 @@
 import { isArray } from "lodash";
 import { useState } from "react";
 import classNames from "classnames";
-import TextAnimation from "../TextAnimation/TextAnimation";
+import TextAnimation from "../AnimacaoTexto/AnimacaoTexto";
 import { useAutenticacion } from "../../contextos/ContextoAutenticacion";
 
 export default function MenuItem({ props }) {

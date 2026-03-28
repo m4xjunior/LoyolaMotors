@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CtaBtn } from "../Button/Button";
+import { CtaBtn } from "../Botao/Botao";
 import { servicioConfiguracion } from "../../servicios/servicioConfiguracion";
 
 const CONFIG_POR_DEFECTO = {

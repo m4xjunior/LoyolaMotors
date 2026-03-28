@@ -5,14 +5,9 @@ import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 import SingleTeamMemberDetails from "../componentes/Equipe/DetalhesMembroEquipe";
 import TeamDetailsSlider from "../componentes/Equipe/CarrosselDetalhesEquipe";
 
-<<<<<<<< HEAD:src/paginas/PaginaDetalleMiembro.jsx
-import membersDataFallback from "../dataJson/teamMembersData.json";
-import SpecialistTeamMembers from "../components/Team/SpecialistTeamMembers";
-import { servicioContenido } from "../servicios/servicioContenido";
-========
-import membersData from "../dadosJson/dadosMembrosEquipe.json";
+import membersDataFallback from "../dadosJson/dadosMembrosEquipe.json";
 import SpecialistTeamMembers from "../componentes/Equipe/MembrosEspecialistas";
->>>>>>>> origin/main:src/paginas/DetalhesMembroEquipe.jsx
+import { servicioContenido } from "../servicios/servicioContenido";
 
 const TeamMemberDetails = () => {
   const { teamId } = useParams();

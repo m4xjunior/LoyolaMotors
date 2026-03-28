@@ -1,13 +1,13 @@
 
-import AboutPageHero from "../components/CommonPageHero/AboutPageHero";
-import CompanyTab from "../components/CompanyTab/CompanyTab";
-import ChooseUs from "../components/ChooseUs/ChooseUs";
-import AutoCounter from "../components/AutoCounter/AutoCounter";
-import Testimonial from "../components/Testimonial/Testimonial";
-import Teams from "../components/Team/Teams";
-import PricingTable from "../components/Pricing/PricingTable";
-import TrustedClient from "../components/TrustedClient/TrustedClient";
-import Cta from "../components/Cta/Cta";
+import AboutPageHero from "../componentes/HeroPagina/HeroPaginaSobre";
+import CompanyTab from "../componentes/AbaEmpresa/AbaEmpresa";
+import ChooseUs from "../componentes/PorQueNos/PorQueNos";
+import AutoCounter from "../componentes/ContadorAutomatico/ContadorAutomatico";
+import Testimonial from "../componentes/Depoimento/Depoimento";
+import Teams from "../componentes/Equipe/Equipes";
+import PricingTable from "../componentes/Precos/TabelaPrecos";
+import TrustedClient from "../componentes/ClienteConfiavel/ClienteConfiavel";
+import Cta from "../componentes/ChamadaAcao/ChamadaAcao";
 
 const About = () => {
   return (

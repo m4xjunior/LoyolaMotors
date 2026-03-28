@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { useAuth } from "../contextos/ContextoAutenticacao";
+import { useAutenticacion } from "../contextos/ContextoAutenticacion";
 import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 import { mockInvoices } from "../dados/dadosMock";
 
@@ -780,7 +780,7 @@ const EmptyDescription = styled.p`
 `;
 
 const InvoicesPage = () => {
-  const { logout } = useAuth();
+  const { logout } = useAutenticacion();
   const navigate = useNavigate();
   const [invoices, setInvoices] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");

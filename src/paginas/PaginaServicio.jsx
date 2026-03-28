@@ -1,7 +1,7 @@
 
-import Services from "../components/Services/ServicesSection";
-import Cta from "../components/Cta/Cta";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
+import Services from "../componentes/Servicos/SecaoServicos";
+import Cta from "../componentes/ChamadaAcao/ChamadaAcao";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 
 const Service = () => {
   return (
