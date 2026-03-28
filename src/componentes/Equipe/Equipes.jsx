@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import SectionHeading from "../SectionHeading/SectionHeading";
-import { MoreBtn } from "../Button/Button";
-import TeamCard from "./TeamCard";
+import SectionHeading from "../TituloSecao/TituloSecao";
+import { MoreBtn } from "../Botao/Botao";
+import TeamCard from "./CartaoEquipe";
 import { servicioContenido } from "../../servicios/servicioContenido";
 
 const MEMBERS_POR_DEFECTO = [

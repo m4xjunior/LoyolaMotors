@@ -6,12 +6,8 @@ import BlogPost from "../componentes/Blog/PostBlog";
 import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 import SectionHeading from "../componentes/TituloSecao/TituloSecao";
 
-<<<<<<<< HEAD:src/paginas/PaginaArticuloBlog.jsx
 import blogsDataFallback from "../dataJson/blogsData.json";
 import { servicioContenido } from "../servicios/servicioContenido";
-========
-import blogsData from "../dadosJson/dadosBlog.json";
->>>>>>>> origin/main:src/paginas/BlogUnico.jsx
 
 const SingleBlog = () => {
   const { blogId } = useParams();

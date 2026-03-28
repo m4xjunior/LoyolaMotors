@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Counter from "./Counter";
+import Counter from "./Contador";
 import { servicioContenido } from "../../servicios/servicioContenido";
 
 const ESTADISTICAS_POR_DEFECTO = [

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import SectionHeading from "../SectionHeading/SectionHeading";
+import SectionHeading from "../TituloSecao/TituloSecao";
 import { servicioConfiguracion } from "../../servicios/servicioConfiguracion";
 
 const CONFIG_POR_DEFECTO = {

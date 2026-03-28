@@ -1,6 +1,6 @@
 
-import ContactForm from "../components/ContactUs/ContactForm";
-import ContactInfo from "../components/ContactUs/ContactInfo";
+import ContactForm from "../componentes/Contato/FormularioContato";
+import ContactInfo from "../componentes/Contato/InfoContato";
 
 const Contact = () => {
   return (

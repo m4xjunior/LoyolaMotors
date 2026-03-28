@@ -1,8 +1,8 @@
 
-import Videos from "../components/VideoPopUp/Videos";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import FrequentlyQuestions from "../components/FrequentlyQuestions/FrequentlyQuestions";
-import AppointmentForm from "../components/AppointmentForm/AppointmentForm";
+import Videos from "../componentes/VideoPopup/Videos";
+import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
+import FrequentlyQuestions from "../componentes/PerguntasFrequentes/PerguntasFrequentes";
+import AppointmentForm from "../componentes/FormularioAgendamento/FormularioAgendamento";
 
 const Faq = () => {
   return (

@@ -1,19 +1,10 @@
-<<<<<<<< HEAD:src/paginas/PaginaEquipo.jsx
 import { useState, useEffect } from "react";
-import CommonPageHero from "../components/CommonPageHero/CommonPageHero";
-import PersonDetails from "../components/Team/PersonDetails";
-import MemberCard from "../components/Team/MemberCard";
-
-import membersDataFallback from "../dataJson/teamMembersData.json";
-import { servicioContenido } from "../servicios/servicioContenido";
-========
-
 import CommonPageHero from "../componentes/HeroPagina/HeroPagina";
 import PersonDetails from "../componentes/Equipe/DetalhesPessoa";
 import MemberCard from "../componentes/Equipe/CartaoMembro";
 
-import membersData from "../dadosJson/dadosMembrosEquipe.json";
->>>>>>>> origin/main:src/paginas/Equipe.jsx
+import membersDataFallback from "../dataJson/teamMembersData.json";
+import { servicioContenido } from "../servicios/servicioContenido";
 
 const Team = () => {
   const [membersData, setMembersData] = useState(membersDataFallback);
