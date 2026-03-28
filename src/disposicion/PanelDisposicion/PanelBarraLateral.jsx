@@ -107,7 +107,7 @@ const PanelBarraLateral = () => {
   return (
     <Sidebar collapsible="icon" className="border-r border-[var(--borde)]">
       {/* ── Header: Logo ── */}
-      <SidebarHeader className="border-b border-[var(--borde)] bg-[var(--fondo)]">
+      <SidebarHeader className="border-b border-[var(--borde)] ">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild className="hover:bg-transparent active:bg-transparent">
@@ -130,7 +130,7 @@ const PanelBarraLateral = () => {
       </SidebarHeader>
 
       {/* ── Content: Secciones de navegación ── */}
-      <SidebarContent className="bg-[var(--fondo)]">
+      <SidebarContent className="">
         {secciones.map((seccion) => {
           if (seccion.visible && !seccion.visible()) return null;
 
@@ -178,7 +178,7 @@ const PanelBarraLateral = () => {
       </SidebarContent>
 
       {/* ── Footer: Usuario + Cerrar Sesión + Volver al sitio ── */}
-      <SidebarFooter className="border-t border-[var(--borde)] bg-[var(--fondo)]">
+      <SidebarFooter className="border-t border-[var(--borde)] ">
         <SidebarMenu>
           {/* Volver al sitio */}
           <SidebarMenuItem>
