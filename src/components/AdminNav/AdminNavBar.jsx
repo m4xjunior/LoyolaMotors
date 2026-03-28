@@ -8,31 +8,31 @@ import "./AdminNavBar.scss";
 
 const BarraNavegacaoAdmin = () => {
   const [estaAberto, setEstaAberto] = useState(false);
-  const { user: usuario, hasRole: temPermissao } = useAutenticacion();
+  const { user: usuario, tieneRol: temPermissao } = useAutenticacion();
   const localizacao = useLocation();
 
   const itensMenuAdmin = [
     {
-      titulo: "Dashboard",
-      caminho: "/dashboard",
+      titulo: "Panel",
+      caminho: "/panel",
       icone: <LayoutDashboard size={20} />,
       papelNecessario: "empleado",
     },
     {
       titulo: "Veículos",
-      caminho: "/dashboard/vehiculos",
+      caminho: "/panel/vehiculos",
       icone: <Car size={20} />,
       papelNecessario: "empleado",
     },
     {
       titulo: "Serviços",
-      caminho: "/dashboard/servicios",
+      caminho: "/panel/servicios",
       icone: <Wrench size={20} />,
       papelNecessario: "empleado",
     },
     {
       titulo: "Usuários",
-      caminho: "/dashboard/usuarios",
+      caminho: "/panel/usuarios",
       icone: <Users size={20} />,
       papelNecessario: "admin",
     },

@@ -91,7 +91,7 @@ const VehiclesManagementPage = () => {
   // Carregar dados
   useEffect(() => {
     if (!user) {
-      navigate("/login");
+      navigate("/inicio-sesion");
       return;
     }
 
@@ -299,12 +299,12 @@ const VehiclesManagementPage = () => {
             </div>
             <div className="dashboard-actions">
               <Link
-                to="/dashboard/vehiculos/novo"
+                to="/panel/vehiculos/novo"
                 className="primary-action-btn"
               >
                 🚗 Novo Veículo
               </Link>
-              <Link to="/dashboard" className="logout-btn">
+              <Link to="/panel" className="logout-btn">
                 ← Voltar ao Dashboard
               </Link>
             </div>
@@ -459,7 +459,7 @@ const VehiclesManagementPage = () => {
                   selectedMarca === "todas" &&
                   selectedClient === "todos" && (
                     <Link
-                      to="/dashboard/vehiculos/novo"
+                      to="/panel/vehiculos/novo"
                       className="primary-action-btn"
                     >
                       + Adicionar Primeiro Veículo
@@ -480,7 +480,7 @@ const VehiclesManagementPage = () => {
                     vehicle={vehicle}
                     customerName={getCustomerName(vehicle.clienteId)}
                     onEdit={() =>
-                      navigate(`/dashboard/vehiculos/editar/${vehicle.id}`)
+                      navigate(`/panel/vehiculos/editar/${vehicle.id}`)
                     }
                     onDelete={() => handleDelete(vehicle)}
                   />

@@ -63,7 +63,7 @@ export const ProveedorAutenticacion = ({ children }) => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  const login = (email, password) => {
+  const iniciarSesion = (email, password) => {
     return new Promise((resolve, reject) => {
       // Simulate API call
       setTimeout(() => {
@@ -99,17 +99,17 @@ export const ProveedorAutenticacion = ({ children }) => {
     });
   };
 
-  const logout = () => {
+  const cerrarSesion = () => {
     setUser(null);
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("currentUser");
   };
 
-  const isAuthenticated = () => {
+  const estaAutenticado = () => {
     return localStorage.getItem("isAuthenticated") === "true" && user !== null;
   };
 
-  const hasRole = (requiredRole) => {
+  const tieneRol = (requiredRole) => {
     if (!user) return false;
     if (requiredRole === "admin") return user.rol === "admin";
     if (requiredRole === "empleado")
@@ -184,10 +184,21 @@ export const ProveedorAutenticacion = ({ children }) => {
     return users.filter((u) => u.activo);
   };
 
+  // Aliases for backward compatibility
+  const login = iniciarSesion;
+  const logout = cerrarSesion;
+  const isAuthenticated = estaAutenticado;
+  const hasRole = tieneRol;
+
   const value = {
     user,
     loading,
     users: getAllUsers(),
+    iniciarSesion,
+    cerrarSesion,
+    estaAutenticado,
+    tieneRol,
+    // backward-compat aliases
     login,
     logout,
     isAuthenticated,

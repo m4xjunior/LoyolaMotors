@@ -98,7 +98,7 @@ const PaginaNuevaFactura = () => {
       } else {
         await servicioFacturas.crear(datos);
       }
-      navigate("/dashboard/facturas");
+      navigate("/panel/facturas");
     } catch (err) {
       console.error("Error al guardar factura:", err);
       setError("Error al guardar la factura. Intenta de nuevo.");
@@ -114,7 +114,7 @@ const PaginaNuevaFactura = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate("/dashboard/facturas")}
+          onClick={() => navigate("/panel/facturas")}
           className="text-[var(--texto-deshabilitado)] hover:text-[var(--texto-principal)]"
         >
           <ArrowLeft className="mr-1 size-4" />
@@ -359,7 +359,7 @@ const PaginaNuevaFactura = () => {
           <Button
             type="button"
             variant="outline"
-            onClick={() => navigate("/dashboard/facturas")}
+            onClick={() => navigate("/panel/facturas")}
             className="border-[var(--borde)] text-[var(--texto-principal)]"
           >
             Cancelar

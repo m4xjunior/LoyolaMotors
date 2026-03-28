@@ -11,16 +11,16 @@ export default function PaginaInicioSesion() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAutenticacion();
+  const { iniciarSesion } = useAutenticacion();
 
-  const from = location.state?.from?.pathname || "/dashboard";
+  const from = location.state?.from?.pathname || "/panel";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
     try {
-      await login(email, password);
+      await iniciarSesion(email, password);
       navigate(from, { replace: true });
     } catch (err) {
       setError(err.message);

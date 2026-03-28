@@ -99,7 +99,7 @@ const PaginaClientes = () => {
           asChild
           className="bg-[var(--acento)] text-white hover:bg-[var(--acento)]/90"
         >
-          <Link to="/dashboard/clientes/nuevo">
+          <Link to="/panel/clientes/nuevo">
             <Plus weight="bold" className="mr-2 size-4" />
             Nuevo Cliente
           </Link>
@@ -220,7 +220,7 @@ const PaginaClientes = () => {
                             size="icon-sm"
                             title="Ver detalle"
                             onClick={() =>
-                              navigate(`/dashboard/clientes/${cliente.id}`)
+                              navigate(`/panel/clientes/${cliente.id}`)
                             }
                           >
                             <Eye className="size-4 text-[var(--texto-deshabilitado)]" />
@@ -231,7 +231,7 @@ const PaginaClientes = () => {
                             title="Editar"
                             onClick={() =>
                               navigate(
-                                `/dashboard/clientes/editar/${cliente.id}`
+                                `/panel/clientes/editar/${cliente.id}`
                               )
                             }
                           >

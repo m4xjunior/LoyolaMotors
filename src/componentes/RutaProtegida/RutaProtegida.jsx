@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useAutenticacion } from '../../contextos/ContextoAutenticacion';
 
 const ProtectedRoute = ({ children, requiredRole = null }) => {
-  const { isAuthenticated, hasRole, loading } = useAutenticacion();
+  const { estaAutenticado, tieneRol, loading } = useAutenticacion();
   const location = useLocation();
 
   // Wait for auth state to be restored from localStorage
@@ -12,13 +12,13 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
     return null;
   }
 
-  if (!isAuthenticated()) {
-    // Redirect them to the /login page, but save the current location they were
+  if (!estaAutenticado()) {
+    // Redirect them to the /inicio-sesion page, but save the current location they were
     // trying to go to. This allows us to send them along to that page after they login.
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/inicio-sesion" state={{ from: location }} replace />;
   }
 
-  if (requiredRole && !hasRole(requiredRole)) {
+  if (requiredRole && !tieneRol(requiredRole)) {
     return <Navigate to="/" replace />;
   }
 

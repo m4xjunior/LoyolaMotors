@@ -64,6 +64,8 @@ export default function App() {
 
   return (
     <Routes>
+      <Route path="/inicio-sesion" element={<PaginaInicioSesion />} />
+      {/* Legacy alias */}
       <Route path="/login" element={<PaginaInicioSesion />} />
 
       {/* Public site routes under Main layout (Header + Footer) */}
@@ -88,9 +90,9 @@ export default function App() {
         <Route path="privacy-policy" element={<PaginaPrivacidad />} />
       </Route>
 
-      {/* Dashboard routes under PanelPrincipal layout (Sidebar + PanelCabecera) */}
+      {/* Panel routes under PanelPrincipal layout (Sidebar + PanelCabecera) */}
       <Route
-        path="/dashboard"
+        path="/panel"
         element={
           <ProtectedRoute requiredRole="empleado">
             <PanelPrincipal />

@@ -65,7 +65,7 @@ const PaginaServiciosVehiculo = () => {
       ]);
 
       if (!v) {
-        navigate("/dashboard/vehiculos");
+        navigate("/panel/vehiculos");
         return;
       }
       setVehiculo(v);
@@ -131,7 +131,7 @@ const PaginaServiciosVehiculo = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate("/dashboard/vehiculos")}
+          onClick={() => navigate("/panel/vehiculos")}
           className="text-[var(--texto-deshabilitado)] hover:text-[var(--texto-principal)]"
         >
           <ArrowLeft className="mr-1 size-4" />
@@ -196,7 +196,7 @@ const PaginaServiciosVehiculo = () => {
                 asChild
                 className="bg-[var(--acento)] text-white hover:bg-[var(--acento)]/90 shrink-0"
               >
-                <Link to={`/dashboard/servicios/nuevo`} state={{ vehiculoId: vehicleId }}>
+                <Link to={`/panel/servicios/nuevo`} state={{ vehiculoId: vehicleId }}>
                   <Plus weight="bold" className="mr-2 size-4" />
                   Nuevo Servicio
                 </Link>
@@ -237,7 +237,7 @@ const PaginaServiciosVehiculo = () => {
                   asChild
                   className="bg-[var(--acento)] text-white hover:bg-[var(--acento)]/90"
                 >
-                  <Link to="/dashboard/servicios/nuevo" state={{ vehiculoId: vehicleId }}>
+                  <Link to="/panel/servicios/nuevo" state={{ vehiculoId: vehicleId }}>
                     <Plus weight="bold" className="mr-2 size-4" />
                     Registrar primer servicio
                   </Link>
@@ -298,7 +298,7 @@ const PaginaServiciosVehiculo = () => {
                             size="icon-sm"
                             title="Editar"
                             onClick={() =>
-                              navigate(`/dashboard/servicios/editar/${servicio.id}`)
+                              navigate(`/panel/servicios/editar/${servicio.id}`)
                             }
                           >
                             <PencilSimple className="size-4 text-[var(--texto-deshabilitado)]" />

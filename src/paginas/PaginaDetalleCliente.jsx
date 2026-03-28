@@ -53,7 +53,7 @@ const PaginaDetalleCliente = () => {
       <div className="space-y-4">
         <div className="flex items-center gap-4">
           <Button asChild variant="ghost" size="sm" className="text-[var(--texto-deshabilitado)]">
-            <Link to="/dashboard/clientes">
+            <Link to="/panel/clientes">
               <ArrowLeft className="mr-1 size-4" />
               Volver a Clientes
             </Link>
@@ -81,7 +81,7 @@ const PaginaDetalleCliente = () => {
             size="sm"
             className="text-[var(--texto-deshabilitado)] hover:text-[var(--texto-principal)]"
           >
-            <Link to="/dashboard/clientes">
+            <Link to="/panel/clientes">
               <ArrowLeft className="mr-1 size-4" />
               Volver a Clientes
             </Link>
@@ -99,7 +99,7 @@ const PaginaDetalleCliente = () => {
           asChild
           className="bg-[var(--acento)] text-white hover:bg-[var(--acento)]/90"
         >
-          <Link to={`/dashboard/clientes/editar/${clienteId}`}>
+          <Link to={`/panel/clientes/editar/${clienteId}`}>
             <PencilSimple className="mr-2 size-4" />
             Editar
           </Link>
@@ -196,7 +196,7 @@ const PaginaDetalleCliente = () => {
             size="sm"
             className="border-[var(--borde)] text-[var(--texto-principal)]"
           >
-            <Link to={`/dashboard/vehiculos/novo?clienteId=${clienteId}`}>
+            <Link to={`/panel/vehiculos/novo?clienteId=${clienteId}`}>
               <Car className="mr-2 size-4" />
               Agregar Vehiculo
             </Link>

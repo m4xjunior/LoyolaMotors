@@ -84,7 +84,7 @@ const PaginaNuevoVehiculo = () => {
       } else {
         await servicioVehiculos.crear(datos);
       }
-      navigate("/dashboard/vehiculos");
+      navigate("/panel/vehiculos");
     } catch (err) {
       console.error("Error al guardar vehiculo:", err);
       setError("Error al guardar el vehiculo. Intenta de nuevo.");
@@ -100,7 +100,7 @@ const PaginaNuevoVehiculo = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate("/dashboard/vehiculos")}
+          onClick={() => navigate("/panel/vehiculos")}
           className="text-[var(--texto-deshabilitado)] hover:text-[var(--texto-principal)]"
         >
           <ArrowLeft className="mr-1 size-4" />
@@ -246,7 +246,7 @@ const PaginaNuevoVehiculo = () => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => navigate("/dashboard/vehiculos")}
+                onClick={() => navigate("/panel/vehiculos")}
                 className="border-[var(--borde)] text-[var(--texto-principal)]"
               >
                 Cancelar

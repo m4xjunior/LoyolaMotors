@@ -14,21 +14,21 @@ export const usarPanel = () => useContext(ContextoPanel);
 // 3. Main Layout Component for the entire dashboard area
 const PanelPrincipal = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const { user, loading, logout } = useAutenticacion();
+  const { user, loading, cerrarSesion } = useAutenticacion();
   const navigate = useNavigate();
   const location = useLocation();
 
   // Redirect to login if user is not authenticated
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/login", { replace: true });
+      navigate("/inicio-sesion", { replace: true });
     }
   }, [user, loading, navigate]);
 
   const handleInactivityLogout = useCallback(() => {
-    logout();
-    navigate("/login", { replace: true });
-  }, [logout, navigate]);
+    cerrarSesion();
+    navigate("/inicio-sesion", { replace: true });
+  }, [cerrarSesion, navigate]);
 
   const { isWarning, remainingSeconds, resetTimer } = useMonitorInactividad({
     timeout: 900000,      // 15 minutes

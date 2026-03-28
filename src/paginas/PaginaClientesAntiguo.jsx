@@ -115,7 +115,7 @@ CustomerCard.propTypes = {
 };
 
 const CustomersPage = () => {
-  const { logout } = useAutenticacion();
+  const { cerrarSesion: logout } = useAutenticacion();
   const navigate = useNavigate();
   const [customers, setCustomers] = useState([]);
   const [filteredCustomers, setFilteredCustomers] = useState([]);
@@ -169,7 +169,7 @@ const CustomersPage = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/inicio-sesion");
   };
 
   const resetForm = () => {
@@ -362,7 +362,7 @@ const CustomersPage = () => {
                 </p>
               </div>
               <div className="d-flex gap-3 flex-wrap">
-                <Link to="/dashboard" className="common-btn">
+                <Link to="/panel" className="common-btn">
                   Volver al Dashboard
                 </Link>
                 <button
@@ -783,7 +783,7 @@ const CustomersPage = () => {
                                     {vehicle.kilometraje.toLocaleString()} km
                                   </p>
                                   <Link
-                                    to={`/dashboard/vehiculos/${vehicle.id}/servicios`}
+                                    to={`/panel/vehiculos/${vehicle.id}/servicios`}
                                     className="more-btn"
                                   >
                                     VER SERVICIOS

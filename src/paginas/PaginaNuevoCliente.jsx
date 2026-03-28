@@ -60,7 +60,7 @@ const PaginaNuevoCliente = () => {
       } else {
         await servicioClientes.crear(formulario);
       }
-      navigate("/dashboard/clientes");
+      navigate("/panel/clientes");
     } catch (err) {
       console.error("Error al guardar cliente:", err);
       setError("Error al guardar el cliente. Intenta de nuevo.");
@@ -76,7 +76,7 @@ const PaginaNuevoCliente = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate("/dashboard/clientes")}
+          onClick={() => navigate("/panel/clientes")}
           className="text-[var(--texto-deshabilitado)] hover:text-[var(--texto-principal)]"
         >
           <ArrowLeft className="mr-1 size-4" />
@@ -189,7 +189,7 @@ const PaginaNuevoCliente = () => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => navigate("/dashboard/clientes")}
+                onClick={() => navigate("/panel/clientes")}
                 className="border-[var(--borde)] text-[var(--texto-principal)]"
               >
                 Cancelar

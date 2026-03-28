@@ -29,7 +29,7 @@ const capitalize = (str) =>
   str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 const PanelCabecera = () => {
-  const { user, logout } = useAutenticacion();
+  const { user, cerrarSesion } = useAutenticacion();
   const { toggleSidebar } = usarPanel();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
@@ -49,8 +49,8 @@ const PanelCabecera = () => {
 
   const handleLogout = () => {
     setShowUserMenu(false);
-    logout();
-    navigate("/login", { replace: true });
+    cerrarSesion();
+    navigate("/inicio-sesion", { replace: true });
   };
 
   // Close dropdown when clicking outside

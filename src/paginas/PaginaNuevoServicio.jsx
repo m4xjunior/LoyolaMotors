@@ -103,7 +103,7 @@ const PaginaNuevoServicio = () => {
       } else {
         await servicioServicios.crear(payload);
       }
-      navigate("/dashboard/servicios");
+      navigate("/panel/servicios");
     } catch (err) {
       console.error("Error al guardar servicio:", err);
       setError("Error al guardar el servicio. Intenta de nuevo.");
@@ -121,7 +121,7 @@ const PaginaNuevoServicio = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate("/dashboard/servicios")}
+          onClick={() => navigate("/panel/servicios")}
           className="text-[var(--texto-deshabilitado)] hover:text-[var(--texto-principal)]"
         >
           <ArrowLeft className="mr-1 size-4" />
@@ -302,7 +302,7 @@ const PaginaNuevoServicio = () => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => navigate("/dashboard/servicios")}
+                onClick={() => navigate("/panel/servicios")}
                 className="border-[var(--borde)] text-[var(--texto-principal)]"
               >
                 Cancelar

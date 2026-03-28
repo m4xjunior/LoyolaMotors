@@ -110,7 +110,7 @@ const PaginaUsuarios = () => {
           </div>
         </div>
         <Button
-          onClick={() => navigate("/dashboard/usuarios/nuevo")}
+          onClick={() => navigate("/panel/usuarios/nuevo")}
           className="bg-[var(--acento)] text-white hover:bg-[var(--acento)]/90"
         >
           <Plus weight="bold" className="mr-2 size-4" />
@@ -241,7 +241,7 @@ const PaginaUsuarios = () => {
                             size="icon-sm"
                             title="Editar"
                             onClick={() =>
-                              navigate(`/dashboard/usuarios/editar/${usuario.id}`)
+                              navigate(`/panel/usuarios/editar/${usuario.id}`)
                             }
                           >
                             <PencilSimple className="size-4 text-[var(--texto-deshabilitado)]" />

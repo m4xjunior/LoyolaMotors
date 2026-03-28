@@ -8,7 +8,7 @@ import logo from "/assets/img/icon/loyola-logo-v2.png";
 import navitemlist from "../../dataJson/navitemlist.json";
 
 export default function NavMenu() {
-  const { isAuthenticated } = useAutenticacion();
+  const { estaAutenticado } = useAutenticacion();
   const [navBar, setNavbar] = useState("");
   const [navlist, setNavList] = useState("");
 
@@ -53,10 +53,10 @@ export default function NavMenu() {
           </div>
           <div className="ak-main-header-right">
             {/* Login Button - Only show login when not authenticated */}
-            {!isAuthenticated() && (
+            {!estaAutenticado() && (
               <div className="ak-header-login" style={{ marginLeft: "20px" }}>
                 <Link
-                  to="/login"
+                  to="/inicio-sesion"
                   className="ak-login-btn"
                   style={{
                     display: "inline-flex",

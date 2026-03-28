@@ -130,7 +130,7 @@ const PaginaFacturas = () => {
           asChild
           className="bg-[var(--acento)] text-white hover:bg-[var(--acento)]/90"
         >
-          <Link to="/dashboard/facturas/nueva">
+          <Link to="/panel/facturas/nueva">
             <Plus weight="bold" className="mr-2 size-4" />
             Nueva Factura
           </Link>
@@ -272,7 +272,7 @@ const PaginaFacturas = () => {
                             size="icon-sm"
                             title="Ver detalle"
                             onClick={() =>
-                              navigate(`/dashboard/facturas/${factura.id}`)
+                              navigate(`/panel/facturas/${factura.id}`)
                             }
                           >
                             <Eye className="size-4 text-[var(--texto-deshabilitado)]" />
@@ -283,7 +283,7 @@ const PaginaFacturas = () => {
                             title="Editar"
                             onClick={() =>
                               navigate(
-                                `/dashboard/facturas/editar/${factura.id}`
+                                `/panel/facturas/editar/${factura.id}`
                               )
                             }
                           >

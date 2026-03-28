@@ -79,7 +79,7 @@ const PaginaDetalleFactura = () => {
       <div className="space-y-4">
         <div className="flex items-center gap-4">
           <Button asChild variant="ghost" size="sm" className="text-[var(--texto-deshabilitado)]">
-            <Link to="/dashboard/facturas">
+            <Link to="/panel/facturas">
               <ArrowLeft className="mr-1 size-4" />
               Volver a Facturas
             </Link>
@@ -116,7 +116,7 @@ const PaginaDetalleFactura = () => {
             size="sm"
             className="text-[var(--texto-deshabilitado)] hover:text-[var(--texto-principal)]"
           >
-            <Link to="/dashboard/facturas">
+            <Link to="/panel/facturas">
               <ArrowLeft className="mr-1 size-4" />
               Volver a Facturas
             </Link>
@@ -137,7 +137,7 @@ const PaginaDetalleFactura = () => {
           asChild
           className="bg-[var(--acento)] text-white hover:bg-[var(--acento)]/90"
         >
-          <Link to={`/dashboard/facturas/editar/${facturaId}`}>
+          <Link to={`/panel/facturas/editar/${facturaId}`}>
             <PencilSimple className="mr-2 size-4" />
             Editar
           </Link>

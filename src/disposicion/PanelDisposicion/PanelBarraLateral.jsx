@@ -59,7 +59,7 @@ const secciones = [
 ];
 
 const PanelBarraLateral = () => {
-  const { user, logout: cerrarSesion } = useAutenticacion();
+  const { user, cerrarSesion } = useAutenticacion();
   const { isSidebarOpen, toggleSidebar } = usarPanel();
   const location = useLocation();
   const navigate = useNavigate();
@@ -83,7 +83,7 @@ const PanelBarraLateral = () => {
 
   const handleCerrarSesion = () => {
     cerrarSesion();
-    navigate("/login", { replace: true });
+    navigate("/inicio-sesion", { replace: true });
   };
 
   return (

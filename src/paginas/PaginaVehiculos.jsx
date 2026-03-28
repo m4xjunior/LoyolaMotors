@@ -109,7 +109,7 @@ const PaginaVehiculos = () => {
           asChild
           className="bg-[var(--acento)] text-white hover:bg-[var(--acento)]/90"
         >
-          <Link to="/dashboard/vehiculos/novo">
+          <Link to="/panel/vehiculos/novo">
             <Plus weight="bold" className="mr-2 size-4" />
             Nuevo Vehiculo
           </Link>
@@ -231,7 +231,7 @@ const PaginaVehiculos = () => {
                             size="icon-sm"
                             title="Ver servicios"
                             onClick={() =>
-                              navigate(`/dashboard/vehiculos/${vehiculo.id}/servicios`)
+                              navigate(`/panel/vehiculos/${vehiculo.id}/servicios`)
                             }
                           >
                             <Eye className="size-4 text-[var(--texto-deshabilitado)]" />
@@ -242,7 +242,7 @@ const PaginaVehiculos = () => {
                             title="Editar"
                             onClick={() =>
                               navigate(
-                                `/dashboard/vehiculos/editar/${vehiculo.id}`
+                                `/panel/vehiculos/editar/${vehiculo.id}`
                               )
                             }
                           >

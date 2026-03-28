@@ -257,7 +257,7 @@ const PiePagina = () => {
               </Link>
               {" | "}
               <Link
-                to="/login"
+                to="/inicio-sesion"
                 style={{ textDecoration: "underline", opacity: 0.7 }}
               >
                 Admin

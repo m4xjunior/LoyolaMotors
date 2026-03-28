@@ -118,7 +118,7 @@ const PaginaServicios = () => {
           asChild
           className="bg-[var(--acento)] text-white hover:bg-[var(--acento)]/90"
         >
-          <Link to="/dashboard/servicios/nuevo">
+          <Link to="/panel/servicios/nuevo">
             <Plus weight="bold" className="mr-2 size-4" />
             Nuevo Servicio
           </Link>
@@ -195,7 +195,7 @@ const PaginaServicios = () => {
                 asChild
                 className="bg-[var(--acento)] text-white hover:bg-[var(--acento)]/90"
               >
-                <Link to="/dashboard/servicios/nuevo">
+                <Link to="/panel/servicios/nuevo">
                   <Plus weight="bold" className="mr-2 size-4" />
                   Crear primer servicio
                 </Link>
@@ -255,7 +255,7 @@ const PaginaServicios = () => {
                             size="icon-sm"
                             title="Editar"
                             onClick={() =>
-                              navigate(`/dashboard/servicios/editar/${servicio.id}`)
+                              navigate(`/panel/servicios/editar/${servicio.id}`)
                             }
                           >
                             <PencilSimple className="size-4 text-[var(--texto-deshabilitado)]" />
