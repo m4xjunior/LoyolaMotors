@@ -26,7 +26,7 @@ const TrustedClient = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="ak-height-125 ak-height-lg-80"></div>
       <div className="ak-slider ak-trusted-client-slider">
         <h4 className="title">Trusted Client</h4>

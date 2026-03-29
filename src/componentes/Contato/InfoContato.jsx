@@ -40,7 +40,7 @@ const ContactInfo = () => {
   ];
 
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="ak-height-125 ak-height-lg-80"></div>
       <div className="contact-info">
         <div className="left-info" data-aos="fade-right">
@@ -59,7 +59,7 @@ const ContactInfo = () => {
           {contactData.map((item, index) => (
             <div className="info-card" key={index} data-aos="fade-left">
               <p>{item.label} :</p>
-              <div className="d-flex gap-2 align-items-center">
+              <div className="flex gap-2 items-center">
                 <div>
                   <img src={item.icon} alt={item.label} />
                 </div>

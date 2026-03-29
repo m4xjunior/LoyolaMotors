@@ -40,7 +40,7 @@ const CommentForm = ({ blogid }) => {
       <div className="ak-height-30 ak-height-lg-30"></div>
       <div className="post-from" data-aos="fade-up">
         <div className="comment-form-title-container">
-          <h2 className="contact-form-title ak-white-color text-uppercase">
+          <h2 className="contact-form-title ak-white-color uppercase">
             Post A Comment
           </h2>
         </div>

@@ -62,7 +62,7 @@ const Testimonial = () => {
   });
 
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="ak-height-125 ak-height-lg-80"></div>
       <div className="ak-testimonal-controll">
         <div className="testimonal-heading" data-aos="fade-right">
@@ -108,7 +108,7 @@ const Testimonial = () => {
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema(item)) }}
                   />
                   <div className="slider-info">
-                    <div className="d-flex justify-content-between align-items-end">
+                    <div className="flex justify-between items-end">
                       <div>
                         <h5 className="name" itemProp="author">{item.nombre}</h5>
                         <p className="from">{item.origen}</p>

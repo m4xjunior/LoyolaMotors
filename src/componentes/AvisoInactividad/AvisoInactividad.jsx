@@ -1,5 +1,13 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { AlertTriangleIcon } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 /**
  * Formats a number of seconds into "M:SS" display format.
@@ -11,6 +19,61 @@ const formatCountdown = (totalSeconds) => {
   const seconds = clamped % 60;
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
 };
+
+const InactivityWarningModal = ({ isVisible, remainingSeconds, onStayLoggedIn }) => {
+  const isUrgent = remainingSeconds < 10;
+
+  return (
+    <AlertDialog open={isVisible}>
+      <AlertDialogContent className="bg-[rgba(26,26,26,0.98)] backdrop-blur-xl border-white/10 max-w-[420px] text-center flex flex-col items-center gap-5 p-10">
+        <AlertDialogHeader className="flex flex-col items-center gap-5">
+          {/* Warning icon */}
+          <div className="w-16 h-16 rounded-full bg-[rgba(255,61,36,0.12)] border border-[rgba(255,61,36,0.3)] flex items-center justify-center">
+            <AlertTriangleIcon className="w-7 h-7 text-[#ff3d24]" aria-hidden="true" />
+          </div>
+
+          <AlertDialogTitle className="text-[var(--texto-principal)] text-2xl font-bold m-0">
+            Sesion Inactiva
+          </AlertDialogTitle>
+
+          <AlertDialogDescription className="text-[var(--texto-secundario)] text-[0.95rem] leading-relaxed m-0">
+            Su sesion se cerrara automaticamente por inactividad. Haga clic en
+            continuar para permanecer conectado.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        {/* Countdown */}
+        <div className="flex flex-col items-center gap-1 py-4 px-6 bg-white/[0.04] border border-white/10 rounded-xl w-full">
+          <span className="text-[var(--texto-secundario)] text-xs uppercase tracking-widest font-medium">
+            Tiempo restante
+          </span>
+          <span
+            className={`font-bold tabular-nums leading-none transition-all duration-300 ${
+              isUrgent ? "text-[#ff3d24] text-[3.5rem]" : "text-[var(--texto-principal)] text-[3rem]"
+            }`}
+          >
+            {formatCountdown(remainingSeconds)}
+          </span>
+        </div>
+
+        <AlertDialogFooter className="w-full sm:justify-center">
+          <AlertDialogAction
+            onClick={onStayLoggedIn}
+            className="bg-[#ff3d24] hover:bg-[#e02912] text-white rounded-xl py-[0.85rem] px-8 text-base font-semibold w-full shadow-[0_4px_16px_rgba(255,61,36,0.3)] hover:shadow-[0_8px_24px_rgba(255,61,36,0.45)] tracking-wide"
+          >
+            Continuar Sesion
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
+
+export default InactivityWarningModal;
+
+/* COMPONENTE LEGADO - Reemplazado por shadcn AlertDialog
+import { useState } from "react";
+import PropTypes from "prop-types";
 
 const InactivityWarningModal = ({ isVisible, remainingSeconds, onStayLoggedIn }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -28,7 +91,6 @@ const InactivityWarningModal = ({ isVisible, remainingSeconds, onStayLoggedIn })
       aria-describedby="inactivity-modal-description"
     >
       <div className="bg-[rgba(26,26,26,0.98)] backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_24px_64px_rgba(0,0,0,0.6)] p-10 max-w-[420px] w-[90%] text-center flex flex-col items-center gap-5">
-        {/* Warning icon */}
         <div className="w-16 h-16 rounded-full bg-[rgba(255,61,36,0.12)] border border-[rgba(255,61,36,0.3)] flex items-center justify-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +106,6 @@ const InactivityWarningModal = ({ isVisible, remainingSeconds, onStayLoggedIn })
           </svg>
         </div>
 
-        {/* Title */}
         <h2
           id="inactivity-modal-title"
           className="text-[var(--texto-principal)] text-2xl font-bold m-0"
@@ -52,7 +113,6 @@ const InactivityWarningModal = ({ isVisible, remainingSeconds, onStayLoggedIn })
           Sesion Inactiva
         </h2>
 
-        {/* Message */}
         <p
           id="inactivity-modal-description"
           className="text-[var(--texto-secundario)] text-[0.95rem] leading-relaxed m-0"
@@ -61,7 +121,6 @@ const InactivityWarningModal = ({ isVisible, remainingSeconds, onStayLoggedIn })
           continuar para permanecer conectado.
         </p>
 
-        {/* Countdown */}
         <div className="flex flex-col items-center gap-1 py-4 px-6 bg-white/[0.04] border border-white/10 rounded-xl w-full">
           <span className="text-[var(--texto-secundario)] text-xs uppercase tracking-widest font-medium">
             Tiempo restante
@@ -75,7 +134,6 @@ const InactivityWarningModal = ({ isVisible, remainingSeconds, onStayLoggedIn })
           </span>
         </div>
 
-        {/* Action button */}
         <button
           type="button"
           className={`bg-[#ff3d24] text-white border-none rounded-xl py-[0.85rem] px-8 text-base font-semibold cursor-pointer w-full shadow-[0_4px_16px_rgba(255,61,36,0.3)] transition-all duration-200 tracking-wide ${
@@ -97,5 +155,4 @@ InactivityWarningModal.propTypes = {
   remainingSeconds: PropTypes.number.isRequired,
   onStayLoggedIn: PropTypes.func.isRequired,
 };
-
-export default InactivityWarningModal;
+COMPONENTE LEGADO */

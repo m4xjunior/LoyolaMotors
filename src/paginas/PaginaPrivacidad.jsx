@@ -4,7 +4,7 @@ const PrivacyPolicy = () => {
   return (
     <>
       <CommonPageHero title={"Política de Privacidad"} />
-      <div className="container">
+      <div className="mx-auto max-w-7xl px-4">
         <div className="ak-height-80 ak-height-lg-60"></div>
         <div className="privacy-policy-content" style={{ maxWidth: "900px", margin: "0 auto" }}>
           <div data-aos="fade-up" data-aos-duration="500">

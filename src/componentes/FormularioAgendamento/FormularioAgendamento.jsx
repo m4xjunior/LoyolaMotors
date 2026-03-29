@@ -68,7 +68,7 @@ const AppointmentForm = () => {
   };
 
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="ak-height-125 ak-height-lg-80"></div>
       <div className="contact-content">
         <div
@@ -76,7 +76,7 @@ const AppointmentForm = () => {
           data-aos="fade-up"
           data-aos-delay="700"
         >
-          <h2 className="contact-form-title ak-white-color text-uppercase">
+          <h2 className="contact-form-title ak-white-color uppercase">
             Solicita una cita
           </h2>
           <p>

@@ -34,7 +34,7 @@ const SingleBlog = () => {
       <CommonPageHero title={"Single Blog"} />
       <BlogPost post={blog} />
 
-      <div className="container">
+      <div className="mx-auto max-w-7xl px-4">
         <div className="ak-height-125 ak-height-lg-80"></div>
         <SectionHeading
           type={true}
@@ -43,7 +43,7 @@ const SingleBlog = () => {
           desp="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard."
         />
         <div className="ak-height-50 ak-height-lg-50"></div>
-        <div className="row row-cols-1 row-cols-md-1 row-cols-lg-3 g-5 g-lg-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-4">
           {similarBlogs.map((post, index) => (
             <BlogCard key={index} post={post} />
           ))}

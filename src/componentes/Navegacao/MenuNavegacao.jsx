@@ -28,7 +28,7 @@ export default function NavMenu() {
 
   return (
     <div className="ak-main_header">
-      <div className="container">
+      <div className="mx-auto max-w-7xl px-4">
         <div className="ak-main_header_in">
           <div className="ak-main-header-left">
             <Link className="ak-site_branding" to="/">

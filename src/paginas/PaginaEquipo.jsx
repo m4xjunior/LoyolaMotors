@@ -19,9 +19,9 @@ const Team = () => {
     <>
       <CommonPageHero title={"Equipo"} />
       <PersonDetails />
-      <div className="container">
+      <div className="mx-auto max-w-7xl px-4">
         <div className="all-members">
-          <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 g-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {membersData?.map((member, index) => (
               <MemberCard key={index} member={member} delay={index * 50} />
             ))}

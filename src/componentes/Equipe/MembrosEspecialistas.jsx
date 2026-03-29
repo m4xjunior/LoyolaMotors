@@ -30,8 +30,8 @@ const SpecialistTeamMembers = ({ team }) => {
   return (
     <>
       <div className="ak-height-125 ak-height-lg-80"></div>
-      <div className="d-flex justify-content-center">
-        <div className="sticky-content container">
+      <div className="flex justify-center">
+        <div className="sticky-content mx-auto max-w-7xl px-4">
           <div className="content style_2">
             <div className="service">
               {speciaList.map((item) => (

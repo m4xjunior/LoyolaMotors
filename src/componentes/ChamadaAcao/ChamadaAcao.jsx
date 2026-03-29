@@ -21,7 +21,7 @@ const Cta = () => {
   const telefonoHref = `tel:${telefono.replace(/\s/g, '')}`;
 
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="ak-height-125 ak-height-lg-80"></div>
       <div className="cta" data-aos="fade-right">
         <span className="border-pr"></span>

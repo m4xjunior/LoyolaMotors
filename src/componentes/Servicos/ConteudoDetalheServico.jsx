@@ -10,8 +10,8 @@ const ServicesDetailContent = ({ service }) => {
   return (
     <>
       <div className="ak-height-75 ak-height-lg-80"></div>
-      <div className="d-flex justify-content-center">
-        <div className="sticky-content container">
+      <div className="flex justify-center">
+        <div className="sticky-content mx-auto max-w-7xl px-4">
           <div className="content">
             <div className="single-blog-list" data-aos="fade-up">
               <h4 className="single-blog-title">{title}</h4>
@@ -19,7 +19,7 @@ const ServicesDetailContent = ({ service }) => {
               <img
                 src="/assets/img/service/services-single.jpg"
                 data-aos="fade-up"
-                className="img-fluid"
+                className="max-w-full h-auto"
                 alt="..."
               />
               <div className="ak-height-50 ak-height-lg-50"></div>
@@ -34,7 +34,7 @@ const ServicesDetailContent = ({ service }) => {
             ))}
           </div>
           <div className="sidebar">
-            <div className="d-flex flex-column gap-4 align-items-xxl-end">
+            <div className="flex flex-col gap-4 2xl:items-end">
               {similar_services?.map((similar_item, index) => (
                 <div className="service-card-style-2" data-aos="fade-up">
                   <div className="service-icon">

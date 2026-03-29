@@ -13,7 +13,7 @@ const PersonDetails = () => {
   const { name, title, quote, image, id } = personData;
 
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="ak-height-75 ak-height-lg-75"></div>
       <div className="ceo-content">
         <div className="left-info" data-aos="fade-left" data-aos-delay="800">
@@ -61,7 +61,7 @@ const PersonDetails = () => {
           <div className="ceo-desp">
             <p className="desp">{quote}</p>
           </div>
-          <div className="d-flex gap-3 align-items-center">
+          <div className="flex gap-3 items-center">
             <div>
               <Link to={`/team-member/${id}`} className="more-btn">
                 VER MÁS

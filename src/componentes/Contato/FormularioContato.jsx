@@ -74,7 +74,7 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="ak-height-100 ak-height-lg-40"></div>
       <div className="ak-height-125 ak-height-lg-80"></div>
       <div className="contact-content">
@@ -83,7 +83,7 @@ const ContactForm = () => {
           data-aos="fade-up"
           data-aos-delay="700"
         >
-          <h2 className="contact-form-title ak-white-color text-uppercase">
+          <h2 className="contact-form-title ak-white-color uppercase">
             Contáctanos
           </h2>
           <p>Inicio / Contacto</p>

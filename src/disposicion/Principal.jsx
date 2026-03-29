@@ -4,7 +4,7 @@ import Cabecera from "./Cabecera/Cabecera";
 import PiePagina from "./PiePagina/PiePagina";
 import { pageScrollUp } from "../auxiliar/principal";
 import ScrollUpButton from "../componentes/VoltarTopo/VoltarTopo";
-import AdminNavBar from "../componentes/NavAdmin/BarraNavAdmin";
+// /* COMPONENTE LEGADO - Reemplazado por shadcn Sidebar */ import AdminNavBar from "../componentes/NavAdmin/BarraNavAdmin";
 
 const Principal = () => {
   const { pathname } = useLocation();
@@ -19,7 +19,7 @@ const Principal = () => {
       <Outlet />
       <PiePagina />
       <ScrollUpButton />
-      <AdminNavBar />
+      {/* COMPONENTE LEGADO - Reemplazado por shadcn Sidebar */}{/* <AdminNavBar /> */}
     </>
   );
 };

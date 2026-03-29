@@ -19,7 +19,7 @@ const ChooseUs = () => {
   const { bgText, title, desp, list, img } = chooseUsData;
 
   return (
-    <section className="container">
+    <section className="mx-auto max-w-7xl px-4">
       <div className="ak-height-125 ak-height-lg-80"></div>
       <div className="choose-us-container-extents">
         <div className="choose-us-contain">

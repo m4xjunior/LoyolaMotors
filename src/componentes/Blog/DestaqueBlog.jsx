@@ -6,7 +6,7 @@ const BlogFeature = () => {
   const { id, date, title, blogdetails, imageUrl } = blogData;
 
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="ak-height-75 ak-height-lg-80"></div>
       <div className="blog-feature">
         <div

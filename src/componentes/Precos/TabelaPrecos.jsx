@@ -67,7 +67,7 @@ const PricingTable = ({ type }) => {
       )}
       <div className="ak-bg pricing-section-bg-img">
         <div className="ak-height-100 ak-height-lg-50"></div>
-        <div className="container">
+        <div className="mx-auto max-w-7xl px-4">
           {type || (
             <>
               <SectionHeading

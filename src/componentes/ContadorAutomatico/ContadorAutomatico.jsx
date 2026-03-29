@@ -18,12 +18,12 @@ const AutoCounter = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="ak-height-125 ak-height-lg-80"></div>
       <div className="auto-counter-section">
-        <div className="row align-items-center gap-lg-0 gap-3" id="counter">
+        <div className="grid grid-cols-1 lg:grid-cols-3 items-center gap-3 lg:gap-0" id="counter">
           {estadisticas.map((counter, index) => (
-            <div key={counter.id} className="col-lg-4">
+            <div key={counter.id}>
               <Counter
                 end={counter.numero}
                 delay={index * 50}

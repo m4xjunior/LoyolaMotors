@@ -71,7 +71,7 @@ const HeroSlider = () => {
                 className="ak-hero-bg ak-bg object-cover"
                 alt={item.alt || item.titulo}
               />
-              <div className="container">
+              <div className="mx-auto max-w-7xl px-4">
                 <div className="hero-slider-info">
                   <div className="slider-info">
                     <div className="hero-title">
@@ -152,10 +152,10 @@ const HeroSlider = () => {
           </div>
         </div>
       </div>
-      <div className="container">
+      <div className="mx-auto max-w-7xl px-4">
         <div className="hero-contact-info">
           <Link to="tel:+34640162947">
-            <div className="d-flex align-items-center gap-2">
+            <div className="flex items-center gap-2">
               <div className="heartbeat-icon">
                 <img src="/assets/img/icon/phone.svg" alt="..." />
               </div>
@@ -165,7 +165,7 @@ const HeroSlider = () => {
             </div>
           </Link>
           <Link to="#">
-            <div className="d-flex align-items-center gap-2">
+            <div className="flex items-center gap-2">
               <div className="heartbeat-icon">
                 <img src="/assets/img/icon/heroaddress.svg" alt="..." />
               </div>
@@ -174,7 +174,7 @@ const HeroSlider = () => {
               </p>
             </div>
           </Link>
-          <div className="d-flex align-items-center gap-2">
+          <div className="flex items-center gap-2">
             <div className="heartbeat-icon">
               <img src="/assets/img/icon/hero-time.svg" alt="..." />
             </div>

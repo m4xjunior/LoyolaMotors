@@ -10,7 +10,7 @@ import {
 
 const CommonPageHero = ({ title }) => {
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="common-page-title">
         <h3 className="page-title">{title}</h3>
         <Breadcrumb>

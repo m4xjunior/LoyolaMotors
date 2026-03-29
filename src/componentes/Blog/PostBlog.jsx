@@ -10,7 +10,7 @@ const BlogPost = ({ post }) => {
   } = post;
 
   return (
-    <div className="container container-customize">
+    <div className="mx-auto max-w-7xl px-4 container-customize">
       <div className="ak-height-75 ak-height-lg-80"></div>
       <div>
         <div className="time-title" data-aos="fade-up" data-aos-delay="600">
@@ -37,8 +37,8 @@ const BlogPost = ({ post }) => {
       <div data-aos="fade-up">
         <div className="primary-color-border"></div>
         <div className="mt-3">
-          <div className="d-flex align-items-center">
-            <p className="me-5">Social Share:</p>
+          <div className="flex items-center">
+            <p className="mr-5">Social Share:</p>
             <div className="social-icon">
               <Link to="https://www.facebook.com/">
                 <img src="/assets/img/icon/facebookicon.svg" alt="..." />

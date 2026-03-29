@@ -26,7 +26,7 @@ const FrequentlyQuestions = () => {
   const workingHours = config.horario || CONFIG_POR_DEFECTO.horario;
 
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="ak-height-75 ak-height-lg-80"></div>
       <h4
         className="faq-images-title"
@@ -42,7 +42,7 @@ const FrequentlyQuestions = () => {
         <div className="images" data-aos="fade-up" data-aos-delay="950">
           <img src={accordionImg} className="img-bg-faq" alt="Accordion Side" />
           <div className="images-info">
-            <div className="d-flex align-items-center gap-3">
+            <div className="flex items-center gap-3">
               <div className="heartbeat-icon">
                 <a href={`tel:${phone}`}>
                   <span className="ak-heartbeat-btn">
@@ -52,7 +52,7 @@ const FrequentlyQuestions = () => {
               </div>
               <h3>{phone}</h3>
             </div>
-            <div className="d-flex align-items-center gap-3">
+            <div className="flex items-center gap-3">
               <div className="heartbeat-icon">
                 <a href={`mailto:${email}`}>
                   <span className="ak-heartbeat-btn">
@@ -65,7 +65,7 @@ const FrequentlyQuestions = () => {
             <div className="ak-location">
               <a
                 href="#"
-                className="d-flex gap-2 location text-hover-animation"
+                className="flex gap-2 location text-hover-animation"
               >
                 <img src="/assets/img/icon/location.svg" alt="Location Icon" />
                 <span>{address}</span>
@@ -74,7 +74,7 @@ const FrequentlyQuestions = () => {
             <div className="ak-date-time">
               <a
                 href="#"
-                className="date text-hover-animation d-flex align-items-center gap-2"
+                className="date text-hover-animation flex items-center gap-2"
               >
                 <span>
                   <img src="/assets/img/icon/date-icon.svg" alt="Date Icon" />

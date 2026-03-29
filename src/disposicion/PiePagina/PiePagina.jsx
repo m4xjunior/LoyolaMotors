@@ -68,7 +68,7 @@ const PiePagina = () => {
     <>
       <div className="ak-height-125 ak-height-lg-80"></div>
       <footer className="footer style-1 footer-bg">
-        <div className="container">
+        <div className="mx-auto max-w-7xl px-4">
           <div className="ak-height-40 ak-height-lg-60"></div>
           <div
             className="footer-email"
@@ -145,7 +145,7 @@ const PiePagina = () => {
                 Loyola Motors Valencia — Taller especializado en chapa, pintura y mecánica general con más de 20 años de experiencia en el centro de Valencia.
               </p>
               <div className="ak-height-35 ak-height-lg-30"></div>
-              <div className="d-flex align-items-center gap-3">
+              <div className="flex items-center gap-3">
                 <div className="heartbeat-icon">
                   <Link to={telefonoHref}>
                     <span className="ak-heartbeat-btn">
@@ -211,7 +211,7 @@ const PiePagina = () => {
               <div className="footer-address">
                 <p className="adress-title">UBICACIÓN Y CONTACTO</p>
                 <Link to="#" className="location">
-                  <span className="me-1">
+                  <span className="mr-1">
                     <img
                       src="/assets/img/icon/location.svg"
                       alt="Location"
@@ -220,13 +220,13 @@ const PiePagina = () => {
                   {direccion}
                 </Link>
                 <Link to={`mailto:${emailEmpresa}`} className="email">
-                  <span className="me-1">
+                  <span className="mr-1">
                     <img src="/assets/img/icon/email.svg" alt="Email" />
                   </span>
                   {emailEmpresa}
                 </Link>
                 <p className="date">
-                  <span className="me-1">
+                  <span className="mr-1">
                     <img
                       src="/assets/img/icon/calender.svg"
                       alt="Calendar"

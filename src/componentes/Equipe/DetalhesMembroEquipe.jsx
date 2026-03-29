@@ -10,7 +10,7 @@ const SingleTeamMemberDetails = ({ team }) => {
   } = team;
 
   return (
-    <div className="container">
+    <div className="mx-auto max-w-7xl px-4">
       <div className="ak-height-75 ak-height-lg-75"></div>
       <div className="ceo-content type_2">
         <div className="left-info" data-aos="fade-left" data-aos-delay="800">
@@ -42,9 +42,9 @@ const SingleTeamMemberDetails = ({ team }) => {
           </div>
         </div>
       </div>
-      <div className="d-flex gap-5 align-items-center mt-5">
+      <div className="flex gap-5 items-center mt-5">
         <p>Follow Me:</p>
-        <div className="member-info-social d-flex gap-3">
+        <div className="member-info-social flex gap-3">
           <a href={linkedin} className="icon">
             <img src="/assets/img/icon/linkedinicon.svg" alt="LinkedIn" />
           </a>

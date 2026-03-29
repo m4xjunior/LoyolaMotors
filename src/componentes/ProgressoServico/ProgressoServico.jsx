@@ -26,9 +26,9 @@ const serviceProgresData = [
 
 const ServiceProgres = () => {
   return (
-    <section className="container">
+    <section className="mx-auto max-w-7xl px-4">
       <div className="ak-height-125 ak-height-lg-80"></div>
-      <div className="row  row-cols-1 row-cols-xl-3 g-4">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         {serviceProgresData?.map((item) => (
           <div
             className="service-progress-card"
