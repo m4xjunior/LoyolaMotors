@@ -18,7 +18,7 @@ const DATOS_POR_DEFECTO = [
     id: 3,
     titulo: "Historia",
     contenido:
-      "Más de 20 años cuidando los coches de familias y empresas, con más de 900 reseñas 5 estrellas.",
+      "Más de 20 años cuidando los coches de familias y empresas en Valencia, con atención personalizada limitada a 15 vehículos al mes.",
   },
 ];
 

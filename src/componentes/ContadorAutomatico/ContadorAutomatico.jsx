@@ -4,7 +4,7 @@ import { servicioContenido } from "../../servicios/servicioContenido";
 
 const ESTADISTICAS_POR_DEFECTO = [
   { id: 1, numero: 22, texto: "AÑOS DE EXPERIENCIA", orden: 0 },
-  { id: 2, numero: 900, texto: "RESEÑAS 5 ESTRELLAS", orden: 1 },
+  { id: 2, numero: 15, texto: "COCHES AL MES MÁXIMO", orden: 1 },
   { id: 3, numero: 100, texto: "SATISFACCIÓN DEL CLIENTE", orden: 2 },
 ];
 

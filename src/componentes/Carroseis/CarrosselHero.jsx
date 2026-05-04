@@ -17,9 +17,9 @@ const DIAPOSITIVAS_POR_DEFECTO = [
   },
   {
     id: 2,
-    titulo: "900 Reseñas de 5 Estrellas",
-    subtitulo: "Confianza y Calidad Garantizada",
-    descripcion: "Clientes satisfechos nos avalan. Atendemos solo 15 coches al mes para máxima dedicación.",
+    titulo: "Solo 15 coches al mes",
+    subtitulo: "Para máxima dedicación",
+    descripcion: "Atención personalizada y plazo de entrega garantizado. Precio cerrado por escrito antes de empezar.",
     enlaceBoton: "tel:+34640162947",
     imagenUrl: "/assets/img/hero/hero_slider_bg_2.png",
     alt: "Cliente satisfecho recibiendo su coche reparado en Loyola Motors",

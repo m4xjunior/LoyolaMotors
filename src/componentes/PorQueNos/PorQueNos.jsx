@@ -4,11 +4,11 @@ import { ButtonCommon } from "../Botao/Botao";
 const chooseUsData = {
   bgText: "CARACTERÍSTICAS",
   title: "¿POR QUÉ ELEGIR LOYOLA MOTORS?",
-  desp: "Más de 20 años cuidando los carros de su familia. 900 reviews 5 estrellas, precios transparentes y garantía de hasta 1 año.",
+  desp: "Más de 20 años cuidando los coches de familias y empresas en Valencia. Atención personalizada limitada a 15 vehículos al mes, precios transparentes y garantía de hasta 1 año.",
   img: "/assets/img/chooseus/choose-us.png",
   list: [
     { title: "TÉCNICOS CERTIFICADOS (más de 10 años de formación continua)" },
-    { title: "MÁS DE 900 RESEÑAS 5 ESTRELLAS en Google y Facebook" },
+    { title: "ATENCIÓN PERSONALIZADA – solo 15 coches al mes para máxima dedicación" },
     { title: "GARANTÍA DE HASTA 1 AÑO en reparaciones y pintura" },
     { title: "PRECIOS TRANSPARENTES – compara y ahorra hasta 25%" },
     { title: "ATENCIÓN PERSONALIZADA – respondemos en menos de 2 horas" },
